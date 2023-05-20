@@ -1,0 +1,95 @@
+@import url("./components/add-post");
+@import url("./components/blog-table");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+}
+
+.page-add-post {
+  width: 100%;
+}
+.page-add-post .btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.page-add-post .btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+.page-add-post input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+}
+
+.blog-table .block-action {
+  display: flex;
+}
+.blog-table table .long-col {
+  width: auto;
+  min-width: 150px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.blog-table .status {
+  text-transform: capitalize;
+}
+.blog-table .status span {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.blog-table .status span.online {
+  background-color: chartreuse;
+}
+.blog-table .status span.offline {
+  background-color: red;
+}
+.blog-table .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  color: #000000;
+  float: left;
+  padding: 5px 12px;
+  text-decoration: none;
+  transition: background-color 0.5s;
+  border: 1px solid #DDD;
+  margin: 0 4px;
+  font-size: 14px;
+}
+.pagination a.active {
+  background-color: #0096FF;
+  color: #FFFFFF;
+  border: 1px solid #0096FF;
+}
+.pagination a:hover:not(.active) {
+  background-color: #DDD;
+}
+
+/*# sourceMappingURL=main.css.map */

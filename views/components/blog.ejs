@@ -1,0 +1,70 @@
+<div class="blog-table">
+    <div class="card shadow border-0 mb-7">
+        <div class="card-header">
+            <h5 class="mb-0">Applications</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-nowrap">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">No.1</th>
+                        <th scope="col" class="long-col">Author</th>
+                        <th scope="col" class="long-col">Title</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="long-col">Created Date</th>
+                        <th scope="col" class="long-col">Modify Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% blogs.forEach((blog, index) => { %>
+                      <% let status = blog.status ? 'online' : 'offline'  %>
+                        <tr>
+                            <td>
+                                <%= (index + 1) %>
+                            </td>
+                            <td class="long-col">
+                                <img alt="..."
+                                    src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
+                                    class="avatar avatar-sm rounded-circle me-2">
+                                <a class="text-heading font-semibold" href="#">
+                                    Wainii Dev
+                                </a>
+                            </td>
+                            <td class="long-col">
+                                <%= blog.title %>
+                            </td>
+                            <td class="status">
+                                <span class="<%= status %>"></span>
+                                <%= status %>
+                            </td>
+                            <td class="long-col">
+                                <%= blog.createdAt %>
+                            </td>
+                            <td class="long-col">
+                                <%= blog.updatedAt %>
+                            </td>
+                            <td class="block-action">
+                                <a href="/view-post/<%= blog._id %>" class="btn btn-sm btn-neutral">View</a>
+                                <form action="/edit-post/<%= blog._id %>" method="get">
+                                    <button type="submit" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                </form>
+                                <form action="/delete-post?id=<%= blog._id %>" method="post">
+                                    <button type="submit" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick="if (!confirm('Are you sure you want to delete?')) return;">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer border-0 py-5">
+            <span class="text-muted text-sm">Showing <%= blogs.length%> items out of <%= allItems %> results found</span>
+            <%- include('pagination', {totalPage: totalPage, page: currentPage}) %>
+        </div>
+    </div>
+</div>

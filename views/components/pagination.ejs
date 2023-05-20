@@ -1,0 +1,19 @@
+<% if (totalPage > 1) { %>
+<% 
+    let p = parseInt(page);
+    let prevBtn = p > 1 ? p - 1 : p; 
+    let nextBtn = p < totalPage ? p + 1 : p;
+
+    let isPrev = (p - 1 == 0) ? 'disable' : '';
+    let isNext = (p + 1 > totalPage) ? 'disable' : '';
+%>
+
+<div class="pagination <%= page %>">
+    <a class="<%=  isPrev %>" href="/p/<%=prevBtn%>">&laquo;</a>
+    <% for (let i = 1; i <= totalPage; i++ ) { %>
+        <% let isActive = (page == i) ? 'active' : '' %>
+        <a href="/p/<%= i %>" class="<%= isActive %>"> <%= i %> </a>
+    <% } %>
+    <a class="<%=  isNext %>" href="/p/<%= nextBtn %>">&raquo;</a>
+</div>
+<% } %>

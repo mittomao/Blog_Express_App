@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add Post</title>
+    <%- include('templates/meta')%>
+</head>
+
+<body>
+    <div class="page-add-post">
+        <div class="container">
+            <h2 class="text-center">Edit Post</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="post" role="form" action="/update-post?id=<%= data._id %>">
+                        <div class="form-group mb-3">
+                            <label> Title </label>
+                            <input type="text" class="form-control" name="title" placeholder="Title" value="<%= data.title %>" required/>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-3">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="status" id=""> Disable
+                            </label>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label> Content </label>
+                            <textarea class="form-control" id="editor-content" name="content">
+                                <%= data.content %>
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plugins JS File -->
+    <%- include('templates/block_script')%>
+
+        <script>
+            console.log('CKEDITOR', CKEDITOR);
+            CKEDITOR.replace('editor-content');
+            CKEDITOR.on('instanceReady', function (evt) {
+                var editor = evt.editor;
+
+                editor.on('change', function (e) {
+                    var contentSpace = editor.ui.space('contents');
+                    var ckeditorFrameCollection = contentSpace.$.getElementsByTagName('iframe');
+                    var ckeditorFrame = ckeditorFrameCollection[0];
+                    var innerDoc = ckeditorFrame.contentDocument;
+                    var innerDocTextAreaHeight = $(innerDoc.body).height();
+                    console.log(innerDocTextAreaHeight);
+                });
+            });
+        </script>
+        <!-- Main JS File -->
+        <!-- <script src="assets/js/main.js"></script> -->
+</body>
+
+</html>
