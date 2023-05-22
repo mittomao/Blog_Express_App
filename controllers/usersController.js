@@ -1,10 +1,18 @@
 'use strict'
 const _CONST = require('../config/constant')
-const user_model = require('../models/usersModel')
+const userModel = require('../models/usersModel')
 
 var self = module.exports = {
-    function_register_users: async(obj) => {
+    FUNC_REGISTER_USER: async (obj) => {
         //insert vao collection Users
-        return user_model.create(obj);
+        return userModel.create(obj);
+    },
+    FUNC_LOGIN: async (obj) => {
+        console.log('obj query', obj);
+        //insert vao collection Users
+        return userModel.findOne({
+            username: obj.username,
+            password: obj.password
+        })
     }
 }

@@ -1,9 +1,9 @@
 'use strict'
+const { Exception } = require('sass')
 const _CONST = require('../config/constant')
 const _UTIL = require('../utils/')
-const _LOGIN_CON = require('./loginController')
-const _USERS_CON = require('./usersController')
 const _BLOG_CON = require('./blogController')
+const _USER_CON = require('./usersController')
 
 module.exports = {
     home: async (req, res) => {
@@ -31,7 +31,7 @@ module.exports = {
             let add = await _BLOG_CON.Func_Create_Post(req.body);
             if (add) {
                 return res.redirect('http://localhost:9000/');
-            }    
+            }
         } catch (error) {
             console.error('error', error)
         }
@@ -45,7 +45,7 @@ module.exports = {
             }
         } catch (error) {
             console.error('error', error)
-        } 
+        }
     },
     updatePost: async (req, res) => {
         const { id } = req.query;
@@ -53,7 +53,7 @@ module.exports = {
             let update = await _BLOG_CON.Func_Update_Post_By_Id(id, req.body);
             if (update) {
                 return res.redirect('http://localhost:9000/');
-            }    
+            }
         } catch (error) {
             console.error('error', error)
         }
@@ -64,57 +64,52 @@ module.exports = {
             let deletePost = await _BLOG_CON.Func_Delete_Post_By_Id(id);
             if (deletePost) {
                 return res.redirect('http://localhost:9000/');
-            }    
-            // const data = await _BLOG_CON.Func_Get_ALl_Post();
-            // return res.render('home.ejs', {
-            //     blogs: data
-            // });
+            }
         } catch (error) {
             console.error('error', error)
         }
-    }
+    },
+    register: async (req, res) => {
+        if (req.method === "GET") {
+            return res.render('register')
+        }
+        try {
+            const { username, password, email, phone } = req.body;
+            const register = await _USER_CON.FUNC_REGISTER_USER({
+                username,
+                password,
+                email,
+                phone
+            });
 
-    // profile: async (req, res) => {
-    //     return res.render('profile')
-    // },
-    // login: async (req, res) => {
-    //     if(req.session.user){
-    //         return res.redirect('http://localhost:9000/profile?step=session')
-    //     }
-    //     if(req.method === 'GET'){
-    //         return res.render('login')
-    //     }
+            if (register) {
+                return res.redirect('http://localhost:9000/')
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    },
+    login: async (req, res) => {
+        if (req.method === 'GET') {
+            return res.render('login')
+        }
 
-    //     if(req.method === 'POST'){
-    //         //su dung Util check missing key neu can
-    //         let q = req.body;
-    //         let check = _UTIL.checkMissingKey(q, ['email', 'password'])
-    //         console.log('check>>>>', check)
-    //         if(q.TYPE === 'RE'){
-    //             console.log('user >>> register');
-    //             let rsLogin = await _LOGIN_CON.function_register(q)
-    //             if(rsLogin){
-    //                 let rsUser = await _USERS_CON.function_register_users(q);
-    //                 if(rsUser){
-    //                     return res.redirect('http://localhost:9000/login?step=login')
-    //                 }
-    //             }
+        try {
+            const { username, password } = req.body;
+            const login = await _USER_CON.FUNC_LOGIN({
+                username,
+                password
+            });
 
-    //             return res.redirect('http://localhost:9000/login?step=error_login')
-    //         }
-
-    //         //xu ly cho login
-
-    //         if(q.TYPE === 'LO'){
-    //             let objLogin = await _LOGIN_CON.function_login(q)
-    //             if(objLogin){
-    //                 //storage session here
-    //                 req.session.user = objLogin;
-    //                 return res.redirect('http://localhost:9000/profile?step=login_success')
-    //             }
-    //             return res.redirect('http://localhost:9000/login?step=error')
-    //         }
-    //     }
-
-    // },
+            if (login) {
+                return res.redirect('http://localhost:9000/')
+            } else {
+                res.status(500).json({
+                    mess: "Username or Password is Correct"
+                })
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    },
 }

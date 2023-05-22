@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('templates/meta')%>
+</head>
+
+<body>
+
+    <div class="form-register">
+        <div class="form-register-container">
+            <div class="title">Registration</div>
+            <form action="/register" method="post">
+                <div class="user__details">
+                    <div class="input__box input__box-user">
+                        <span class="details">Username</span>
+                        <input type="text" id="username" name="username" placeholder="johnWC98" required>
+                    </div>
+                    <div class="input__box">
+                        <span class="details">Email</span>
+                        <input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="johnsmith@hotmail.com" required>
+                    </div>
+                    <div class="input__box">
+                        <span class="details">Phone Number</span>
+                        <input id="phone" name="phone" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="012-345-6789" required>
+                    </div>
+                    <div class="input__box">
+                        <span class="details">Password</span>
+                        <input id="password" name="password" type="password" placeholder="********" required>
+                    </div>
+                    <div class="input__box">
+                        <span class="details">Confirm Password</span>
+                        <input id="confirm-password" name="confirm-password" type="password" placeholder="********" required>
+                    </div>
+
+                </div>
+                <div class="button">
+                    <input type="submit" id="submit" value="Register">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <%- include('templates/block_script')%>
+    <script>
+        const password = $('#password').val();
+        const confirmPassword = $('#confirm-password').val();
+
+        $('#submit').on('submit', (e) => {
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                e.stopPropagation();
+                alert('Vui Long nhap lai mat khau chinh xac!!!');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

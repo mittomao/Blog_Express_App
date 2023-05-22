@@ -6,8 +6,14 @@ const middleware = require('../utils/middleware')
 const router = express.Router();
 router.get('/', index_Controller.home)
 router.get('/p/:page', index_Controller.home)
-// router.get('/api/test', index_Controller.test)
-// router.get('/login', index_Controller.login)
+
+// Login
+router.get('/login', index_Controller.login)
+router.post('/login', index_Controller.login)
+
+// Register
+router.get('/register', index_Controller.register)
+router.post('/register', index_Controller.register)
 // router.post('/login', index_Controller.login)
 // router.get('/profile', [middleware.checkLogin, index_Controller.profile])
 // router.get('/profile', [middleware.checkLogin, index_Controller.profile])
