@@ -11,6 +11,8 @@ router.get('/p/:page', index_Controller.home)
 router.get('/login', index_Controller.login)
 router.post('/login', index_Controller.login)
 
+// Logout
+router.get('/logout', index_Controller.logout)
 // Register
 router.get('/register', index_Controller.register)
 router.post('/register', index_Controller.register)
@@ -19,7 +21,7 @@ router.post('/register', index_Controller.register)
 // router.get('/profile', [middleware.checkLogin, index_Controller.profile])
 
 //Create 
-router.get('/add-post', index_Controller.pageCreate)
+router.get('/add-post', index_Controller.addPost)
 router.post('/add-post', index_Controller.addPost)
 
 // Update

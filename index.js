@@ -3,13 +3,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const blogRouter = require('./routes/');
 const bodyParser = require('body-parser');
+const session = require("express-session");
 
 const app = express();
 
 // Form Data
 app.use(express.json());
 app.use(bodyParser.json()); //utilizes the body-parser package
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+    session({
+        resave: true,
+        saveUninitialized: true,
+        secret: 'somesecret',
+        cookie: { maxAge: 360000 }
+    }
+    ));
 
 // Static File
 app.use(express.static(__dirname + '/public'));

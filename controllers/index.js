@@ -6,27 +6,32 @@ const _BLOG_CON = require('./blogController')
 const _USER_CON = require('./usersController')
 
 module.exports = {
-    home: async (req, res) => {
-        let { page = 1 } = req.params;
-
+    home: async (req, res) => { 
         try {
-            const data = await _BLOG_CON.Func_Get_ALl_Post(page);
-            if (data) {
-                return res.render('home.ejs', {
-                    blogs: data.posts,
-                    currentPage: data.current,
-                    totalPage: data.totalPage,
-                    allItems: data.allItems
-                });
+            let { page = 1 } = req.params;
+            if (req.session?.loggedin) {
+                const data = await _BLOG_CON.Func_Get_ALl_Post(page);
+                if (data) {
+                    return res.render('home.ejs', {
+                        blogs: data.posts,
+                        currentPage: data.current,
+                        totalPage: data.totalPage,
+                        allItems: data.allItems,
+                        username: req.session.username
+                    });
+                }
             }
+            
+            return res.redirect('http://localhost:9000/login')
+            
         } catch (error) {
             console.error(error);
         }
     },
-    pageCreate: (req, res) => {
-        return res.render('add-post.ejs');
-    },
     addPost: async (req, res) => {
+        if (req.method === "GET") {
+            return res.render('add-post.ejs');
+        }
         try {
             let add = await _BLOG_CON.Func_Create_Post(req.body);
             if (add) {
@@ -50,6 +55,7 @@ module.exports = {
     updatePost: async (req, res) => {
         const { id } = req.query;
         try {
+            console.log("req.body", req.body);
             let update = await _BLOG_CON.Func_Update_Post_By_Id(id, req.body);
             if (update) {
                 return res.redirect('http://localhost:9000/');
@@ -94,6 +100,8 @@ module.exports = {
             return res.render('login')
         }
 
+        req.session = req.session || {};
+
         try {
             const { username, password } = req.body;
             const login = await _USER_CON.FUNC_LOGIN({
@@ -102,14 +110,25 @@ module.exports = {
             });
 
             if (login) {
-                return res.redirect('http://localhost:9000/')
+                req.session.loggedin = true;
+				req.session.username = username;
+				req.body.test = username;
+
+                res.redirect('http://localhost:9000/')
             } else {
-                res.status(500).json({
-                    mess: "Username or Password is Correct"
-                })
+                res.send("Username Or Password Is Correct!!!")
+                // res.status(404).json({
+                //     mess: "Username or Password is Correct"
+                // })
             }
         } catch (error) {
             console.error(error)
         }
     },
+    logout: async (req, res) => {
+        req.session.loggedin = false;
+        req.session.username = null;
+
+        res.redirect('http://localhost:9000/')
+    }
 }

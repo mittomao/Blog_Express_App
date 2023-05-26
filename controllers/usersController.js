@@ -8,7 +8,6 @@ var self = module.exports = {
         return userModel.create(obj);
     },
     FUNC_LOGIN: async (obj) => {
-        console.log('obj query', obj);
         //insert vao collection Users
         return userModel.findOne({
             username: obj.username,

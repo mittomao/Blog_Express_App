@@ -29,6 +29,7 @@ module.exports = {
         return await blogModel.findById(id);
     },
     Func_Update_Post_By_Id: async (id, params) => {
+        console.log('Func_Update_Post_By_Id', params);
         return await blogModel.findByIdAndUpdate({
             _id: id
         }, {
