@@ -46,12 +46,12 @@
                             </td>
                             <td class="block-action">
                                 <a href="/view-post/<%= blog._id %>" class="btn btn-sm btn-neutral">View</a>
-                                <form action="/edit-post/<%= blog._id %>" method="get">
+                                <form action="/admin/edit-post/<%= blog._id %>" method="get">
                                     <button type="submit" class="btn btn-sm btn-square btn-neutral text-danger-hover">
                                         <i class="bi bi-pencil"></i>
                                     </button>
                                 </form>
-                                <form action="/delete-post?id=<%= blog._id %>" method="post">
+                                <form action="/admin/delete-post?id=<%= blog._id %>" method="post">
                                     <button type="submit" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick="if (!confirm('Are you sure you want to delete?')) return;">
                                         <i class="bi bi-trash"></i>
                                     </button>

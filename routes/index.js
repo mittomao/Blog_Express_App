@@ -1,6 +1,6 @@
 'use strict';
 const express = require('express')
-const index_Controller = require('../controllers/')
+const index_Controller = require('../controllers/indexController')
 const middleware = require('../utils/middleware')
 
 const router = express.Router();

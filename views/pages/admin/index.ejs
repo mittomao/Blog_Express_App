@@ -1,0 +1,17 @@
+<!-- Dashboard -->
+<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+    <!-- Vertical Navbar -->
+    <%- include('../../components/navbar', { username })%>
+    <!-- Main content -->
+    <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+        <!-- Header -->
+        <%- include('../../components/header')%>
+        <!-- Main -->
+        <main class="py-6 bg-surface-secondary">
+            <div class="container-fluid">
+                <!-- Blog Table -->
+                <%- include('../../components/blog', { blogs }) %>
+            </div>
+        </main>
+    </div>
+</div>

@@ -9,11 +9,11 @@
 %>
 
 <div class="pagination <%= page %>">
-    <a class="<%=  isPrev %>" href="/p/<%=prevBtn%>">&laquo;</a>
+    <a class="<%=  isPrev %>" href="/admin/p/<%=prevBtn%>">&laquo;</a>
     <% for (let i = 1; i <= totalPage; i++ ) { %>
         <% let isActive = (page == i) ? 'active' : '' %>
-        <a href="/p/<%= i %>" class="<%= isActive %>"> <%= i %> </a>
+        <a href="/admin/p/<%= i %>" class="<%= isActive %>"> <%= i %> </a>
     <% } %>
-    <a class="<%=  isNext %>" href="/p/<%= nextBtn %>">&raquo;</a>
+    <a class="<%=  isNext %>" href="/admin/p/<%= nextBtn %>">&raquo;</a>
 </div>
 <% } %>
