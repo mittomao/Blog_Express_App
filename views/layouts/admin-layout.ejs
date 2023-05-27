@@ -3,13 +3,49 @@
 
 <head>
     <%- include('../../templates/meta')%>
-    <link rel="stylesheet" href="/css/admin.css">
+        <link rel="stylesheet" href="/css/admin.css">
 </head>
 
 <body>
     <div class="admin-page">
         <%- body %>
     </div>
+
+    <%- include('../../templates/block_script')%>
+
+        <script>
+            if ($('#editor-content').length) {
+                CKEDITOR.replace('editor-content');
+                CKEDITOR.on('instanceReady', function (evt) {
+                    var editor = evt.editor;
+
+                    editor.on('change', function (e) {
+                        var contentSpace = editor.ui.space('contents');
+                        var ckeditorFrameCollection = contentSpace.$.getElementsByTagName('iframe');
+                        var ckeditorFrame = ckeditorFrameCollection[0];
+                        var innerDoc = ckeditorFrame.contentDocument;
+                        var innerDocTextAreaHeight = $(innerDoc.body).height();
+                        console.log(innerDocTextAreaHeight);
+                    });
+                });
+            }
+        </script>
+
+        <script>
+            var btnFile = document.getElementById('thumbnail-btn');
+            if (btnFile) {
+                var inputFile = document.getElementById('thumbnail-input');
+                var previewImage = document.querySelector('.preview-image');
+                btnFile.onchange = function () {
+                    if (btnFile.files[0]) {
+                        previewImage.classList.remove('disable');
+                        previewImage.querySelector('img').src = URL.createObjectURL(btnFile.files[0]);
+                        inputFile.value = btnFile.files[0].name;
+                    }
+                }
+            }
+
+        </script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ const _BLOG_CON = require('./blogController')
 const _USER_CON = require('./usersController')
 
 module.exports = {
-    home: async (req, res) => { 
+    home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
             if (req.session?.loggedin) {
@@ -18,14 +18,14 @@ module.exports = {
                         totalPage: data.totalPage,
                         allItems: data.allItems,
                         username: req.session.username,
-                        title: 'Admin Page', 
+                        title: 'Admin Page',
                         layout: 'admin-layout',
                     });
                 }
             }
-            
+
             return res.redirect('http://localhost:9000/admin/login')
-            
+
         } catch (error) {
             console.error(error);
         }
@@ -35,7 +35,7 @@ module.exports = {
             return res.render('add-post.ejs', { title: 'Add Post Page', layout: 'admin-layout' });
         }
         try {
-            let add = await _BLOG_CON.Func_Create_Post(req.body);
+            let add = await _BLOG_CON.Func_Create_Post({ author: req.session.username, ...req.body });
             if (add) {
                 return res.redirect('http://localhost:9000/admin');
             }
@@ -56,9 +56,9 @@ module.exports = {
     },
     updatePost: async (req, res) => {
         const { id } = req.query;
+        console.log('req.body', req.body);
         try {
-            console.log("req.body", req.body);
-            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, req.body);
+            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, { author: req.session.username, ...req.body });
             if (update) {
                 return res.redirect('http://localhost:9000/admin');
             }
@@ -113,8 +113,8 @@ module.exports = {
 
             if (login) {
                 req.session.loggedin = true;
-				req.session.username = username;
-				req.body.test = username;
+                req.session.username = username;
+                req.body.test = username;
 
                 res.redirect('http://localhost:9000/admin')
             } else {

@@ -386,12 +386,24 @@ em {
 }
 .post_section .post_content {
   float: right;
-  width: 490px;
+  width: 500px;
 }
-.post_section h2 {
+.post_section .post_content-title h2 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin: 0;
   padding: 10px 0 10px 0;
-  line-height: 30px;
+}
+.post_section .post_content-title h2 a {
+  line-height: 1.2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.post_section .post_content-information {
+  margin-bottom: 10px;
 }
 .post_section p {
   text-align: justify;

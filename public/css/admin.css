@@ -19,6 +19,15 @@ body {
 .page-add-post {
   width: 100%;
 }
+.page-add-post .preview-image {
+  margin-bottom: 16px;
+}
+.page-add-post .preview-image.disable {
+  display: none;
+}
+.page-add-post .preview-image img {
+  height: 100px;
+}
 .page-add-post .btn-file {
   position: relative;
   overflow: hidden;
