@@ -36,7 +36,12 @@ img {
   border: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: 1.25 !important;
 }
 
@@ -441,6 +446,18 @@ em {
   border-bottom: 1px dashed #666;
   font-size: 20px;
   font-weight: bold;
+}
+
+.main-post .post_content-desc {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.main-post .post_content-desc > div {
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #templatemo_rss a {
