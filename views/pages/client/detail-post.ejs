@@ -1,0 +1,48 @@
+<% 
+    let date = new Date(data.createdAt);
+    let currentDay=date.getDate(); 
+    let currentMonth = date.toLocaleString('default', { month: 'short' }); 
+%>
+<div class="detail-post">
+<div class="post_section">
+    <div class="post_date">
+        <%= currentDay %><span> <%= currentMonth %> </span>
+    </div>
+    <div class="post_content">
+        <h2>
+            <%= data.title %>
+        </h2>
+
+        <div class="post-content-body">
+            <% if (data.content) { %>
+            <%- data.content %>
+            <%  } else { %>
+                <h5>Nội dung đang trong quá trình cập nhật! Cảm ơn bạn đã đón xem.</h5>
+                <img src="/images/thank-you-for-watching.jpg" alt="" height="200" width="auto">
+            <% } %>
+        </div>
+    </div>
+    <div id="comment_form">
+        <h3>Leave a comment</h3>
+
+        <form action="#" method="post">
+            <div class="form_row">
+                <label>Name ( Required )</label><br />
+                <input type="text" name="name" />
+            </div>
+            <div class="form_row">
+                <label>Email (Required, will not be published)</label><br />
+                <input type="text" name="name" />
+            </div>
+            <div class="form_row">
+                <label>Your comment</label><br />
+                <textarea name="comment" rows="" cols=""></textarea>
+            </div>
+
+            <input type="submit" name="Submit" value="Submit" class="submit_btn" />
+        </form>
+
+    </div>
+    <div class="cleaner"></div>
+</div>
+</div>

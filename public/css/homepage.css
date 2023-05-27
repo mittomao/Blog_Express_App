@@ -36,6 +36,10 @@ img {
   border: none;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.25 !important;
+}
+
 h1 {
   font-size: 40px;
   font-weight: bold;
@@ -387,6 +391,7 @@ em {
 .post_section .post_content {
   float: right;
   width: 500px;
+  min-height: 300px;
 }
 .post_section .post_content-title h2 {
   white-space: nowrap;

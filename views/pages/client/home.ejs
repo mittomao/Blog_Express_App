@@ -1,110 +1,65 @@
-<div id="templatemo_main_wrapper">
-    <div id="templatemo_main">
-        <div id="templatemo_main_top">
+<div class="main-post">
+<% posts.forEach((post, index)=> { %>
+    <% 
+        let date=new Date(post.createdAt); let currentDay=date.getDate(); 
+        let currentMonth=date.toLocaleString('default', { month: 'short' }); 
+    %>
+        <div class="post_section">
 
-            <div id="templatemo_content">
-                <% posts.forEach((post, index)=> { %>
-                    <% let date=new Date(post.createdAt); let currentDay=date.getDate(); let
-                        currentMonth=date.toLocaleString('default', { month: 'short' }); %>
-                        <div class="post_section">
-
-                            <div class="post_date">
-                                <%= currentDay %><span>
-                                        <%= currentMonth %>
-                                    </span>
-                            </div>
-                            <div class="post_content">
-                                <div class="post_content-title">
-                                    <h2>
-                                        <a href="blog_post.html">
-                                            <%= post.title %>
-                                        </a>
-                                    </h2>
-                                </div>
-                                <div class="post_content-information">
-                                    <strong>Author:</strong>
-                                    <%= post.author %> | <strong>Category:</strong>
-                                        <a href="#">
-                                            <%= post.tag %>
-                                        </a>
-                                        |
-                                        <strong>CreatedAt: </strong>
-                                        <%= date.toLocaleString() %>
-                                </div>
-                                <div class="post_content-body">
-                                    <% if (post.thumbnail) { %>
-                                        <a href="#" target="_parent">
-                                            <img src="images/thumbnails/<%= post.thumbnail %>" alt="image" />
-                                        </a>
-                                        <% } %>
-
-                                            <p>
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                industry. Lorem
-                                                Ipsum has been the industry's standard dummy text ever since the
-                                                1500s, when an
-                                                unknown printer took a galley of type and scrambled it to make a
-                                                type specimen
-                                                book. It has survived not only five centuries, but also the leap
-                                                into electronic
-                                                typesetting, remaining essentially unchanged. It was popularised in
-                                                the 1960s
-                                                with the release of Letraset sheets containing Lorem Ipsum passages,
-                                                and more
-                                                recently with desktop publishing software like Aldus PageMaker
-                                                including
-                                                versions of Lorem Ipsum.
-                                            </p>
-
-                                            <p>
-                                                <span>24 Comments</span> | <a href="#">Continue reading...</a>
-                                            </p>
-                                </div>
-                            </div>
-                            <div class="cleaner"></div>
-                        </div>
-                        <% }) %>
+            <div class="post_date">
+                <%= currentDay %><span>
+                        <%= currentMonth %>
+                    </span>
             </div>
-
-            <div id="templatemo_sidebar">
-
-                <h4>Categories</h4>
-                <ul class="templatemo_list">
-                    <li><a href="index.html">Praesent adipiscing</a></li>
-                    <li><a href="index.html">Duis sed justo</a></li>
-                    <li><a href="index.html">Mauris vulputate</a></li>
-                    <li><a href="index.html">Nam auctor</a></li>
-                    <li><a href="index.html">Aliquam quam</a></li>
-                </ul>
-
-                <div class="cleaner_h40"></div>
-
-                <h4>Friends</h4>
-                <ul class="templatemo_list">
-                    <li><a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a></li>
-                    <li><a href="http://www.flashmo.com" target="_parent">Flash Templates</a></li>
-                    <li><a href="http://www.templatemo.com/page/1" target="_parent">Free Blog Themes</a></li>
-                    <li><a href="http://www.webdesignmo.com/blog" target="_parent">Web Design Blog</a></li>
-                    <li><a href="http://www.koflash.com" target="_parent">Flash Websites Gallery</a></li>
-                    <li><a href="#">Vestibulum laoreet</a></li>
-                    <li><a href="#">Nullam nec mi enim</a></li>
-                    <li><a href="#">Aliquam quam nulla</a></li>
-                </ul>
-
-                <div id="ads">
-                    <a href="#"><img src="images/templatemo_200x100_banner.jpg" alt="banner 1" /></a>
-
-                    <a href="#"><img src="images/templatemo_200x100_banner.jpg" alt="banner 2" /></a>
+            <div class="post_content">
+                <div class="post_content-title">
+                    <h2>
+                        <a href="/post/<%= post._id %>">
+                            <%= post.title %>
+                        </a>
+                    </h2>
                 </div>
+                <div class="post_content-information">
+                    <strong>Author:</strong>
+                    <%= post.author %> | <strong>Category:</strong>
+                        <a href="#">
+                            <%= post.tag %>
+                        </a>
+                        |
+                        <strong>CreatedAt: </strong>
+                        <%= date.toLocaleString() %>
+                </div>
+                <div class="post_content-body">
+                    <% if (post.thumbnail) { %>
+                        <a href="#" target="_parent">
+                            <img src="images/thumbnails/<%= post.thumbnail %>" alt="image" />
+                        </a>
+                        <% } %>
 
+                            <p>
+                                Lorem Ipsum is simply dummy text of the printing and typesetting
+                                industry. Lorem
+                                Ipsum has been the industry's standard dummy text ever since the
+                                1500s, when an
+                                unknown printer took a galley of type and scrambled it to make a
+                                type specimen
+                                book. It has survived not only five centuries, but also the leap
+                                into electronic
+                                typesetting, remaining essentially unchanged. It was popularised in
+                                the 1960s
+                                with the release of Letraset sheets containing Lorem Ipsum passages,
+                                and more
+                                recently with desktop publishing software like Aldus PageMaker
+                                including
+                                versions of Lorem Ipsum.
+                            </p>
+
+                            <p>
+                                <span>24 Comments</span> | <a href="#">Continue reading...</a>
+                            </p>
+                </div>
             </div>
-
             <div class="cleaner"></div>
-
         </div>
-
-    </div>
-
-    <div id="templatemo_main_bottom"></div>
-
+<% }) %>
 </div>
