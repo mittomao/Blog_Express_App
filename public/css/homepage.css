@@ -396,7 +396,6 @@ em {
 .post_section .post_content {
   float: right;
   width: 500px;
-  min-height: 300px;
 }
 .post_section .post_content-title h2 {
   white-space: nowrap;
@@ -458,6 +457,10 @@ em {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.detail-post .post_content {
+  min-height: 300px;
 }
 
 #templatemo_rss a {

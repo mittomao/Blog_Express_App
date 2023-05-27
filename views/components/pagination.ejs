@@ -1,5 +1,6 @@
 <% if (totalPage > 1) { %>
 <% 
+    let pathName = isAdmin ? '/admin' : '';
     let p = parseInt(page);
     let prevBtn = p > 1 ? p - 1 : p; 
     let nextBtn = p < totalPage ? p + 1 : p;
@@ -9,11 +10,11 @@
 %>
 
 <div class="pagination <%= page %>">
-    <a class="<%=  isPrev %>" href="/admin/p/<%=prevBtn%>">&laquo;</a>
+    <a class="<%=  isPrev %>" href="<%= pathName %>/p/<%=prevBtn%>">&laquo;</a>
     <% for (let i = 1; i <= totalPage; i++ ) { %>
         <% let isActive = (page == i) ? 'active' : '' %>
-        <a href="/admin/p/<%= i %>" class="<%= isActive %>"> <%= i %> </a>
+        <a href="<%= pathName %>/p/<%= i %>" class="<%= isActive %>"> <%= i %> </a>
     <% } %>
-    <a class="<%=  isNext %>" href="/admin/p/<%= nextBtn %>">&raquo;</a>
+    <a class="<%=  isNext %>" href="<%= pathName %>/p/<%= nextBtn %>">&raquo;</a>
 </div>
 <% } %>

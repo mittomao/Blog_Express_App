@@ -8,13 +8,15 @@ module.exports = {
     home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
-            const data = await _BLOG_CON.Func_Get_ALl_Post();
-            console.log('data homepage', data);
+            const data = await _BLOG_CON.Func_Get_ALl_Post(page);
             if (data) {
                 return res.render("home.ejs", {
                     posts: data.posts,
+                    currentPage: data.current,
+                    totalPage: data.totalPage,
                     title: 'Home Page',
-                    layout: "home-layout"
+                    layout: "home-layout",
+                    isAdmin: false
                 });
             }
         } catch (error) {
@@ -32,12 +34,31 @@ module.exports = {
         try {
             const { id } = req.params;
             let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
-            if ( post ) {
+            if (post) {
                 return res.render("detail-post.ejs", { data: post, title: post.title, layout: "home-layout" });
             }
-            
+
         } catch (error) {
             console.error(error);
         }
     },
+    tag: async (req, res) => {
+        try {
+            const { page = 1, tag } = req.params;
+            let data = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
+            if (data) {
+                return res.render("tag.ejs", { 
+                    posts: data.posts,
+                    currentPage: data.current,
+                    totalPage: data.totalPage,
+                    title: tag, 
+                    layout: "home-layout",
+                    isAdmin: false
+                });
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }

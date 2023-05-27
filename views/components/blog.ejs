@@ -11,6 +11,7 @@
                         <th scope="col" class="long-col">Author</th>
                         <th scope="col" class="">Tag</th>
                         <th scope="col" class="long-col">Title</th>
+                        <th scope="col" class="long-col">Summary</th>
                         <th scope="col">Status</th>
                         <th scope="col" class="long-col">Created Date</th>
                         <th scope="col" class="long-col">Modify Date</th>
@@ -37,6 +38,9 @@
                             </td>
                             <td class="long-col">
                                 <%= blog.title %>
+                            </td>
+                            <td class="long-col">
+                                <%= blog.summary %>
                             </td>
                             <td class="status">
                                 <span class="<%= status %>"></span>

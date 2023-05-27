@@ -15,10 +15,9 @@
 
         <div class="post-content-body">
             <% if (data.content) { %>
-            <%- data.content %>
+                <%- data.content %>
             <%  } else { %>
-                <h5>Nội dung đang trong quá trình cập nhật! Cảm ơn bạn đã đón xem.</h5>
-                <img src="/images/thank-you-for-watching.jpg" alt="" height="200" width="auto">
+                <%- include('../../components/no-result') %>
             <% } %>
         </div>
     </div>

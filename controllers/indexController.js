@@ -20,6 +20,7 @@ module.exports = {
                         username: req.session.username,
                         title: 'Admin Page',
                         layout: 'admin-layout',
+                        isAdmin: true
                     });
                 }
             }

@@ -10,6 +10,7 @@ const blogSchema = new Schema({
     author: { type: String, default: '', require },
     tag: { type: String, default: '' },
     title: { type: String, default: '', require },
+    summary: { type: String, default: '' },
     thumbnail: { type: String, default: '' },
     content: { type: String, default: '' },
     status: { type: Boolean, default: true }
