@@ -49,7 +49,7 @@ app.use("/admin", adminRouter);
 app.use("/", clientRouter);
 
 //connect db
-mongoose.connect(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology:true })
     .then(() => {
         app.listen(process.env.PORT, () => {
             console.log('Connection Mongodb & Listening on port', process.env.PORT);
