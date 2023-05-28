@@ -25,7 +25,7 @@ module.exports = {
                 }
             }
 
-            return res.redirect('http://localhost:9000/admin/login')
+            return res.redirect('/admin/login')
 
         } catch (error) {
             console.error(error);
@@ -38,7 +38,7 @@ module.exports = {
         try {
             let add = await _BLOG_CON.Func_Create_Post({ author: req.session.username, ...req.body });
             if (add) {
-                return res.redirect('http://localhost:9000/admin');
+                return res.redirect('/admin');
             }
         } catch (error) {
             console.error('error', error)
@@ -61,7 +61,7 @@ module.exports = {
         try {
             let update = await _BLOG_CON.Func_Update_Post_By_Id(id, { author: req.session.username, ...req.body });
             if (update) {
-                return res.redirect('http://localhost:9000/admin');
+                return res.redirect('/admin');
             }
         } catch (error) {
             console.error('error', error)
@@ -72,7 +72,7 @@ module.exports = {
         try {
             let deletePost = await _BLOG_CON.Func_Delete_Post_By_Id(id);
             if (deletePost) {
-                return res.redirect('http://localhost:9000/admin');
+                return res.redirect('/admin');
             }
         } catch (error) {
             console.error('error', error)
@@ -92,7 +92,7 @@ module.exports = {
             });
 
             if (register) {
-                return res.redirect('http://localhost:9000/admin')
+                return res.redirect('/admin')
             }
         } catch (error) {
             console.error(error)
@@ -117,7 +117,7 @@ module.exports = {
                 req.session.username = username;
                 req.body.test = username;
 
-                res.redirect('http://localhost:9000/admin')
+                res.redirect('/admin')
             } else {
                 res.send("Username Or Password Is Correct!!!")
                 // res.status(404).json({
@@ -132,6 +132,6 @@ module.exports = {
         req.session.loggedin = false;
         req.session.username = null;
 
-        res.redirect('http://localhost:9000/admin/login')
+        res.redirect('/admin/login')
     }
 }
