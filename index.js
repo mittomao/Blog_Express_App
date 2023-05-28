@@ -56,5 +56,5 @@ mongoose.connect(process.env.MONGODB_URL)
         });
     })
     .catch((err) => {
-        console.log(err);
+        console.log("Connect MongoDb ERROR: " + process.env.MONGODB_URL, err);
     });
