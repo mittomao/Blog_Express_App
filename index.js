@@ -9,9 +9,9 @@ const path = require("path");
 const expressLayouts = require('express-ejs-layouts')
 
 const app = express();
-const PATH_ADMIN_TEMPLATE = "\\views\\pages\\admin\\";
-const PATH_CLIENT_TEMPLATE = "\\views\\pages\\client\\";
-const PATH_LAYOUTS_TEMPLATE = "\\views\\layouts\\";
+const PATH_ADMIN_TEMPLATE = "/views/pages/admin/";
+const PATH_CLIENT_TEMPLATE = "/views/pages/client/";
+const PATH_LAYOUTS_TEMPLATE = "/views/layouts/";
 
 // Form Data
 app.use(express.json());
