@@ -36,7 +36,7 @@ module.exports = {
         }
     },
     Func_Create_Post: async (obj) => {
-        const { author, tag, title, thumbnail, content, status } = obj;
+        const { author, tag, title, summary, thumbnail, content, status } = obj;
         return await blogModel.create({
             author,
             tag,
