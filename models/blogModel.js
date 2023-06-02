@@ -4,6 +4,7 @@
  */
 
 const mongoose = require('mongoose');
+const random = require('mongoose-simple-random');
 const Schema = mongoose.Schema;
 
 const blogSchema = new Schema({
@@ -16,5 +17,7 @@ const blogSchema = new Schema({
     status: { type: Boolean, default: true }
 }, 
 { collection: 'blog', timestamps: true })
+
+blogSchema.plugin(random);
 
 module.exports = mongoose.model('blog', blogSchema)

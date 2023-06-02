@@ -1,6 +1,7 @@
 const blogModel = require('../models/blogModel')
 
 module.exports = {
+    // Get Post
     Func_Get_ALl_Post: async (p) => {
         let perPage = parseInt(process.env.PER_PAGE);
         let page = p;
@@ -35,6 +36,14 @@ module.exports = {
             totalPage: Math.ceil(count.length / perPage)
         }
     },
+    Func_Random_Post: async (callback) => { 
+        await blogModel.findRandom({}, {}, {limit: 2}, function(err, res) {
+            if (!err) {
+                callback(res)
+            }
+        });
+    },
+    // Action
     Func_Create_Post: async (obj) => {
         const { author, tag, title, summary, thumbnail, content, status } = obj;
         return await blogModel.create({

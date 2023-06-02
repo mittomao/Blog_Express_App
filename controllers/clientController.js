@@ -35,7 +35,14 @@ module.exports = {
             const { id } = req.params;
             let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
             if (post) {
-                return res.render("detail-post.ejs", { data: post, title: post.title, layout: "home-layout" });
+                await _BLOG_CON.Func_Random_Post((result) => {
+                    return res.render("detail-post.ejs", {
+                        data: post,
+                        related: result,
+                        title: post.title,
+                        layout: "home-layout" 
+                    });
+                });
             }
 
         } catch (error) {
