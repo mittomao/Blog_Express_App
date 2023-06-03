@@ -9,7 +9,7 @@ module.exports = {
         try {
             let { page = 1 } = req.params;
             const data = await _BLOG_CON.Func_Get_ALl_Post(page);
-            console.log('data', data);
+
             if (data) {
                 return res.render("home.ejs", {
                     posts: data.posts,
@@ -54,7 +54,7 @@ module.exports = {
         try {
             const { page = 1, tag } = req.params;
             let data = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
-            console.log('data123', data);
+
             if (data) {
                 return res.render("tag.ejs", { 
                     posts: data.posts,
