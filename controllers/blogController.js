@@ -1,4 +1,4 @@
-const blogModel = require('../models/blogModel')
+const blogModel = require('../models/blogModel');
 
 module.exports = {
     // Get Post
