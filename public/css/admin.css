@@ -1,88 +1,126 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.form-sign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
-
-body {
-  width: 100%;
-}
-
-.navbar-brand {
-  display: block;
+.form-sign .form-sign-container {
   margin: 0 auto;
 }
-.navbar-brand img {
-  height: auto !important;
-}
-
-.page-add-post {
-  width: 100%;
-}
-.page-add-post .preview-image {
-  margin-bottom: 16px;
-}
-.page-add-post .preview-image.disable {
-  display: none;
-}
-.page-add-post .preview-image img {
-  height: 100px;
-}
-.page-add-post .btn-file {
+.form-sign .form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 500px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
   position: relative;
-  overflow: hidden;
 }
-.page-add-post .btn-file input[type=file] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 100%;
-  min-height: 100%;
-  font-size: 100px;
-  text-align: right;
-  filter: alpha(opacity=0);
-  opacity: 0;
-  outline: none;
-  background: white;
-  cursor: inherit;
-  display: block;
-}
-.page-add-post input[readonly] {
-  background-color: white !important;
-  cursor: text !important;
-}
-
-.blog-table .block-action {
+.form-sign .title {
+  font-size: 28px;
+  color: royalblue;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
   display: flex;
-}
-.blog-table table .long-col {
-  width: auto;
-  min-width: 150px;
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.blog-table .status {
-  text-transform: capitalize;
-}
-.blog-table .status span {
-  display: inline-block;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  margin-right: 5px;
-}
-.blog-table .status span.online {
-  background-color: chartreuse;
-}
-.blog-table .status span.offline {
-  background-color: red;
-}
-.blog-table .card-footer {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  padding-left: 30px;
+}
+.form-sign .title::before,
+.form-sign .title::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: royalblue;
+}
+.form-sign .title::before {
+  width: 18px;
+  height: 18px;
+  background-color: royalblue;
+}
+.form-sign .title::after {
+  width: 18px;
+  height: 18px;
+  animation: pulse 1s linear infinite;
+}
+.form-sign .message,
+.form-sign .signin {
+  color: rgba(88, 87, 87, 0.822);
+  font-size: 14px;
+}
+.form-sign .signin {
+  text-align: center;
+}
+.form-sign .signin a {
+  color: royalblue;
+}
+.form-sign .signin a:hover {
+  text-decoration: underline royalblue;
+}
+.form-sign .flex {
+  display: flex;
+  width: 100%;
+  gap: 6px;
+}
+.form-sign .form label {
+  position: relative;
+}
+.form-sign .form label .input {
+  width: 100%;
+  padding: 10px 10px 20px 10px;
+  outline: 0;
+  border: 1px solid rgba(105, 105, 105, 0.397);
+  border-radius: 10px;
+}
+.form-sign .form label .input + span {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  color: grey;
+  font-size: 0.9em;
+  cursor: text;
+  transition: 0.3s ease;
+}
+.form-sign .form label .input:placeholder-shown + span {
+  top: 15px;
+  font-size: 0.9em;
+}
+.form-sign .form label .input:focus + span,
+.form-sign .form label .input:valid + span {
+  top: 35px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+.form-sign .form label .input:valid + span {
+  color: green;
+}
+.form-sign .submit {
+  border: none;
+  outline: none;
+  background-color: royalblue;
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  transform: 0.3s ease;
+}
+.form-sign .submit:hover {
+  background-color: rgb(56, 90, 194);
+}
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
 }
 
 .form-login {
@@ -272,142 +310,91 @@ body {
   background: #07315B;
 }
 
-.form-register {
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  /*center vertically */
-  align-items: center;
-  /* center horizontally */
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
-  padding: 10px;
-  /* inside the form user details */
-  /* inside the form gender details */
-  /* submit button */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.form-register-container {
-  max-width: 700px;
+
+body {
   width: 100%;
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 5px;
 }
-.form-register-container .title {
-  font-size: 25px;
-  font-weight: 500;
-  position: relative;
-}
-.form-register-container .title::before {
-  content: "";
-  position: absolute;
-  height: 3.5px;
-  width: 30px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
-  left: 0;
-  bottom: 0;
-}
-.form-register-container form .user__details {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 20px 0 12px 0;
-}
-.form-register form .user__details .input__box {
-  width: calc(50% - 20px);
-  margin-bottom: 15px;
-}
-.form-register .input__box-user {
-  width: 100% !important;
-}
-.form-register .user__details .input__box .details {
-  font-weight: 500;
-  margin-bottom: 5px;
+
+.navbar-brand {
   display: block;
+  margin: 0 auto;
 }
-.form-register .user__details .input__box input {
-  height: 45px;
+.navbar-brand img {
+  height: auto !important;
+}
+
+.page-add-post {
   width: 100%;
-  outline: none;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding-left: 15px;
-  font-size: 16px;
-  border-bottom-width: 2px;
-  transition: all 0.3s ease;
 }
-.form-register .user__details .input__box input:focus,
-.form-register .user__details .input__box input:valid {
-  border-color: #9b59b6;
+.page-add-post .preview-image {
+  margin-bottom: 16px;
 }
-.form-register form .gender__details .gender__title {
-  font-size: 20px;
-  font-weight: 500;
-}
-.form-register form .gender__details .category {
-  display: flex;
-  width: 80%;
-  margin: 15px 0;
-  justify-content: space-between;
-}
-.form-register .gender__details .category label {
-  display: flex;
-  align-items: center;
-}
-.form-register .gender__details .category .dot {
-  height: 18px;
-  width: 18px;
-  background: #d9d9d9;
-  border-radius: 50%;
-  margin: 10px;
-  border: 5px solid transparent;
-  transition: all 0.3s ease;
-}
-.form-register #dot-1:checked ~ .category .one,
-.form-register #dot-2:checked ~ .category .two,
-.form-register #dot-3:checked ~ .category .three {
-  border-color: #d9d9d9;
-  background: #9b59b6;
-}
-.form-register form input[type=radio] {
+.page-add-post .preview-image.disable {
   display: none;
 }
-.form-register form .button {
-  height: 45px;
-  margin: 45px 0;
+.page-add-post .preview-image img {
+  height: 100px;
 }
-.form-register form .button input {
-  height: 100%;
-  width: 100%;
+.page-add-post .btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.page-add-post .btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
   outline: none;
-  color: #fff;
-  border: none;
-  font-size: 18px;
-  font-weight: 500;
-  border-radius: 5px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
-  transition: all 0.3s ease;
+  background: white;
+  cursor: inherit;
+  display: block;
 }
-.form-register form .button input:hover {
-  background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+.page-add-post input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
 }
-@media only screen and (max-width: 584px) {
-  .form-register .container {
-    max-width: 100%;
-  }
-  .form-register form .user__details .input__box {
-    margin-bottom: 15px;
-    width: 100%;
-  }
-  .form-register form .gender__details .category {
-    width: 100%;
-  }
-  .form-register .container form .user__details {
-    max-height: 300px;
-    overflow-y: scroll;
-  }
-  .form-register .user__details::-webkit-scrollbar {
-    width: 0;
-  }
+
+.blog-table .block-action {
+  display: flex;
+}
+.blog-table table .long-col {
+  width: auto;
+  min-width: 150px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.blog-table .status {
+  text-transform: capitalize;
+}
+.blog-table .status span {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.blog-table .status span.online {
+  background-color: chartreuse;
+}
+.blog-table .status span.offline {
+  background-color: red;
+}
+.blog-table .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /*# sourceMappingURL=admin.css.map */
