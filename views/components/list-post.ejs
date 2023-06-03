@@ -3,6 +3,7 @@
         <% 
             let date=new Date(post.createdAt);
             let currentDay=date.getDate(); 
+            let currentYear=date.getFullYear(); 
             let currentMonth=date.toLocaleString('default', { month: 'short' }); 
             let urlImage = 'https://placehold.co/150x150';
             if ( post.thumbnail ) {
@@ -16,7 +17,7 @@
                     <h3 class="mb-2"><a href="/post/<%= post._id %>"><%= post.title %></a></h3>
                     <div class="meta-wrap">
                         <p class="meta">
-                            <span><i class="icon-calendar mr-2"></i><%= currentDay %>, <%= currentMonth %></span>
+                            <span><i class="icon-calendar mr-2"></i><%= currentDay %> <%= currentMonth %> <%= currentYear %></span>
                             <span><a href="/tag/<%= post.tag %>"><i class="icon-folder-o mr-2"></i><%= post.tag %></a></span>
                             <span><i class="icon-comment2 mr-2"></i>5 Comment</span>
                         </p>

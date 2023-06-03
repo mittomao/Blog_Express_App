@@ -9,5 +9,8 @@ clientRouter.get('/p/:page', clientController.home)
 clientRouter.get('/portfolio', clientController.portfolio)
 clientRouter.get('/post/:id', clientController.detailPost)
 clientRouter.get('/tag/:tag', clientController.tag)
+clientRouter.get('/life', clientController.life)
+clientRouter.get('/about', clientController.about)
+clientRouter.get('/contact', clientController.contact)
 
 module.exports = clientRouter;

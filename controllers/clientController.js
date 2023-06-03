@@ -1,8 +1,5 @@
 'use strict'
-const _CONST = require('../config/constant')
-const _UTIL = require('../utils')
 const _BLOG_CON = require('./blogController')
-const _USER_CON = require('./usersController')
 
 module.exports = {
     home: async (req, res) => {
@@ -12,6 +9,7 @@ module.exports = {
 
             if (data) {
                 return res.render("home.ejs", {
+                    fullLayout: true,
                     posts: data.posts,
                     currentPage: data.current,
                     totalPage: data.totalPage,
@@ -26,7 +24,11 @@ module.exports = {
     },
     portfolio: async (req, res) => {
         try {
-            return res.render("portfolio.ejs", { title: 'Portfolio Page', layout: "home-layout" });
+            return res.render("portfolio.ejs", { 
+                title: 'Portfolio Page',
+                layout: "home-layout",
+                fullLayout: false,
+            });
         } catch (error) {
             console.error(error);
         }
@@ -41,7 +43,8 @@ module.exports = {
                         data: post,
                         related: result,
                         title: post.title,
-                        layout: "home-layout" 
+                        layout: "home-layout",
+                        fullLayout: true,
                     });
                 });
             }
@@ -56,16 +59,53 @@ module.exports = {
             let data = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
 
             if (data) {
-                return res.render("tag.ejs", { 
+                return res.render("tag.ejs", {
+                    fullLayout: true,
                     posts: data.posts,
                     currentPage: data.current,
                     totalPage: data.totalPage,
-                    title: tag, 
+                    title: tag,
                     layout: "home-layout",
                     isAdmin: false
                 });
             }
 
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    contact: async (req, res) => {
+        try {
+            return res.render("contact.ejs", {
+                fullLayout: false,
+                title: "Contact Page",
+                layout: "home-layout",
+                isAdmin: false
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    life: async (req, res) => {
+        try {
+            return res.render("life.ejs", {
+                fullLayout: false,
+                title: "Contact Page",
+                layout: "home-layout",
+                isAdmin: false
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    about: async (req, res) => {
+        try {
+            return res.render("about.ejs", {
+                fullLayout: false,
+                title: "Contact Page",
+                layout: "home-layout",
+                isAdmin: false
+            });
         } catch (error) {
             console.error(error);
         }

@@ -1610,11 +1610,11 @@ h1, h2, h3, h4, h5,
             -ms-transform: scaleX(1);
             -o-transform: scaleX(1);
             transform: scaleX(1); }
-      #wainiidev-aside #wainiidev-main-menu ul li.wainiidev-active {
+      #wainiidev-aside #wainiidev-main-menu ul li.active {
         font-weight: 600; }
-        #wainiidev-aside #wainiidev-main-menu ul li.wainiidev-active a {
+        #wainiidev-aside #wainiidev-main-menu ul li.active a {
           color: #1eafed; }
-          #wainiidev-aside #wainiidev-main-menu ul li.wainiidev-active a:after {
+          #wainiidev-aside #wainiidev-main-menu ul li.active a:after {
             visibility: visible;
             -webkit-transform: scaleX(1);
             -moz-transform: scaleX(1);
