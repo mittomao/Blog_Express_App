@@ -11,11 +11,15 @@ module.exports = {
             .skip((perPage * page) - perPage)
             .sort({ createdAt: -1 })
 
+        let totalCount = 1;
+        if (count.length > perPage) {
+            totalCount = Math.ceil(count.length / perPage)
+        }
         return {
             posts: response,
             current: page,
             allItems: count.length,
-            totalPage: Math.ceil(count.length / perPage)
+            totalPage: totalCount
         }
     },
     Func_Get_Post_By_Id: async (id) => {
@@ -30,14 +34,18 @@ module.exports = {
             .skip((perPage * page) - perPage)
             .sort({ createdAt: -1 })
 
+        let totalCount = 1;
+        if (response.length >= perPage) {
+            totalCount = Math.ceil(count.length / perPage)
+        } 
         return {
             posts: response,
             current: page,
-            totalPage: Math.ceil(count.length / perPage)
+            totalPage: totalCount
         }
     },
-    Func_Random_Post: async (callback) => { 
-        await blogModel.findRandom({}, {}, {limit: 2}, function(err, res) {
+    Func_Random_Post: async (callback) => {
+        await blogModel.findRandom({}, {}, { limit: 2 }, function (err, res) {
             if (!err) {
                 callback(res)
             }

@@ -1,48 +1,27 @@
-<% 
-    let date = new Date(data.createdAt);
-    let currentDay=date.getDate(); 
-    let currentMonth = date.toLocaleString('default', { month: 'short' }); 
-%>
 <div class="detail-post">
-<div class="post_section">
-    <div class="post_date">
-        <%= currentDay %><span> <%= currentMonth %> </span>
-    </div>
-    <div class="post_content">
-        <h2>
-            <%= data.title %>
-        </h2>
+    <div class="detail-post__content row pt-md-4">
+        <h1 class="mb-3"></h1>
 
-        <div class="post-content-body">
+        <div class="detail-post__body">
             <% if (data.content) { %>
                 <%- data.content %>
-            <%  } else { %>
+            <% } else { %>
                 <%- include('../../components/no-result') %>
             <% } %>
         </div>
+
+        <div class="about-author d-flex p-4 bg-light">
+            <div class="bio mr-5">
+                <img src="images/person_1.jpg" alt="Image placeholder" class="img-fluid mb-4">
+            </div>
+            <div class="desc">
+                <h3>George Washington</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus
+                    voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur
+                    similique,
+                    inventore eos fugit cupiditate numquam!</p>
+            </div>
+        </div>
     </div>
     <%- include('../../components/related-post') %>
-    <div id="comment_form" class="section">
-        <h3>Leave a comment</h3>
-
-        <form action="#" method="post">
-            <div class="form_row">
-                <label>Name ( Required )</label><br />
-                <input type="text" name="name" />
-            </div>
-            <div class="form_row">
-                <label>Email (Required, will not be published)</label><br />
-                <input type="text" name="name" />
-            </div>
-            <div class="form_row">
-                <label>Your comment</label><br />
-                <textarea name="comment" rows="" cols=""></textarea>
-            </div>
-
-            <input type="submit" name="Submit" value="Submit" class="submit_btn" />
-        </form>
-
-    </div>
-    <div class="cleaner"></div>
-</div>
 </div>
