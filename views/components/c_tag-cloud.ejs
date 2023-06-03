@@ -1,13 +1,26 @@
+<%
+    let tags = [
+        { name: 'javascript', count: 50},
+        { name: 'css flex', count: 0},
+        { name: 'redux', count: 2},
+        { name: 'object', count: 12},
+        { name: 'array', count: 23},
+        { name: 'async', count: 25},
+        { name: 'cookies', count: 52},
+        { name: 'npm', count: 43},
+        { name: 'linux', count: 12},
+        { name: 'uuid', count: 0},
+        { name: 'json', count: 1},
+        { name: 'basic', count: 2},
+        { name: 'seo', count: 7}
+    ];
+%>
 <div class="tag-cloud sidebar-box ftco-animate">
     <h3 class="sidebar-heading">Tag Cloud</h3>
     <ul class="tagcloud">
-        <a href="#" class="tag-cloud-link">animals</a>
-        <a href="#" class="tag-cloud-link">human</a>
-        <a href="#" class="tag-cloud-link">people</a>
-        <a href="#" class="tag-cloud-link">cat</a>
-        <a href="#" class="tag-cloud-link">dog</a>
-        <a href="#" class="tag-cloud-link">nature</a>
-        <a href="#" class="tag-cloud-link">leaves</a>
-        <a href="#" class="tag-cloud-link">food</a>
+        <% tags.forEach((item, index) => { %>
+            <% let isCount = item.count == 0 ? 'disabled' : ''; %>
+            <a href="#" class="tag-cloud-link <%= isCount %>">#<%= item.name%> <span>(<%= item.count %>)</span></a>
+        <% }) %>
     </ul>
 </div>
