@@ -36,7 +36,7 @@ module.exports = {
             const { id } = req.params;
             let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
             if (post) {
-                await _BLOG_CON.Func_Random_Post((result) => {
+                await _BLOG_CON.Func_Random_Post((result, id) => {
                     return res.render("detail-post.ejs", {
                         data: post,
                         related: result,

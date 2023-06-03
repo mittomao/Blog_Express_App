@@ -44,10 +44,12 @@ module.exports = {
             totalPage: totalCount
         }
     },
-    Func_Random_Post: async (callback) => {
-        await blogModel.findRandom({}, {}, { limit: 2 }, function (err, res) {
+    Func_Random_Post: async (callback, id) => {
+        await blogModel.findRandom({
+            _id: { $ne: id }
+        }, {}, { limit: 2 }, function (err, res) {
             if (!err) {
-                callback(res)
+                callback(res, id)
             }
         });
     },
