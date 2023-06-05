@@ -20,15 +20,25 @@ router.post('/register', index_Controller.register)
 // router.get('/profile', [middleware.checkLogin, index_Controller.profile])
 // router.get('/profile', [middleware.checkLogin, index_Controller.profile])
 
-//Create 
+//Create Post
 router.get('/add-post', index_Controller.addPost)
 router.post('/add-post', index_Controller.addPost)
 
-// Update
+// Update Post
 router.get('/edit-post/:id', index_Controller.pageEdit)
 router.post('/update-post', index_Controller.updatePost)
 
-// Delete
+// Delete Post
 router.post('/delete-post', index_Controller.deletePost)
+
+// View Page Tag
+router.get('/tag', index_Controller.pageTag)
+// Create Tag
+router.get('/add-tag', index_Controller.addTag)
+router.post('/add-tag', index_Controller.addTag)
+
+router.get('/edit-tag/:id', index_Controller.pageEditTag)
+router.post('/update-tag', index_Controller.updateTag)
+router.post('/delete-tag', index_Controller.deleteTag)
 
 module.exports = router;

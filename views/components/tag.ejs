@@ -1,0 +1,60 @@
+<div class="blog-table">
+    <div class="card shadow border-0 mb-7">
+        <div class="card-header">
+            <h5 class="mb-0">Applications</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-nowrap">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">No.1</th>
+                        <th scope="col" class="long-col">Name</th>
+                        <th scope="col" class="">Quantity</th>
+                        <th scope="col" class="long-col">Prioritize</th>
+                        <th scope="col" class="long-col">Created Date</th>
+                        <th scope="col" class="long-col">Modify Date</th>
+                        <th scope="col" class="long-col">Action</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% tags.forEach((tag, index) => { %>
+                      <% let prioritize = tag.prioritize ? 'primary' : 'secondary'  %>
+                        <tr>
+                            <td>
+                                <%= (index + 1) %>
+                            </td>
+                            <td class="">
+                                <%= tag.name %>
+                            </td>
+                            <td class="long-col">
+                                <%= tag.quantity %>
+                            </td>
+                            <td class="long-col">
+                                <%= prioritize %>
+                            </td> 
+                            <td class="long-col">
+                                <%= tag.createdAt %>
+                            </td>
+                            <td class="long-col">
+                                <%= tag.updatedAt %>
+                            </td>
+                            <td class="block-action">
+                                <form action="/admin/edit-tag/<%= tag._id %>" method="get">
+                                    <button type="submit" class="btn btn-sm btn-square btn-neutral text-danger-hover">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                </form>
+                                <form action="/admin/delete-tag?id=<%= tag._id %>" method="post">
+                                    <button type="submit" class="btn btn-sm btn-square btn-neutral text-danger-hover" onclick="if (!confirm('Are you sure you want to delete?')) return;">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

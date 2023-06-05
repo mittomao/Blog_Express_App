@@ -22,7 +22,8 @@ app.use(
         resave: true,
         saveUninitialized: true,
         secret: 'somesecret',
-        cookie: { maxAge: 3600000000 }
+        cookie: { maxAge: 3600000 },
+        maxAge: new Date(Date.now() + 3600000),
     }
     ));
 
@@ -49,7 +50,7 @@ app.use("/admin", adminRouter);
 app.use("/", clientRouter);
 
 //connect db
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology:true })
+mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true })
     .then(() => {
         app.listen(process.env.PORT, () => {
             console.log('Connection Mongodb & Listening on port', process.env.PORT);

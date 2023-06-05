@@ -1,11 +1,12 @@
 'use strict'
-const { Exception } = require('sass')
 const _CONST = require('../config/constant')
 const _UTIL = require('../utils')
 const _BLOG_CON = require('./blogController')
 const _USER_CON = require('./usersController')
+const _TAG_CON = require('./tagController')
 
 module.exports = {
+    // Post
     home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
@@ -20,7 +21,8 @@ module.exports = {
                         username: req.session.username,
                         title: 'Admin Page',
                         layout: 'admin-layout',
-                        isAdmin: true
+                        isAdmin: true,
+                        action: 'add-post'
                     });
                 }
             }
@@ -49,7 +51,7 @@ module.exports = {
         try {
             let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
             if (post) {
-                return res.render('edit-post.ejs', { data: post, title: 'Register Page', layout: 'admin-layout' });
+                return res.render('edit-post.ejs', { data: post, title: 'Edit Blog Page', layout: 'admin-layout' });
             }
         } catch (error) {
             console.error('error', error)
@@ -133,5 +135,70 @@ module.exports = {
         req.session.username = null;
 
         res.redirect('/admin/login')
-    }
+    },
+    // Tag
+    pageTag: async (req, res) => {
+        if (req.session?.loggedin) {
+            const data = await _TAG_CON.Func_Get_ALl_Tag();
+
+            if (data) {
+                return res.render('tag-page.ejs', {
+                    username: req.session.username,
+                    tags: data,
+                    title: 'Tag Page',
+                    layout: 'admin-layout',
+                    isAdmin: true,
+                    action: 'add-tag'
+                });
+            } 
+        }
+
+        return res.redirect('/admin/login')
+    },
+    addTag: async (req, res) => {
+        if (req.method === "GET") {
+            return res.render('add-tag.ejs', { title: 'Add Tag Page', layout: 'admin-layout' });
+        }
+        try {
+            let add = await _TAG_CON.Func_Create_Tag({ ...req.body });
+            if (add) {
+                return res.redirect('/admin/tag');
+            }
+        } catch (error) {
+            console.error('error', error)
+        }
+    },
+    pageEditTag: async (req, res) => {
+        const { id } = req.params;
+        try {
+            let post = await _TAG_CON.Func_Get_Tag_By_Id(id);
+            if (post) {
+                return res.render('edit-tag.ejs', { data: post, title: 'Edit Tag Page', layout: 'admin-layout' });
+            }
+        } catch (error) {
+            console.error('error', error)
+        }
+    },
+    updateTag: async (req, res) => {
+        const { id } = req.query;
+        try {
+            let update = await _TAG_CON.Func_Update_Tag_By_Id(id, { ...req.body });
+            if (update) {
+                return res.redirect('/admin/tag');
+            }
+        } catch (error) {
+            console.error('error', error)
+        }
+    },
+    deleteTag: async (req, res) => {
+        const { id } = req.query;
+        try {
+            let deleteTag = await _TAG_CON.Func_Delete_Post_By_Id(id);
+            if (deleteTag) {
+                return res.redirect('/admin/tag');
+            }
+        } catch (error) {
+            console.error('error', error)
+        }
+    },
 }

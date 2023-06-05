@@ -1,0 +1,36 @@
+<div class="page-add-post">
+    <div class="container">
+        <h2 class="text-center">Edit Tag</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post" role="form" action="/admin/update-tag?id=<%= data._id %>">
+                    <div class="form-group mb-3">
+                        <label> Name </label>
+                        <input type="text" class="form-control" name="name" placeholder="Tag Name"
+                            value="<%= data.name %>" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label> Quantity </label>
+                        <input type="text" class="form-control" name="quantity" placeholder="quantity"
+                            value="<%= data.quantity %>" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-check-label">
+                            Prioritize  
+                        </label>
+                        <select name="prioritize" id="">
+                            <option value="0" <%=data.prioritize == 0 ? "selected" : "" %>>Secondary</option>
+                            <option value="1" <%=data.prioritize == 1 ? "selected" : "" %>>Primary</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
