@@ -1,15 +1,18 @@
 'use strict'
 const _BLOG_CON = require('./blogController')
+const _TAG_CON = require('./tagController')
 
 module.exports = {
     home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
             const data = await _BLOG_CON.Func_Get_ALl_Post(page);
+            const tags = await _TAG_CON.Func_Get_ALl_Tag();
 
             if (data) {
                 return res.render("home.ejs", {
                     fullLayout: true,
+                    tags,
                     posts: data.posts,
                     currentPage: data.current,
                     totalPage: data.totalPage,
@@ -57,11 +60,13 @@ module.exports = {
         try {
             const { page = 1, tag } = req.params;
             let data = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
+            const tags = await _TAG_CON.Func_Get_ALl_Tag();
 
             if (data) {
                 return res.render("tag.ejs", {
                     fullLayout: true,
                     posts: data.posts,
+                    tags,
                     currentPage: data.current,
                     totalPage: data.totalPage,
                     title: tag,
