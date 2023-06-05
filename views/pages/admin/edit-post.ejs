@@ -1,65 +1,64 @@
-<% 
-    let status=(!data.status) ? 'checked' : '' ; 
-    let checkImage = data.thumbnail ? '' : 'disable';
-%>
-<div class="page-add-post">
-    <div class="container">
-        <h2 class="text-center">Edit Post</h2>
-        <div class="row">
-            <div class="col-md-12">
-                <form method="post" role="form" action="/admin/update-post?id=<%= data._id %>">
-                    <div class="form-group mb-3">
-                        <label for="">Tag</label>
-                        <select class="form-control" name="tag" id="tag">
-                            <option value="" <%=data.tag=='' ? "selected" : "" %>>Choose Tag Name</option>
-                            <option value="Html Css" <%=data.tag=='Html Css' ? "selected" : "" %>>Html Css</option>
-                            <option value="Javascript" <%=data.tag=='Javascript' ? "selected" : "" %>>Javascript
-                            </option>
-                            <option value="ReactJs" <%=data.tag=='ReactJs' ? "selected" : "" %>>ReactJs</option>
-                            <option value="DotNet" <%=data.tag=='DotNet' ? "selected" : "" %>>DotNet</option>
-                            <option value="Sitecore" <%=data.tag=='Sitecore' ? "selected" : "" %>>Sitecore</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label> Title </label>
-                        <input type="text" class="form-control" name="title" placeholder="Title"
-                            value="<%= data.title %>" required />
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="summary">Summary</label>
-                        <textarea class="form-control" name="summary" id="summary" rows="3"><%= data.summary %></textarea>
-                      </div>
-
-                    <div class="form-group mb-3">
-                        <label for="">Thumbnail</label>
-                        <div class="preview-image <%= checkImage %>">
-                          <img src="/images/thumbnails/<%= data.thumbnail %>" alt="">
+<% let status=(!data.status) ? 'checked' : '' ; let checkImage=data.thumbnail ? '' : 'disable' ; %>
+    <div class="page-add-post">
+        <div class="container">
+            <h2 class="text-center">Edit Post</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="post" role="form" action="/admin/update-post?id=<%= data._id %>">
+                        <div class="form-group mb-3">
+                            <label for="">Tag</label>
+                            <select class="form-control" name="tag" id="select-tag" multiple placeholder="Tag Name"
+                                data-allow-clear="1">
+                                <option value="Sitecore" <%=data.tag=='Sitecore' ? "selected" : "" %>>Sitecore</option>
+                                <% tags.forEach((tag, index)=> { %>
+                                    <option value="<%= tag.name %>" <%=data.tag.includes(tag.name) ? "selected" : "" %>>
+                                        <%= tag.name %>
+                                    </option>
+                                <% }) %>
+                            </select>
                         </div>
-                        <input type="file" class="form-control-file" id="thumbnail-btn" placeholder="" aria-describedby="fileHelpId" accept=".jpg, .jpeg, .png">
-                        <input type="text" name="thumbnail" id = "thumbnail-input" value="<%= data.thumbnail %>" />
-                        <small id="fileHelpId" class="form-text text-muted">image size below 10mb</small>
-                      </div>
 
-                    <div class="form-check form-check-inline mb-3">
-                        <label class="form-check-label">
-                            <input class="form-check-input" value="<%=data.status%>" type="checkbox" name="status"
-                                <%=status %> > Disable
-                        </label>
-                    </div>
+                        <div class="form-group mb-3">
+                            <label> Title </label>
+                            <input type="text" class="form-control" name="title" placeholder="Title"
+                                value="<%= data.title %>" required />
+                        </div>
 
-                    <div class="form-group mb-3">
-                        <label> Content </label>
-                        <textarea class="form-control" id="editor-content" name="content">
+                        <div class="form-group mb-3">
+                            <label for="summary">Summary</label>
+                            <textarea class="form-control" name="summary" id="summary"
+                                rows="3"><%= data.summary %></textarea>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="">Thumbnail</label>
+                            <div class="preview-image <%= checkImage %>">
+                                <img src="/images/thumbnails/<%= data.thumbnail %>" alt="">
+                            </div>
+                            <input type="file" class="form-control-file" id="thumbnail-btn" placeholder=""
+                                aria-describedby="fileHelpId" accept=".jpg, .jpeg, .png">
+                            <input type="text" name="thumbnail" id="thumbnail-input" value="<%= data.thumbnail %>" />
+                            <small id="fileHelpId" class="form-text text-muted">image size below 10mb</small>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-3">
+                            <label class="form-check-label">
+                                <input class="form-check-input" value="<%=data.status%>" type="checkbox" name="status"
+                                    <%=status %> > Disable
+                            </label>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label> Content </label>
+                            <textarea class="form-control" id="editor-content" name="content">
                             <%= data.content %>
                         </textarea>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
-                    </div>
-                </form>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>

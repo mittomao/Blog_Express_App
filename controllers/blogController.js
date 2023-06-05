@@ -29,7 +29,9 @@ module.exports = {
         let perPage = parseInt(process.env.PER_PAGE);
         let page = p;
         const count = await blogModel.find();
-        const response = await blogModel.find({ [name]: value })
+        const response = await blogModel.find({
+                [name]: { "$regex": value, "$options": "i" }
+             })
             .limit(perPage)
             .skip((perPage * page) - perPage)
             .sort({ createdAt: -1 })

@@ -5,14 +5,11 @@
             <div class="col-md-12">
                 <form method="post" role="form" action="/admin/add-post">
                     <div class="form-group mb-3">
-                      <label for="">Tag</label>
-                      <select class="form-control" name="tag" id="tag">
-                        <option value="">Choose Tag Name</option>
-                        <option value="Html Css">Html Css</option>
-                        <option value="Javascript">Javascript</option>
-                        <option value="ReactJs">ReactJs</option>
-                        <option value="DotNet">DotNet</option>
-                        <option value="Sitecore">Sitecore</option>
+                      <label for="">Choose Tag Name</label>
+                      <select class="form-control" name="tag" id="select-tag" multiple placeholder="Tag Name" data-allow-clear="1">
+                        <% tags.forEach((tag, index) => { %>
+                          <option value="<%= tag.name %>"><%= tag.name %></option>
+                        <% }) %>
                       </select>
                     </div>
                     <div class="form-group mb-3">

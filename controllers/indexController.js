@@ -35,10 +35,20 @@ module.exports = {
     },
     addPost: async (req, res) => {
         if (req.method === "GET") {
-            return res.render('add-post.ejs', { title: 'Add Post Page', layout: 'admin-layout' });
+            try {
+                const tags = await _TAG_CON.Func_Get_ALl_Tag();
+                return res.render('add-post.ejs', {
+                    title: 'Add Post Page',
+                    tags,
+                    layout: 'admin-layout'
+                });
+            } catch (error) {
+                console.error('error', error)
+            }
         }
+
         try {
-            let add = await _BLOG_CON.Func_Create_Post({ author: req.session.username, ...req.body });
+            let add = await _BLOG_CON.Func_Create_Post({ author: req.session.username, ...req.body, tag: req.body.tag.toString() });
             if (add) {
                 return res.redirect('/admin');
             }
@@ -50,8 +60,14 @@ module.exports = {
         const { id } = req.params;
         try {
             let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
+            const tags = await _TAG_CON.Func_Get_ALl_Tag();
             if (post) {
-                return res.render('edit-post.ejs', { data: post, title: 'Edit Blog Page', layout: 'admin-layout' });
+                return res.render('edit-post.ejs', {
+                    data: post,
+                    tags,
+                    title: 'Edit Blog Page',
+                    layout: 'admin-layout'
+                });
             }
         } catch (error) {
             console.error('error', error)
@@ -59,9 +75,8 @@ module.exports = {
     },
     updatePost: async (req, res) => {
         const { id } = req.query;
-        console.log('req.body', req.body);
         try {
-            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, { author: req.session.username, ...req.body });
+            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, { author: req.session.username, ...req.body, tag: req.body.tag.toString() });
             if (update) {
                 return res.redirect('/admin');
             }
@@ -150,7 +165,7 @@ module.exports = {
                     isAdmin: true,
                     action: 'add-tag'
                 });
-            } 
+            }
         }
 
         return res.redirect('/admin/login')

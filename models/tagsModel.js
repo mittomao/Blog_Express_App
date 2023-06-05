@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tags = new Schema({
-    name: { type: String, require},
+    name: [{
+        type: String,
+        required: true
+    }],
     quantity: { type: Number, default: 0},
     prioritize: { type: Boolean, default: 0},
 }, 

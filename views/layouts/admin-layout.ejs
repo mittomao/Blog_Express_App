@@ -41,7 +41,7 @@
                 'sitecore': 'sitecore.jpg',
             }
             var btnFile = document.getElementById('thumbnail-btn');
-            var tag = document.getElementById('tag');
+            var tag = document.getElementById('select-tag');
             tag.addEventListener('change', function (e) {
                 if (e.target.value) {
                     const value = e.target.value.replace(/\s/g, '').toLowerCase();
@@ -60,6 +60,19 @@
                 }
             }
 
+        </script>
+
+        <script>
+            $(function () {
+                $('#select-tag').each(function () {
+                    $(this).select2({
+                        theme: 'bootstrap4',
+                        width: 'style',
+                        placeholder: $(this).attr('placeholder'),
+                        allowClear: Boolean($(this).data('allow-clear')),
+                    });
+                });
+            });
         </script>
 </body>
 
