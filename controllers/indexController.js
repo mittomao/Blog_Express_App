@@ -5,6 +5,21 @@ const _BLOG_CON = require('./blogController')
 const _USER_CON = require('./usersController')
 const _TAG_CON = require('./tagController')
 
+class ResonposeDataAdmin {
+    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, username, action }) {
+        this.layout = layout;
+        this.isAdmin = isAdmin;
+        this.title = title;
+        this.currentPage = currentPage;
+        this.totalPage = totalPage;
+        this.blogs = blogs;
+        this.allItems = allItems;
+        this.tags = tags;
+        this.username = username;
+        this.action = action;
+    }
+}
+
 module.exports = {
     // Post
     home: async (req, res) => {
@@ -13,17 +28,18 @@ module.exports = {
             if (req.session?.loggedin) {
                 const data = await _BLOG_CON.Func_Get_ALl_Post(page);
                 if (data) {
-                    return res.render('index.ejs', {
-                        blogs: data.posts,
-                        currentPage: data.current,
-                        totalPage: data.totalPage,
-                        allItems: data.allItems,
-                        username: req.session.username,
-                        title: 'Admin Page',
-                        layout: 'admin-layout',
-                        isAdmin: true,
-                        action: 'add-post'
-                    });
+                    return res.render('index.ejs',
+                        new ResonposeDataAdmin({
+                            blogs: data.posts,
+                            currentPage: data.current,
+                            totalPage: data.totalPage,
+                            allItems: data.allItems,
+                            username: req.session.username,
+                            title: 'Admin Page',
+                            layout: 'admin-layout',
+                            isAdmin: true,
+                            action: 'add-post'
+                        }));
                 }
             }
 
@@ -37,11 +53,12 @@ module.exports = {
         if (req.method === "GET") {
             try {
                 const tags = await _TAG_CON.Func_Get_ALl_Tag();
-                return res.render('add-post.ejs', {
-                    title: 'Add Post Page',
-                    tags,
-                    layout: 'admin-layout'
-                });
+                return res.render('add-post.ejs',
+                    new ResonposeDataAdmin({
+                        title: 'Add Post Page',
+                        tags,
+                        layout: 'admin-layout'
+                    }));
             } catch (error) {
                 console.error('error', error)
             }
@@ -62,12 +79,13 @@ module.exports = {
             let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
             const tags = await _TAG_CON.Func_Get_ALl_Tag();
             if (post) {
-                return res.render('edit-post.ejs', {
-                    data: post,
-                    tags,
-                    title: 'Edit Blog Page',
-                    layout: 'admin-layout'
-                });
+                return res.render('edit-post.ejs',
+                    new ResonposeDataAdmin({
+                        blogs: post,
+                        tags,
+                        title: 'Edit Blog Page',
+                        layout: 'admin-layout'
+                    }));
             }
         } catch (error) {
             console.error('error', error)
@@ -97,7 +115,7 @@ module.exports = {
     },
     register: async (req, res) => {
         if (req.method === "GET") {
-            return res.render('register.ejs', { title: 'Register Page', layout: 'admin-layout' })
+            return res.render('register.ejs', new ResonposeDataAdmin({ title: 'Register Page', layout: 'admin-layout' }))
         }
         try {
             const { username, password, email, phone } = req.body;
@@ -117,7 +135,7 @@ module.exports = {
     },
     login: async (req, res) => {
         if (req.method === 'GET') {
-            return res.render('login.ejs', { title: 'Login Page', layout: 'admin-layout' })
+            return res.render('login.ejs', new ResonposeDataAdmin({ title: 'Login Page', layout: 'admin-layout' }))
         }
 
         req.session = req.session || {};
@@ -157,14 +175,15 @@ module.exports = {
             const data = await _TAG_CON.Func_Get_ALl_Tag();
 
             if (data) {
-                return res.render('tag-page.ejs', {
-                    username: req.session.username,
-                    tags: data,
-                    title: 'Tag Page',
-                    layout: 'admin-layout',
-                    isAdmin: true,
-                    action: 'add-tag'
-                });
+                return res.render('tag-page.ejs',
+                    new ResonposeDataAdmin({
+                        username: req.session.username,
+                        tags: data,
+                        title: 'Tag Page',
+                        layout: 'admin-layout',
+                        isAdmin: true,
+                        action: 'add-tag'
+                    }));
             }
         }
 
@@ -172,7 +191,7 @@ module.exports = {
     },
     addTag: async (req, res) => {
         if (req.method === "GET") {
-            return res.render('add-tag.ejs', { title: 'Add Tag Page', layout: 'admin-layout' });
+            return res.render('add-tag.ejs', new ResonposeDataAdmin({ title: 'Add Tag Page', layout: 'admin-layout' }));
         }
         try {
             let add = await _TAG_CON.Func_Create_Tag({ ...req.body });
@@ -188,7 +207,7 @@ module.exports = {
         try {
             let post = await _TAG_CON.Func_Get_Tag_By_Id(id);
             if (post) {
-                return res.render('edit-tag.ejs', { data: post, title: 'Edit Tag Page', layout: 'admin-layout' });
+                return res.render('edit-tag.ejs', new ResonposeDataAdmin({ blogs: post, title: 'Edit Tag Page', layout: 'admin-layout' }));
             }
         } catch (error) {
             console.error('error', error)

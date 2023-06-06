@@ -1,22 +1,22 @@
 <%
     let urlImage = 'https://placehold.co/150x150';
-    if ( data?.author?.avatar ) {
+    if ( posts?.author?.avatar ) {
         urlImage = '/images/' + author.avatar;
     }
 %>
 <div class="detail-post">
-    <div class="detail-post__content row pt-md-4">
-        <h1 class="mb-5"><%= data.title %></h1>
+    <div class="detail-post__content pt-md-4">
+        <h1 class="mb-5"><%= posts.title %></h1>
 
         <div class="detail-post__body">
-            <% if (data.content) { %>
-                <%- data.content %>
+            <% if (posts.content) { %>
+                <%- posts.content %>
             <% } else { %>
                 <%- include('../../components/no-result') %>
             <% } %>
         </div>
 
-        <% if (data.content) { %>
+        <% if (posts.content) { %>
         <div class="about-author d-flex p-4 bg-light">
             <div class="bio mr-5">
                 <img src="<%= urlImage %>" alt="Image placeholder" class="img-fluid mb-4">

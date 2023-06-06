@@ -2,6 +2,20 @@
 const _BLOG_CON = require('./blogController')
 const _TAG_CON = require('./tagController')
 
+class ResonposeDataClient {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related }) {
+        this.layout = layout;
+        this.fullLayout = fullLayout;
+        this.isAdmin = isAdmin;
+        this.title = title;
+        this.currentPage = currentPage;
+        this.totalPage = totalPage;
+        this.posts = posts;
+        this.tags = tags;
+        this.related = related;
+    }
+}
+
 module.exports = {
     home: async (req, res) => {
         try {
@@ -10,16 +24,17 @@ module.exports = {
             const tags = await _TAG_CON.Func_Get_ALl_Tag();
 
             if (data) {
-                return res.render("home.ejs", {
-                    fullLayout: true,
-                    tags,
-                    posts: data.posts,
-                    currentPage: data.current,
-                    totalPage: data.totalPage,
-                    title: 'Home Page',
-                    layout: "home-layout",
-                    isAdmin: false
-                });
+                return res.render("home.ejs", 
+                    new ResonposeDataClient({
+                        fullLayout: true,
+                        tags,
+                        posts: data.posts,
+                        currentPage: data.current,
+                        totalPage: data.totalPage,
+                        title: 'Home Page',
+                        layout: "home-layout",
+                        isAdmin: false
+                    }));
             }
         } catch (error) {
             console.error(error);
@@ -27,11 +42,12 @@ module.exports = {
     },
     portfolio: async (req, res) => {
         try {
-            return res.render("portfolio.ejs", { 
-                title: 'Portfolio Page',
-                layout: "home-layout",
-                fullLayout: false,
-            });
+            return res.render("portfolio.ejs",
+                new ResonposeDataClient({ 
+                    title: 'Portfolio Page',
+                    layout: "home-layout",
+                    fullLayout: false,
+                }));
         } catch (error) {
             console.error(error);
         }
@@ -39,16 +55,19 @@ module.exports = {
     detailPost: async (req, res) => {
         try {
             const { id } = req.params;
-            let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
-            if (post) {
+            let data = await _BLOG_CON.Func_Get_Post_By_Id(id);
+            const tags = await _TAG_CON.Func_Get_ALl_Tag();
+            if (data) {
                 await _BLOG_CON.Func_Random_Post((result, id) => {
-                    return res.render("detail-post.ejs", {
-                        data: post,
-                        related: result,
-                        title: post.title,
-                        layout: "home-layout",
-                        fullLayout: true,
-                    });
+                    return res.render("detail-post.ejs", 
+                        new ResonposeDataClient({
+                            posts: data,
+                            tags,
+                            related: result,
+                            title: data.title,
+                            layout: "home-layout",
+                            fullLayout: true,
+                        }));
                 });
             }
 
@@ -63,16 +82,17 @@ module.exports = {
             const tags = await _TAG_CON.Func_Get_ALl_Tag();
 
             if (data) {
-                return res.render("tag.ejs", {
-                    fullLayout: true,
-                    posts: data.posts,
-                    tags,
-                    currentPage: data.current,
-                    totalPage: data.totalPage,
-                    title: tag,
-                    layout: "home-layout",
-                    isAdmin: false
-                });
+                return res.render("tag.ejs",
+                    new ResonposeDataClient({
+                        fullLayout: true,
+                        posts: data.posts,
+                        tags,
+                        currentPage: data.current,
+                        totalPage: data.totalPage,
+                        title: tag,
+                        layout: "home-layout",
+                        isAdmin: false
+                    }));
             }
 
         } catch (error) {
@@ -81,36 +101,39 @@ module.exports = {
     },
     contact: async (req, res) => {
         try {
-            return res.render("contact.ejs", {
-                fullLayout: false,
-                title: "Contact Page",
-                layout: "home-layout",
-                isAdmin: false
-            });
+            return res.render("contact.ejs",
+                new ResonposeDataClient({
+                    fullLayout: false,
+                    title: "Contact Page",
+                    layout: "home-layout",
+                    isAdmin: false
+                }));
         } catch (error) {
             console.error(error);
         }
     },
     life: async (req, res) => {
         try {
-            return res.render("life.ejs", {
-                fullLayout: false,
-                title: "Contact Page",
-                layout: "home-layout",
-                isAdmin: false
-            });
+            return res.render("life.ejs",
+                new ResonposeDataClient({
+                    fullLayout: false,
+                    title: "Contact Page",
+                    layout: "home-layout",
+                    isAdmin: false
+                }));
         } catch (error) {
             console.error(error);
         }
     },
     about: async (req, res) => {
         try {
-            return res.render("about.ejs", {
-                fullLayout: false,
-                title: "Contact Page",
-                layout: "home-layout",
-                isAdmin: false
-            });
+            return res.render("about.ejs",
+                new ResonposeDataClient({
+                    fullLayout: false,
+                    title: "Contact Page",
+                    layout: "home-layout",
+                    isAdmin: false
+                }));
         } catch (error) {
             console.error(error);
         }

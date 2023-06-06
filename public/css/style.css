@@ -2418,6 +2418,13 @@ h5,
 .blog-entry {
   width: 100%;
   margin-bottom: 3em;
+  box-shadow: 0 0 10px #ddd;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.blog-entry:hover {
+  box-shadow: none;
 }
 
 .blog-entry .img {
