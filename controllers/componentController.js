@@ -13,7 +13,7 @@ module.exports = {
                 description: params.description
             },
             {upsert: true, new: true, runValidators: true},
-            function (err, result) { // callback
+            function (err, result) {
                 if (err) {
                     console.error('Func_Update_Data_Component_newsletter: ', err);
                 } else {
