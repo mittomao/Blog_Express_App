@@ -1,9 +1,12 @@
+<%
+    let title = newsletter?.title || "";
+    let description = newsletter?.description || "";
+%>
 <div class="newsletter sidebar-box subs-wrap img py-4" style="background-image: url(<%=process.env.IMAGE_PREFIX%>/bg_1.jpg);">
     <div class="overlay"></div>
-    <h3 class="mb-4 sidebar-heading">Newsletter</h3>
-    <p class="mb-4">Debug là việc khó gấp đôi code. Nếu
-        viết code thông minh quá mức, bạn sẽ
-        không đủ thông minh để debug nó
+    <h3 class="mb-4 sidebar-heading"><%= title %></h3>
+    <p class="mb-4">
+        <%= description %>
     </p>
     <form action="#" class="subscribe-form">
         <div class="form-group">

@@ -41,4 +41,9 @@ router.get('/edit-tag/:id', index_Controller.pageEditTag)
 router.post('/update-tag', index_Controller.updateTag)
 router.post('/delete-tag', index_Controller.deleteTag)
 
+// Component
+router.get('/components/:name', index_Controller.components)
+router.post('/components/:name', index_Controller.components)
+
+
 module.exports = router;

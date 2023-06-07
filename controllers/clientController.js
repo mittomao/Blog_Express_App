@@ -1,9 +1,10 @@
 'use strict'
 const _BLOG_CON = require('./blogController')
 const _TAG_CON = require('./tagController')
+const _COMP_CON = require('./componentController')
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -13,6 +14,7 @@ class ResonposeDataClient {
         this.posts = posts;
         this.tags = tags;
         this.related = related;
+        this.newsletter = newsletter;
     }
 }
 
@@ -22,18 +24,20 @@ module.exports = {
             let { page = 1 } = req.params;
             const data = await _BLOG_CON.Func_Get_ALl_Post(page);
             const tags = await _TAG_CON.Func_Get_ALl_Tag();
+            const newsletters = await _COMP_CON.Func_Get_Data_Component_newsletter();
 
             if (data) {
                 return res.render("home.ejs", 
                     new ResonposeDataClient({
                         fullLayout: true,
                         tags,
+                        newsletter: newsletters[0],
                         posts: data.posts,
                         currentPage: data.current,
                         totalPage: data.totalPage,
                         title: 'Home Page',
                         layout: "home-layout",
-                        isAdmin: false
+                        isAdmin: false,
                     }));
             }
         } catch (error) {

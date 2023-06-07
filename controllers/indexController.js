@@ -4,9 +4,10 @@ const _UTIL = require('../utils')
 const _BLOG_CON = require('./blogController')
 const _USER_CON = require('./usersController')
 const _TAG_CON = require('./tagController')
+const _COMP_CON = require('./componentController')
 
 class ResonposeDataAdmin {
-    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, username, action }) {
+    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, username, action, dataComponent, componentName }) {
         this.layout = layout;
         this.isAdmin = isAdmin;
         this.title = title;
@@ -17,6 +18,8 @@ class ResonposeDataAdmin {
         this.tags = tags;
         this.username = username;
         this.action = action;
+        this.dataComponent = dataComponent;
+        this.componentName = componentName;
     }
 }
 
@@ -235,4 +238,32 @@ module.exports = {
             console.error('error', error)
         }
     },
+    // Components
+    components: async (req, res) => {
+        let { name } = req.params;
+        if (req.method === "GET") {
+            const data = await _COMP_CON['Func_Get_Data_Component_' + name]();
+            return res.render('components.ejs',
+                new ResonposeDataAdmin({
+                    username: req.session.username,
+                    title: name + ' Page',
+                    layout: 'admin-layout',
+                    isAdmin: true,
+                    componentName: name, 
+                    dataComponent: data[0] 
+            }));
+        }
+
+        await _COMP_CON['Func_Update_Data_Component_' + name](req.body, (data) => {
+            return res.render('components.ejs',
+                new ResonposeDataAdmin({
+                    username: req.session.username,
+                    title: name + ' Component',
+                    layout: 'admin-layout',
+                    isAdmin: true,
+                    componentName: name, 
+                    dataComponent: data
+                }));
+        });
+    }
 }

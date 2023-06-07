@@ -42,7 +42,7 @@
             }
             var btnFile = document.getElementById('thumbnail-btn');
             var tag = document.getElementById('select-tag');
-            tag.addEventListener('change', function (e) {
+            tag && tag.addEventListener('change', function (e) {
                 if (e.target.value) {
                     const value = e.target.value.replace(/\s/g, '').toLowerCase();
                     inputFile.value = imageLists[value] || "";
