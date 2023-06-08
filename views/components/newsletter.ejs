@@ -7,10 +7,20 @@
         <div class="card-header">
             <h5 class="mb-0">View Result</h5>
         </div>
+        <div class="card-body">
+            <%- include('c_newsletter', { newsletter: dataComponent }) %>
+        </div>
     </div>
     <div class="card shadow border-0 mb-7">
         <div class="card-header">
             <h5 class="mb-0">Highlight Code</h5>
+        </div>
+        <div class="card-body">
+            <div class='code-frame'>
+                <textarea cols='30' id='source-code' name='' rows='10'>
+                    <%- include('c_newsletter', { newsletter: dataComponent }) %>
+                </textarea>
+              </div>
         </div>
     </div>
     <div class="card shadow border-0 mb-7">

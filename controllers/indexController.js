@@ -7,7 +7,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController')
 
 class ResonposeDataAdmin {
-    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, username, action, dataComponent, componentName }) {
+    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, username, action, dataComponent, componentName, useStyleClient }) {
         this.layout = layout;
         this.isAdmin = isAdmin;
         this.title = title;
@@ -20,6 +20,7 @@ class ResonposeDataAdmin {
         this.action = action;
         this.dataComponent = dataComponent;
         this.componentName = componentName;
+        this.useStyleClient = useStyleClient;
     }
 }
 
@@ -242,28 +243,30 @@ module.exports = {
     components: async (req, res) => {
         let { name } = req.params;
         if (req.method === "GET") {
-            const data = await _COMP_CON['Func_Get_Data_Component_' + name]();
-            return res.render('components.ejs',
-                new ResonposeDataAdmin({
-                    username: req.session.username,
-                    title: name + ' Page',
-                    layout: 'admin-layout',
-                    isAdmin: true,
-                    componentName: name, 
-                    dataComponent: data[0] 
-            }));
+            try {
+                const data = await _COMP_CON['Func_Get_Data_Component_' + name]();
+                return res.render('components.ejs',
+                    new ResonposeDataAdmin({
+                        username: req.session.username,
+                        title: name + ' Page',
+                        layout: 'admin-layout',
+                        isAdmin: true,
+                        componentName: name,
+                        dataComponent: data[0],
+                        useStyleClient: true
+                    }));
+            } catch (error) {
+                console.error(error)
+            }
+
         }
 
-        await _COMP_CON['Func_Update_Data_Component_' + name](req.body, (data) => {
-            return res.render('components.ejs',
-                new ResonposeDataAdmin({
-                    username: req.session.username,
-                    title: name + ' Component',
-                    layout: 'admin-layout',
-                    isAdmin: true,
-                    componentName: name, 
-                    dataComponent: data
-                }));
-        });
+        try {
+            await _COMP_CON['Func_Update_Data_Component_' + name](req.body, (result) => {
+                return res.redirect('/admin/components/' + name);
+            });
+        } catch (error) {
+            console.error(error)
+        }
     }
 }

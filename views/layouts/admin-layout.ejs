@@ -3,8 +3,11 @@
 
 <head>
     <%- include('../../templates/meta')%>
-        <link rel="stylesheet" href="/css/common.css">
-        <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <%if( useStyleClient ) { %>
+        <link rel="stylesheet" href="/css/style.css">
+    <% } %>
 </head>
 
 <body>
@@ -13,67 +16,7 @@
     </div>
 
     <%- include('../../templates/block_script')%>
-
-        <script>
-            if ($('#editor-content').length) {
-                CKEDITOR.replace('editor-content');
-                CKEDITOR.on('instanceReady', function (evt) {
-                    var editor = evt.editor;
-
-                    editor.on('change', function (e) {
-                        var contentSpace = editor.ui.space('contents');
-                        var ckeditorFrameCollection = contentSpace.$.getElementsByTagName('iframe');
-                        var ckeditorFrame = ckeditorFrameCollection[0];
-                        var innerDoc = ckeditorFrame.contentDocument;
-                        var innerDocTextAreaHeight = $(innerDoc.body).height();
-                        console.log(innerDocTextAreaHeight);
-                    });
-                });
-            }
-        </script>
-
-        <script>
-            const imageLists = {
-                'htmlcss': 'html-css.jpg',
-                'javascript': 'javascript.png',
-                'reactjs': 'reactjs.png',
-                'dotnet': 'dotnet.png',
-                'sitecore': 'sitecore.jpg',
-            }
-            var btnFile = document.getElementById('thumbnail-btn');
-            var tag = document.getElementById('select-tag');
-            tag && tag.addEventListener('change', function (e) {
-                if (e.target.value) {
-                    const value = e.target.value.replace(/\s/g, '').toLowerCase();
-                    inputFile.value = imageLists[value] || "";
-                }
-            });
-            if (btnFile) {
-                var inputFile = document.getElementById('thumbnail-input');
-                var previewImage = document.querySelector('.preview-image');
-                btnFile.onchange = function () {
-                    if (btnFile.files[0]) {
-                        previewImage.classList.remove('disable');
-                        previewImage.querySelector('img').src = URL.createObjectURL(btnFile.files[0]);
-                        inputFile.value = btnFile.files[0].name;
-                    }
-                }
-            }
-
-        </script>
-
-        <script>
-            $(function () {
-                $('#select-tag').each(function () {
-                    $(this).select2({
-                        theme: 'bootstrap4',
-                        width: 'style',
-                        placeholder: $(this).attr('placeholder'),
-                        allowClear: Boolean($(this).data('allow-clear')),
-                    });
-                });
-            });
-        </script>
+    <script src="/js/admin.js"></script>
 </body>
 
 </html>
