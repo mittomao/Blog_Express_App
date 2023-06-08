@@ -4,7 +4,9 @@
     let author = dataComponent?.author || "";
     let createdAt = dataComponent?.createdAt || "";
     let link = dataComponent?.link || "#";
-    dataComponent.isDemo = true;
+    if (dataComponent) {
+        dataComponent.isDemo = true;
+    }
 %>
 <div class="blog-table">
     <div class="card shadow border-0 mb-7">
