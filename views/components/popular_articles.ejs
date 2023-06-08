@@ -1,17 +1,64 @@
+<%
+    let title = dataComponent?.title || "";
+    let image = dataComponent?.image || "";
+    let author = dataComponent?.author || "";
+    let createdAt = dataComponent?.createdAt || "";
+    let link = dataComponent?.link || "#";
+    dataComponent.isDemo = true;
+%>
 <div class="blog-table">
     <div class="card shadow border-0 mb-7">
         <div class="card-header">
             <h5 class="mb-0">View Result</h5>
+        </div>
+        <div class="card-body">
+            <%- include('c_popular-articles', { popularArticle: dataComponent  }) %>
         </div>
     </div>
     <div class="card shadow border-0 mb-7">
         <div class="card-header">
             <h5 class="mb-0">Highlight Code</h5>
         </div>
+        <div class="card-body">
+            <div class='code-frame'>
+                <textarea cols='30' id='source-code' name='' rows='10'>
+                    <%- include('c_popular-articles', { popularArticle: dataComponent }) %>
+                </textarea>
+              </div>
+        </div>
     </div>
     <div class="card shadow border-0 mb-7">
         <div class="card-header">
             <h5 class="mb-0">Edit Value</h5>
+        </div>
+        <div class="card-body">
+            <form action="/admin/components/<%= componentName %>" method="post">
+                <div class="form-group mb-3">
+                    <label> Title </label>
+                    <input type="text" class="form-control" name="title" placeholder="Title" value="<%= title %>" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="">Thumbnail</label>
+                    <div class="preview-image disable">
+                      <img src="" alt="">
+                    </div>
+                    <input type="file" class="form-control-file" id="thumbnail-btn" placeholder="" aria-describedby="fileHelpId" accept=".jpg, .jpeg, .png">
+                    <input type="text" id="thumbnail-input" name="image" value="<%= image %>" />
+                    <small id="fileHelpId" class="form-text text-muted">image size below 10mb</small>
+                  </div>
+                <div class="form-group mb-3">
+                    <label> Author </label>
+                    <input type="text" class="form-control" name="author" placeholder="Author" value="<%= author %>" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label> Link </label>
+                    <input type="text" class="form-control" name="link" placeholder="Link" value="<%= link %>" required/>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
+                </div>
+            </form>
         </div>
     </div>
 </div>

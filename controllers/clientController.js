@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController')
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -15,6 +15,7 @@ class ResonposeDataClient {
         this.tags = tags;
         this.related = related;
         this.newsletter = newsletter;
+        this.popularArticle = popularArticle;
     }
 }
 
@@ -25,6 +26,7 @@ module.exports = {
             const data = await _BLOG_CON.Func_Get_ALl_Post(page);
             const tags = await _TAG_CON.Func_Get_ALl_Tag();
             const newsletters = await _COMP_CON.Func_Get_Data_Component_newsletter();
+            const popularArticles = await _COMP_CON.Func_Get_Data_Component_popular_articles();
 
             if (data) {
                 return res.render("home.ejs", 
@@ -32,6 +34,7 @@ module.exports = {
                         fullLayout: true,
                         tags,
                         newsletter: newsletters[0],
+                        popularArticle: popularArticles[0],
                         posts: data.posts,
                         currentPage: data.current,
                         totalPage: data.totalPage,

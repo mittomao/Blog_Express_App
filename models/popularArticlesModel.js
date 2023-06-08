@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const popularArticles = new Schema({
-    title: [{
+    title: {
         type: String,
         default: ''
-    }],
-    description: { type: String, default: ''},
+    },
+    image: { type: String, default: ''},
+    author: { type: String, default: ''},
+    link: { type: String, default: ''},
 }, 
 { collection: 'popular-articles', timestamps: true })
 

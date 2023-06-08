@@ -1,13 +1,25 @@
-<div class=" popular-article sidebar-box ftco-animate">
+<%
+    let title = popularArticle?.title || "";
+    let image = popularArticle?.image || "";
+    let author = popularArticle?.author || "";
+    let createdAt = popularArticle?.createdAt || "";
+    let link = popularArticle?.link || "#";
+    let modifyClass = popularArticle?.isDemo ? '' : 'ftco-animate';
+
+    let date=new Date(createdAt);
+    let currentDay=date.getDate(); 
+    let currentYear=date.getFullYear(); 
+    let currentMonth=date.toLocaleString('default', { month: 'short' }); 
+%>
+<div class=" popular-article sidebar-box <%= modifyClass %>">
     <h3 class="sidebar-heading">Popular Articles</h3>
     <div class="block-21 mb-4 d-flex">
-        <a class="blog-img mr-4" style="background-image: url(https://topdev.vn/blog/wp-content/uploads/2021/01/ky-nang-lap-trinh.jpg);"></a>
+        <a target="blank" class="blog-img mr-4" style="background-image: url('/images/<%= image %>');"></a>
         <div class="text">
-            <h3 class="heading"><a href="https://topdev.vn/blog/lap-trinh-vien-gioi/">Để trở thành một lập trình viên giỏi hơn mỗi ngày!</a></h3>
+            <h3 class="heading"><a href="<%= link %>"><%= title %></a></h3>
             <div class="meta">
-                <div><a href="#"><span class="icon-calendar"></span> June 06, 2023</a></div>
-                <div><a href="#"><span class="icon-person"></span> Randall Kanna</a></div>
-                <div><a href="#"><span class="icon-chat"></span> 06</a></div>
+                <div><a href="#"><span class="icon-calendar"></span> <%= currentDay %> <%= currentMonth %>,<%= currentYear %> </a></div>
+                <div><a href="#"><span class="icon-person"></span> <%= author %> </a></div>
             </div>
         </div>
     </div>
