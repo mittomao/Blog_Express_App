@@ -9,4 +9,24 @@
   margin-bottom: 30px;
 }
 
+.components.demo {
+  pointer-events: none;
+  visibility: visible;
+}
+.components.demo.ftco-animate, .components.demo .ftco-animate {
+  display: block !important;
+}
+.components .cv {
+  margin-top: 20px;
+}
+.components .cv a {
+  padding: 8px 15px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: 3px solid #1eafed;
+  color: #1eafed;
+  font-size: 12px;
+  box-shadow: 0 0 12px #1eafed;
+}
+
 /*# sourceMappingURL=main.css.map */

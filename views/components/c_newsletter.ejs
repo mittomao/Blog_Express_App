@@ -1,8 +1,9 @@
 <%
     let title = newsletter?.title || "";
     let description = newsletter?.description || "";
+    let modifyClass = newsletter?.isDemo ? 'demo' : '';
 %>
-<div class="newsletter sidebar-box subs-wrap img py-4" style="background-image: url(<%=process.env.IMAGE_PREFIX%>/bg_1.jpg);">
+<section class="components newsletter sidebar-box subs-wrap img py-4 <%= modifyClass %>" style="background-image: url(<%=process.env.IMAGE_PREFIX%>/bg_1.jpg);">
     <div class="overlay"></div>
     <h3 class="mb-4 sidebar-heading"><%= title %></h3>
     <p class="mb-4">
@@ -14,4 +15,4 @@
             <input type="submit" value="Subscribe" class="mt-2 btn btn-white submit">
         </div>
     </form>
-</div>
+</section>

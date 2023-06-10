@@ -1,5 +1,6 @@
 const newsletterModel = require('../models/newsletterModel');
 const popularArticlesModel = require('../models/popularArticlesModel');
+const portfolioModel = require('../models/portfolioModel');
 
 module.exports = {
     // Component newsletter
@@ -45,5 +46,28 @@ module.exports = {
                 }
             }
         );
-    }
+    },
+    // Component portfolio
+    Func_Get_Data_Component_portfolio: async () => {
+        return portfolioModel.find();
+    },
+    Func_Update_Data_Component_portfolio: async (params, callback) => {
+        portfolioModel.findOneAndUpdate(
+            {},
+            {
+                name: params.name,
+                avatar: params.avatar,
+                description: params.description,
+                linkcv: params.linkcv,
+            },
+            {upsert: true, new: true, runValidators: true},
+            function (err, result) {
+                if (err) {
+                    console.error('Func_Update_Data_Component_portfolio: ', err);
+                } else {
+                    callback(result)
+                }
+            }
+        );
+    },
 }
