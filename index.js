@@ -39,6 +39,7 @@ app.set('views', [__dirname + PATH_LAYOUTS_TEMPLATE, __dirname + PATH_ADMIN_TEMP
 //cors
 //app.use(cors({ origin: true, credentials: true }));
 app.use((req, res, next) => {
+    console.log(req.method, req.params);
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "*");
     res.header("Access-Control-Allow-Headers", "*");

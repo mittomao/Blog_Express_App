@@ -1,7 +1,7 @@
 'use strict'
 const _BLOG_CON = require('./blogController')
 const _TAG_CON = require('./tagController')
-const _COMP_CON = require('./componentController')
+const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
     constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories }) {
@@ -181,6 +181,38 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    search: async (req, res) => {
+        try {
+            let { page = 1 } = req.params;
+            let { title } = req.body;
+            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, {
+                status: true,
+                title: { "$regex": title, "$options": "i" },
+            });
+            const dataHome = await GetDataInHomePage();
+            // End 
+
+            if (listPosts || dataHome) {
+                return res.render("home.ejs",
+                    new ResonposeDataClient({
+                        fullLayout: true,
+                        tags: dataHome.tags,
+                        newsletter: dataHome.newsletters[0],
+                        popularArticle: dataHome.popularArticles[0],
+                        categories: dataHome.categories,
+                        posts: listPosts.posts,
+                        currentPage: listPosts.current,
+                        totalPage: listPosts.totalPage,
+                        title: 'Home Page',
+                        layout: "home-layout",
+                        isAdmin: false,
+                    }));
+            }
+        } catch (error) {
+            console.error(error);
             res.redirect('/page-404');
         }
     }
