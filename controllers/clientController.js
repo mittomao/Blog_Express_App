@@ -21,42 +21,55 @@ class ResonposeDataClient {
     }
 }
 
+
+const GetDataInHomePage = async () => {
+    const tags = await _TAG_CON.Func_Get_ALl_Tag();
+    const newsletters = await _COMP_CON.Func_Get_Data_Component_newsletter();
+    const popularArticles = await _COMP_CON.Func_Get_Data_Component_popular_articles();
+    //Get Categories
+    const dataCategories = await _TAG_CON.Func_Get_ALl_Tag();
+    const categories = dataCategories && dataCategories.filter(x => x.prioritize);
+
+    return {
+        tags,
+        newsletters,
+        popularArticles,
+        categories
+    }
+}
+
 module.exports = {
     home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
-            const data = await _BLOG_CON.Func_Get_ALl_Post(page);
-            const tags = await _TAG_CON.Func_Get_ALl_Tag();
-            const newsletters = await _COMP_CON.Func_Get_Data_Component_newsletter();
-            const popularArticles = await _COMP_CON.Func_Get_Data_Component_popular_articles();
-            //Get Categories
-            const dataCategories = await _TAG_CON.Func_Get_ALl_Tag();
-            const categories = dataCategories && dataCategories.filter(x => x.prioritize);
+            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page);
+            const dataHome = await GetDataInHomePage();
             // End 
 
-            if (data) {
-                return res.render("home.ejs", 
+            if (listPosts || dataHome) {
+                return res.render("home.ejs",
                     new ResonposeDataClient({
                         fullLayout: true,
-                        tags,
-                        newsletter: newsletters[0],
-                        popularArticle: popularArticles[0],
-                        categories,
-                        posts: data.posts,
-                        currentPage: data.current,
-                        totalPage: data.totalPage,
+                        tags: dataHome.tags,
+                        newsletter: dataHome.newsletters[0],
+                        popularArticle: dataHome.popularArticles[0],
+                        categories: dataHome.categories,
+                        posts: listPosts.posts,
+                        currentPage: listPosts.current,
+                        totalPage: listPosts.totalPage,
                         title: 'Home Page',
                         layout: "home-layout",
                         isAdmin: false,
                     }));
             }
         } catch (error) {
+            console.error(error);
             res.redirect('/page-404');
         }
     },
     pageNotFound: async (req, res) => {
         return res.render("page-404.ejs",
-            new ResonposeDataClient({ 
+            new ResonposeDataClient({
                 title: '404 Page Not Found',
                 layout: "default-layout",
             }));
@@ -65,7 +78,7 @@ module.exports = {
         try {
             const portfolios = await _COMP_CON.Func_Get_Data_Component_portfolio();
             return res.render("portfolio.ejs",
-                new ResonposeDataClient({ 
+                new ResonposeDataClient({
                     portfolio: portfolios[0],
                     title: 'Portfolio Page',
                     layout: "home-layout",
@@ -78,16 +91,19 @@ module.exports = {
     detailPost: async (req, res) => {
         try {
             const { id } = req.params;
-            let data = await _BLOG_CON.Func_Get_Post_By_Id(id);
-            const tags = await _TAG_CON.Func_Get_ALl_Tag();
-            if (data) {
+            let dataPost = await _BLOG_CON.Func_Get_Post_By_Id(id);
+            const dataHome = await GetDataInHomePage();
+            if (dataPost || dataHome) {
                 await _BLOG_CON.Func_Random_Post((result, id) => {
-                    return res.render("detail-post.ejs", 
+                    return res.render("detail-post.ejs",
                         new ResonposeDataClient({
-                            posts: data,
-                            tags,
+                            posts: dataPost,
+                            tags: dataHome.tags,
+                            newsletter: dataHome.newsletters[0],
+                            popularArticle: dataHome.popularArticles[0],
+                            categories: dataHome.categories,
                             related: result,
-                            title: data.title,
+                            title: dataPost.title,
                             layout: "home-layout",
                             fullLayout: true,
                         }));
@@ -101,21 +117,21 @@ module.exports = {
     tag: async (req, res) => {
         try {
             const { page = 1, tag } = req.params;
-            let data = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
-            const tags = await _TAG_CON.Func_Get_ALl_Tag();
-            //Filter Categories
-            const categories = tags && tags.filter(x => x.prioritize);
+            let dataPost = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
+            const dataHome = await GetDataInHomePage();
             // End 
 
-            if (data) {
+            if (dataPost) {
                 return res.render("tag.ejs",
                     new ResonposeDataClient({
                         fullLayout: true,
-                        posts: data.posts,
-                        tags,
-                        categories,
-                        currentPage: data.current,
-                        totalPage: data.totalPage,
+                        posts: dataPost.posts,
+                        tags: dataHome.tags,
+                        newsletter: dataHome.newsletters[0],
+                        popularArticle: dataHome.popularArticles[0],
+                        categories: dataHome.categories,
+                        currentPage: dataPost.current,
+                        totalPage: dataPost.totalPage,
                         title: tag,
                         layout: "home-layout",
                         isAdmin: false

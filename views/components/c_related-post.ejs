@@ -4,7 +4,7 @@
     <ul>
         <% related.forEach((item, index) => { %>
             <li>
-                <a href=""><%= item.title %></a>
+                <a href="/post/<%= item._id %>"><%= item.title %></a>
             </li>
         <% }) %>
     </ul>
