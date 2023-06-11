@@ -22,7 +22,8 @@ app.use(
         resave: true,
         saveUninitialized: true,
         secret: 'somesecret',
-        cookie: { maxAge: 3600000 },
+        cookie: { maxAge: 8*60*60*1000 },
+        saveUninitialized: true,
         maxAge: new Date(Date.now() + 3600000),
     }
     ));

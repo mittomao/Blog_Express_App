@@ -2,7 +2,7 @@
 $(function () {
     // Higlight Code
     const frame = document.querySelectorAll('.code-frame textarea');
-    if (frame) {
+    if (frame.length) {
         frame["forEach"](function (element) {
             var pre = document.createElement('pre');
             var code = document.createElement('code');

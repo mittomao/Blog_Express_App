@@ -71,7 +71,10 @@ module.exports = {
         try {
             let add = await _BLOG_CON.Func_Create_Post({ author: req.session.username, ...req.body, tag: req.body.tag.toString() });
             if (add) {
-                return res.redirect('/admin');
+                let updateQuantity = _TAG_CON.Func_Increment_Quantity({name: { "$in" : req.body.tag}});
+                if (updateQuantity) {
+                    return res.redirect('/admin');
+                }  
             }
         } catch (error) {
             console.error('error', error)
@@ -108,9 +111,11 @@ module.exports = {
     },
     deletePost: async (req, res) => {
         const { id } = req.query;
+        const post = await _BLOG_CON.Func_Get_Post_By_Id(id);
         try {
             let deletePost = await _BLOG_CON.Func_Delete_Post_By_Id(id);
             if (deletePost) {
+                let updateQuantity = _TAG_CON.Func_Decrement_Quantity({name: { "$in" : post.tag.split(',')}});
                 return res.redirect('/admin');
             }
         } catch (error) {
@@ -154,7 +159,6 @@ module.exports = {
             if (login) {
                 req.session.loggedin = true;
                 req.session.username = username;
-                req.body.test = username;
 
                 res.redirect('/admin')
             } else {
@@ -220,7 +224,7 @@ module.exports = {
     updateTag: async (req, res) => {
         const { id } = req.query;
         try {
-            let update = await _TAG_CON.Func_Update_Tag_By_Id(id, { ...req.body });
+            let update = await _TAG_CON.Func_Update_Tag_By_Query({_id: id}, { ...req.body });
             if (update) {
                 return res.redirect('/admin/tag');
             }

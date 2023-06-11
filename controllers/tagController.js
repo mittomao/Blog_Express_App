@@ -16,12 +16,16 @@ module.exports = {
     Func_Get_Tag_By_Id: async (id) => {
         return await tagModel.findById(id);
     },
-    Func_Update_Tag_By_Id: async (id, params) => {
-        return await tagModel.findByIdAndUpdate({
-            _id: id
-        }, {
+    Func_Update_Tag_By_Query: async (query, params) => {
+        return await tagModel.findByIdAndUpdate(query, {
             ...params
         });
+    },
+    Func_Increment_Quantity: async (query) => {
+        return await tagModel.updateMany(query, {$inc : {'quantity' : 1}}).exec();
+    },
+    Func_Decrement_Quantity: async (query) => {
+        return await tagModel.updateMany(query, {$inc : {'quantity' : -1}}).exec();
     },
     Func_Delete_Post_By_Id: async (id) => {
         return await tagModel.findByIdAndDelete(id);

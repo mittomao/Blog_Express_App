@@ -1,4 +1,5 @@
 const blogModel = require('../models/blogModel');
+const tagsModel = require('../models/tagsModel');
 
 module.exports = {
     // Get Post
