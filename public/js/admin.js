@@ -48,28 +48,31 @@ $(function () {
     }
 
     // Image 
-    const imageLists = {
-        'htmlcss': 'html-css.jpg',
-        'javascript': 'javascript.png',
-        'reactjs': 'reactjs.png',
-        'dotnet': 'dotnet.png',
-        'sitecore': 'sitecore.jpg',
-    }
+    // const imageLists = {
+    //     'htmlcss': 'html-css.jpg',
+    //     'javascript': 'javascript.png',
+    //     'reactjs': 'reactjs.png',
+    //     'dotnet': 'dotnet.png',
+    //     'sitecore': 'sitecore.jpg',
+    // }
     var btnFile = document.getElementById('thumbnail-btn');
-    var tag = document.getElementById('select-tag');
-    tag && tag.addEventListener('change', function (e) {
-        if (e.target.value) {
-            const value = e.target.value.replace(/\s/g, '').toLowerCase();
-            inputFile.value = imageLists[value] || "";
-        }
-    });
+    // var tag = document.getElementById('select-tag');
+    // tag && tag.addEventListener('change', function (e) {
+    //     if (e.target.value) {
+    //         const value = e.target.value.replace(/\s/g, '').toLowerCase();
+    //         inputFile.value = imageLists[value] || "";
+    //     }
+    // });
     if (btnFile) {
         var inputFile = document.getElementById('thumbnail-input');
         var previewImage = document.querySelector('.preview-image');
         btnFile.onchange = function () {
             if (btnFile.files[0]) {
-                previewImage.classList.remove('disable');
-                previewImage.querySelector('img').src = URL.createObjectURL(btnFile.files[0]);
+                if (previewImage && previewImage.length) {
+                    previewImage.classList.remove('disable');
+                    previewImage.querySelector('img').src = URL.createObjectURL(btnFile.files[0]);
+                }
+                
                 inputFile.value = btnFile.files[0].name;
             }
         }

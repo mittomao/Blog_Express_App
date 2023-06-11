@@ -11,6 +11,7 @@ const users = new Schema({
     password: { type: String, default: ''},
     email: { type: String, default: ''},
     phone: { type: String, default: ''},
+    avatar: { type: String, default: ''},
     // status: { type: String, default: 'noactive'},
     // type_regis: { type: String, default: 'WE'},
 }, 

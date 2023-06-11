@@ -7,7 +7,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController')
 
 class ResonposeDataAdmin {
-    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, username, action, dataComponent, componentName, useStyleClient }) {
+    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, account, action, dataComponent, componentName, useStyleClient }) {
         this.layout = layout;
         this.isAdmin = isAdmin;
         this.title = title;
@@ -16,7 +16,7 @@ class ResonposeDataAdmin {
         this.blogs = blogs;
         this.allItems = allItems;
         this.tags = tags;
-        this.username = username;
+        this.account = account;
         this.action = action;
         this.dataComponent = dataComponent;
         this.componentName = componentName;
@@ -29,7 +29,7 @@ module.exports = {
     home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
-            if (req.session?.loggedin) {
+            if (req.session?.account?.loggedin) {
                 const data = await _BLOG_CON.Func_Get_ALl_Post(page);
                 if (data) {
                     return res.render('index.ejs',
@@ -38,7 +38,7 @@ module.exports = {
                             currentPage: data.current,
                             totalPage: data.totalPage,
                             allItems: data.allItems,
-                            username: req.session.username,
+                            account: req.session.account,
                             title: 'Admin Page',
                             layout: 'admin-layout',
                             isAdmin: true,
@@ -69,7 +69,7 @@ module.exports = {
         }
 
         try {
-            let add = await _BLOG_CON.Func_Create_Post({ author: req.session.username, ...req.body, tag: req.body.tag.toString() });
+            let add = await _BLOG_CON.Func_Create_Post({ author: req.session?.account?.username, ...req.body, tag: req.body.tag.toString() });
             if (add) {
                 let updateQuantity = _TAG_CON.Func_Increment_Quantity({name: { "$in" : req.body.tag}});
                 if (updateQuantity) {
@@ -101,7 +101,7 @@ module.exports = {
     updatePost: async (req, res) => {
         const { id } = req.query;
         try {
-            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, { author: req.session.username, ...req.body, tag: req.body.tag.toString() });
+            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, { author: req.session?.account?.username, ...req.body, tag: req.body.tag.toString() });
             if (update) {
                 return res.redirect('/admin');
             }
@@ -127,12 +127,13 @@ module.exports = {
             return res.render('register.ejs', new ResonposeDataAdmin({ title: 'Register Page', layout: 'admin-layout' }))
         }
         try {
-            const { username, password, email, phone } = req.body;
+            const { username, password, email, phone, avatar } = req.body;
             const register = await _USER_CON.FUNC_REGISTER_USER({
                 username,
                 password,
                 email,
-                phone
+                phone,
+                avatar
             });
 
             if (register) {
@@ -157,8 +158,11 @@ module.exports = {
             });
 
             if (login) {
-                req.session.loggedin = true;
-                req.session.username = username;
+                req.session.account = {
+                    loggedin: true,
+                    username: username,
+                    avatar: login.avatar
+                };
 
                 res.redirect('/admin')
             } else {
@@ -172,20 +176,22 @@ module.exports = {
         }
     },
     logout: async (req, res) => {
-        req.session.loggedin = false;
-        req.session.username = null;
+        req.session.account = {
+            loggedin: false,
+            username: null
+        };
 
         res.redirect('/admin/login')
     },
     // Tag
     pageTag: async (req, res) => {
-        if (req.session?.loggedin) {
+        if (req.session?.account?.loggedin) {
             const data = await _TAG_CON.Func_Get_ALl_Tag();
 
             if (data) {
                 return res.render('tag-page.ejs',
                     new ResonposeDataAdmin({
-                        username: req.session.username,
+                        account: req.session.account,
                         tags: data,
                         title: 'Tag Page',
                         layout: 'admin-layout',
@@ -251,7 +257,7 @@ module.exports = {
                 const data = await _COMP_CON['Func_Get_Data_Component_' + name]();
                 return res.render('components.ejs',
                     new ResonposeDataAdmin({
-                        username: req.session.username,
+                        account: req.session.account,
                         title: name + ' Page',
                         layout: 'admin-layout',
                         isAdmin: true,

@@ -119,11 +119,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <img alt="Avatar"
-                                    src="<%= process.env.IMAGE_PREFIX %>/avatar1.png"
+                                    src="<%= process.env.IMAGE_PREFIX %>/<%= account.avatar %>"
                                     class="avatar rounded-circle mr-3" />
                         <span class="username">
-                            <%if (username) { %>
-                                <%= username %>
+                            <%if (account.username) { %>
+                                <%= account.username %>
                                     <% } else { %> Account <% } %>
                         </span>
                                     
