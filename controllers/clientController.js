@@ -42,7 +42,7 @@ module.exports = {
     home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
-            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page);
+            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, {status: true});
             const dataHome = await GetDataInHomePage();
             // End 
 
@@ -117,7 +117,10 @@ module.exports = {
     tag: async (req, res) => {
         try {
             const { page = 1, tag } = req.params;
-            let dataPost = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
+            let dataPost = await _BLOG_CON.Func_Get_ALl_Post(page, {
+                tag: { "$regex": tag, "$options": "i" },
+                status: true
+             });
             const dataHome = await GetDataInHomePage();
             // End 
 

@@ -3,11 +3,11 @@ const tagsModel = require('../models/tagsModel');
 
 module.exports = {
     // Get Post
-    Func_Get_ALl_Post: async (p) => {
+    Func_Get_ALl_Post: async (p, query = {}) => {
         let perPage = parseInt(process.env.PER_PAGE);
         let page = p;
-        const count = await blogModel.find();
-        const response = await blogModel.find()
+        const count = await blogModel.find(query);
+        const response = await blogModel.find(query)
             .limit(perPage)
             .skip((perPage * page) - perPage)
             .sort({ createdAt: -1 })
@@ -25,27 +25,6 @@ module.exports = {
     },
     Func_Get_Post_By_Id: async (id) => {
         return await blogModel.findById(id);
-    },
-    Func_Get_Post_By_Search: async (p, name, value) => {
-        let perPage = parseInt(process.env.PER_PAGE);
-        let page = p;
-        const count = await blogModel.find();
-        const response = await blogModel.find({
-                [name]: { "$regex": value, "$options": "i" }
-             })
-            .limit(perPage)
-            .skip((perPage * page) - perPage)
-            .sort({ createdAt: -1 })
-
-        let totalCount = 1;
-        if (response.length >= perPage) {
-            totalCount = Math.ceil(count.length / perPage)
-        } 
-        return {
-            posts: response,
-            current: page,
-            totalPage: totalCount
-        }
     },
     Func_Random_Post: async (callback, id) => {
         await blogModel.findRandom({
