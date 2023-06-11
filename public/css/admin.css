@@ -408,4 +408,9 @@ body {
   align-items: center;
 }
 
+.form-group label {
+  font-weight: bold;
+  font-size: 90%;
+}
+
 /*# sourceMappingURL=admin.css.map */

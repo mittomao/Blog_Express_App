@@ -1,4 +1,4 @@
-<% let status=(!blogs.status) ? 'checked' : '' ; let checkImage=blogs.thumbnail ? '' : 'disable' ; %>
+<% let checkImage=blogs.thumbnail ? '' : 'disable' ; %>
     <div class="page-add-post">
         <div class="container">
             <h2 class="text-center">Edit Post</h2>
@@ -6,32 +6,33 @@
                 <div class="col-md-12">
                     <form method="post" role="form" action="/admin/update-post?id=<%= blogs._id %>">
                         <div class="form-group mb-3">
-                            <label for="">Tag</label>
+                            <label for="" class="mb-2">Tag</label>
                             <select class="form-control" name="tag" id="select-tag" multiple placeholder="Tag Name"
                                 data-allow-clear="1">
                                 <option value="Sitecore" <%=blogs.tag=='Sitecore' ? "selected" : "" %>>Sitecore</option>
                                 <% tags.forEach((tag, index)=> { %>
-                                    <option value="<%= tag.name %>" <%=blogs.tag.includes(tag.name) ? "selected" : "" %>>
+                                    <option value="<%= tag.name %>" <%=blogs.tag.includes(tag.name) ? "selected" : "" %>
+                                        >
                                         <%= tag.name %>
                                     </option>
-                                <% }) %>
+                                    <% }) %>
                             </select>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label> Title </label>
+                            <label class="mb-2"> Title </label>
                             <input type="text" class="form-control" name="title" placeholder="Title"
                                 value="<%= blogs.title %>" required />
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="summary">Summary</label>
+                            <label for="summary" class="mb-2">Summary</label>
                             <textarea class="form-control" name="summary" id="summary"
                                 rows="3"><%= blogs.summary %></textarea>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="">Thumbnail</label>
+                            <label for="" class="mb-2">Thumbnail</label>
                             <div class="preview-image <%= checkImage %>">
                                 <img src="<%= process.env.IMAGE_PREFIX %>/thumbnails/<%= blogs.thumbnail %>" alt="">
                             </div>
@@ -41,15 +42,18 @@
                             <small id="fileHelpId" class="form-text text-muted">image size below 10mb</small>
                         </div>
 
-                        <div class="form-check form-check-inline mb-3">
-                            <label class="form-check-label">
-                                <input class="form-check-input" value="<%=blogs.status%>" type="checkbox" name="status"
-                                    <%=status %> > Disable
+                        <div class="form-group mb-3">
+                            <label class="mb-2">
+                                Status
                             </label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="1" <%=blogs.status==1 ? "selected" : "" %>>Show</option>
+                                <option value="0" <%=blogs.status==0 ? "selected" : "" %>>Hide</option>
+                            </select>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label> Content </label>
+                            <label class="mb-2"> Content </label>
                             <textarea class="form-control" id="editor-content" name="content">
                             <%= blogs.content %>
                         </textarea>
