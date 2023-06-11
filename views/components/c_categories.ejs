@@ -1,10 +1,10 @@
+<% if (categories) { %>
 <div class="category sidebar-box ftco-animate">
     <h3 class="sidebar-heading">Categories</h3>
     <ul class="categories">
-        <li><a href="/tag/Html Css">Html Css <span>(2)</span></a></li>
-        <li><a href="/tag/Javascript">Javascript <span>(2)</span></a></li>
-        <li><a href="/tag/ReactJs">ReactJs <span>(2)</span></a></li>
-        <li><a href="/tag/DotNet">DotNet <span>(2)</span></a></li>
-        <li><a href="/tag/Sitecore">Sitecore <span>(2)</span></a></li>
+        <% categories.forEach((item, index) => { %>
+        <li><a href="/tag/<%= item.name %>"><%= item.name %> <span>(<%= item.quantity%>)</span></a></li>
+        <% }) %>
     </ul>
 </div>
+<% } %>

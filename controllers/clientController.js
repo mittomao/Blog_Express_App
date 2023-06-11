@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController')
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -17,6 +17,7 @@ class ResonposeDataClient {
         this.newsletter = newsletter;
         this.popularArticle = popularArticle;
         this.portfolio = portfolio;
+        this.categories = categories;
     }
 }
 
@@ -28,7 +29,10 @@ module.exports = {
             const tags = await _TAG_CON.Func_Get_ALl_Tag();
             const newsletters = await _COMP_CON.Func_Get_Data_Component_newsletter();
             const popularArticles = await _COMP_CON.Func_Get_Data_Component_popular_articles();
-
+            //Get Categories
+            const dataCategories = await _TAG_CON.Func_Get_ALl_Tag();
+            const categories = dataCategories && dataCategories.filter(x => x.prioritize);
+            // End 
 
             if (data) {
                 return res.render("home.ejs", 
@@ -37,6 +41,7 @@ module.exports = {
                         tags,
                         newsletter: newsletters[0],
                         popularArticle: popularArticles[0],
+                        categories,
                         posts: data.posts,
                         currentPage: data.current,
                         totalPage: data.totalPage,
@@ -91,6 +96,9 @@ module.exports = {
             const { page = 1, tag } = req.params;
             let data = await _BLOG_CON.Func_Get_Post_By_Search(page, 'tag', tag);
             const tags = await _TAG_CON.Func_Get_ALl_Tag();
+            //Filter Categories
+            const categories = tags && tags.filter(x => x.prioritize);
+            // End 
 
             if (data) {
                 return res.render("tag.ejs",
@@ -98,6 +106,7 @@ module.exports = {
                         fullLayout: true,
                         posts: data.posts,
                         tags,
+                        categories,
                         currentPage: data.current,
                         totalPage: data.totalPage,
                         title: tag,
