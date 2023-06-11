@@ -51,8 +51,15 @@ module.exports = {
                     }));
             }
         } catch (error) {
-            console.error(error);
+            res.redirect('/page-404');
         }
+    },
+    pageNotFound: async (req, res) => {
+        return res.render("page-404.ejs",
+            new ResonposeDataClient({ 
+                title: '404 Page Not Found',
+                layout: "default-layout",
+            }));
     },
     portfolio: async (req, res) => {
         try {
@@ -65,7 +72,7 @@ module.exports = {
                     fullLayout: false,
                 }));
         } catch (error) {
-            console.error(error);
+            res.redirect('/page-404');
         }
     },
     detailPost: async (req, res) => {
@@ -88,7 +95,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.error(error);
+            res.redirect('/page-404');
         }
     },
     tag: async (req, res) => {
@@ -116,7 +123,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.error(error);
+            res.redirect('/page-404');
         }
     },
     contact: async (req, res) => {
@@ -129,7 +136,7 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            console.error(error);
+            res.redirect('/page-404');
         }
     },
     life: async (req, res) => {
@@ -142,7 +149,7 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            console.error(error);
+            res.redirect('/page-404');
         }
     },
     about: async (req, res) => {
@@ -155,7 +162,7 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            console.error(error);
+            res.redirect('/page-404');
         }
     }
 }

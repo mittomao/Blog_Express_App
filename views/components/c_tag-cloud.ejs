@@ -3,7 +3,7 @@
     <h3 class="sidebar-heading">Tag Cloud</h3>
     <ul class="tagcloud">
         <% tags.forEach((item, index) => { %>
-            <% let isCount = item.count == 0 ? 'disabled' : ''; %>
+            <% let isCount = item.quantity == 0 ? 'disabled' : ''; %>
             <a href="/tag/<%= item.name %>" class="tag-cloud-link <%= isCount %>">#<%= item.name%> <span>(<%= item.quantity %>)</span></a>
         <% }) %>
     </ul>

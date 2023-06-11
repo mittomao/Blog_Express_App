@@ -328,6 +328,17 @@ body {
   height: auto !important;
 }
 
+.navbar-nav .nav-link .username {
+  text-transform: uppercase;
+  color: #1eafed;
+  font-weight: bold;
+}
+.navbar-nav .nav-link .avatar {
+  border-radius: 50%;
+  padding: 5px;
+  border: 1px solid #1eafed;
+}
+
 .page-add-post {
   width: 100%;
 }

@@ -3,13 +3,45 @@
 }
 #wainiidev-main h1 {
   margin-bottom: 50px;
-  border-bottom: 1px solid #000;
   color: #DD58D6;
   display: block;
 }
 #wainiidev-main .detail-post__content {
   font-family: "Times New Roman", Times, serif;
   margin-bottom: 30px;
+}
+#wainiidev-main .page_404 {
+  padding: 40px 0;
+  background: #fff;
+  font-family: "Arvo", serif;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#wainiidev-main .page_404 img {
+  width: 100%;
+}
+#wainiidev-main .page_404 .four_zero_four_bg {
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+  height: 400px;
+  background-position: center;
+}
+#wainiidev-main .page_404 .four_zero_four_bg h1 {
+  font-size: 80px;
+}
+#wainiidev-main .page_404 .four_zero_four_bg h3 {
+  font-size: 80px;
+}
+#wainiidev-main .page_404 .link_404 {
+  color: #fff !important;
+  padding: 10px 20px;
+  background: #39ac31;
+  margin: 20px 0;
+  display: inline-block;
+}
+#wainiidev-main .page_404 .contant_box_404 {
+  margin-top: -50px;
 }
 
 .components.demo {

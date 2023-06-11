@@ -1017,6 +1017,12 @@ fieldset:disabled a.btn {
   padding: 0.5rem 1rem;
 }
 
+.nav-link .username{
+  text-transform: uppercase;
+  color: #1eafed;
+  font-weight: bold;
+}
+
 .nav-link:hover,
 .nav-link:focus {
   text-decoration: none;
