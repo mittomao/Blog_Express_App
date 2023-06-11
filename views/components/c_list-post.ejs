@@ -1,3 +1,4 @@
+<% if (posts) { %>
 <div class="list-post row pt-md-4">
     <% posts.forEach((post, index)=> { %>
         <% 
@@ -7,7 +8,7 @@
             let currentMonth=date.toLocaleString('default', { month: 'short' }); 
             let urlImage = 'https://placehold.co/150x150';
             if ( post.thumbnail ) {
-                urlImage = '/images/' + post.thumbnail;
+                urlImage = process.env.IMAGE_PREFIX + '/' + post.thumbnail;
             }
         %>
         <div class="col-md-12">
@@ -30,3 +31,4 @@
     <% }) %>
     <%- include('pagination', {totalPage: totalPage, page: currentPage}) %>
 </div>
+<% } %>

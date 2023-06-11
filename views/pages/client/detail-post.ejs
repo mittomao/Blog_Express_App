@@ -1,7 +1,7 @@
 <%
     let urlImage = 'https://placehold.co/150x150';
     if ( posts?.author?.avatar ) {
-        urlImage = '/images/' + author.avatar;
+        urlImage = process.env.IMAGE_PREFIX + '/' + author.avatar;
     }
 %>
 <div class="detail-post">
@@ -31,5 +31,5 @@
         </div>
         <% } %>
     </div>
-    <%- include('../../components/related-post') %>
+    <%- include('../../components/c_related-post') %>
 </div>

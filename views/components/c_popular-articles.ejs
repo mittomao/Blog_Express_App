@@ -1,3 +1,4 @@
+<% if (popularArticle) { %>
 <%
     let title = popularArticle?.title || "";
     let image = popularArticle?.image || "";
@@ -14,7 +15,7 @@
 <section class="components popular-article sidebar-box <%= modifyClass %>">
     <h3 class="sidebar-heading">Popular Articles</h3>
     <div class="block-21 mb-4 d-flex">
-        <a target="blank" class="blog-img mr-4" style="background-image: url('/images/<%= image %>');"></a>
+        <a target="blank" class="blog-img mr-4" style="background-image: url('<%= process.env.IMAGE_PREFIX %>/<%= image %>');"></a>
         <div class="text">
             <h3 class="heading"><a href="<%= link %>"><%= title %></a></h3>
             <div class="meta">
@@ -24,3 +25,4 @@
         </div>
     </div>
 </section>
+<%}%>

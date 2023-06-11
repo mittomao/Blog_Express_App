@@ -33,7 +33,7 @@
                         <div class="form-group mb-3">
                             <label for="">Thumbnail</label>
                             <div class="preview-image <%= checkImage %>">
-                                <img src="/images/thumbnails/<%= blogs.thumbnail %>" alt="">
+                                <img src="<%= process.env.IMAGE_PREFIX %>/thumbnails/<%= blogs.thumbnail %>" alt="">
                             </div>
                             <input type="file" class="form-control-file" id="thumbnail-btn" placeholder=""
                                 aria-describedby="fileHelpId" accept=".jpg, .jpeg, .png">
