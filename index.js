@@ -18,7 +18,7 @@ bindFlmngr({
     app: app,
     urlFileManager: "/flmngr",
     urlFiles: "/public/images/",
-    dirFiles: "./public/images"
+    dirFiles: "./images"
 });
 
 // Form Data

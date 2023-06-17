@@ -55,7 +55,7 @@ $(function () {
                 apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
                 // urlFileManager: '/flmngr',
                 urlFiles: "/public/images/",
-                dirFiles: "./public/images"
+                dirFiles: "./images"
             },
             // Let's wait for TinyMCE is initialized...
             setup: (editor) => {
