@@ -17,8 +17,8 @@ const PATH_LAYOUTS_TEMPLATE = "/views/layouts/";
 bindFlmngr({
     app: app,
     urlFileManager: "/flmngr",
-    urlFiles: "/public/images/",
-    dirFiles: "./images"
+    urlFiles: "/images/",
+    dirFiles: "./public/images"
 });
 
 // Form Data
