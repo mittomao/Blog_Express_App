@@ -7,11 +7,19 @@ const bodyParser = require('body-parser');
 const session = require("express-session");
 const path = require("path");
 const expressLayouts = require('express-ejs-layouts')
+const { bindFlmngr } = require("@flmngr/flmngr-server-node-express");
 
 const app = express();
 const PATH_ADMIN_TEMPLATE = "/views/pages/admin/";
 const PATH_CLIENT_TEMPLATE = "/views/pages/client/";
 const PATH_LAYOUTS_TEMPLATE = "/views/layouts/";
+
+bindFlmngr({
+    app: app,
+    urlFileManager: "/flmngr",
+    urlFiles: "/public/images/",
+    dirFiles: "./public/images"
+});
 
 // Form Data
 app.use(express.json());

@@ -52,7 +52,10 @@ $(function () {
             plugins: "file-manager,link,image",
             toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
             Flmngr: {
-                apiKey: $('#editor-content').data('key')//"cVGX2I8t"//"FLMNFLMN", // default free key
+                apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
+                // urlFileManager: '/flmngr',
+                urlFiles: "/public/images/",
+                dirFiles: "./public/images"
             },
             // Let's wait for TinyMCE is initialized...
             setup: (editor) => {
@@ -67,18 +70,20 @@ $(function () {
             }
         });
     }
-    
+
     function attachOnClickListenerToButton(Flmngr) {
         let elBtn = document.getElementById("btn");
-        // Style button as ready to be pressed
-        elBtn.style.opacity = 1;
-        elBtn.style.cursor = "pointer";
-        let elLoading = document.getElementById("loading");
-        elLoading.parentElement.removeChild(elLoading);
-        // Add a listener for selecting files
-        elBtn.addEventListener("click", () => {
-            selectFiles(Flmngr);
-        });
+        if (elBtn && elBtn.length) {
+            // Style button as ready to be pressed
+            elBtn.style.opacity = 1;
+            elBtn.style.cursor = "pointer";
+            let elLoading = document.getElementById("loading");
+            elLoading.parentElement.removeChild(elLoading);
+            // Add a listener for selecting files
+            elBtn.addEventListener("click", () => {
+                selectFiles(Flmngr);
+            });
+        }
     }
     function selectFiles(Flmngr) {
         // Collect URLs of images of existing gallery set
