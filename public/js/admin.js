@@ -31,21 +31,93 @@ $(function () {
     }
 
     // Ckeditor
-    if ($('#editor-content').length) {
-        CKEDITOR.replace('editor-content');
-        CKEDITOR.on('instanceReady', function (evt) {
-            var editor = evt.editor;
+    // if ($('#editor-content').length) {
+    //     CKEDITOR.replace('editor-content');
+    //     CKEDITOR.on('instanceReady', function (evt) {
+    //         var editor = evt.editor;
 
-            editor.on('change', function (e) {
-                var contentSpace = editor.ui.space('contents');
-                var ckeditorFrameCollection = contentSpace.$.getElementsByTagName('iframe');
-                var ckeditorFrame = ckeditorFrameCollection[0];
-                var innerDoc = ckeditorFrame.contentDocument;
-                var innerDocTextAreaHeight = $(innerDoc.body).height();
-                console.log(innerDocTextAreaHeight);
-            });
+    //         editor.on('change', function (e) {
+    //             var contentSpace = editor.ui.space('contents');
+    //             var ckeditorFrameCollection = contentSpace.$.getElementsByTagName('iframe');
+    //             var ckeditorFrame = ckeditorFrameCollection[0];
+    //             var innerDoc = ckeditorFrame.contentDocument;
+    //             var innerDocTextAreaHeight = $(innerDoc.body).height();
+    //             console.log(innerDocTextAreaHeight);
+    //         });
+    //     });
+    // }
+    if ($('#editor-content').length) {
+        tinymce.init({
+            selector: "#editor-content",
+            plugins: "file-manager,link,image",
+            toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
+            Flmngr: {
+                apiKey: $('#editor-content').data('key')//"cVGX2I8t"//"FLMNFLMN", // default free key
+            },
+            // Let's wait for TinyMCE is initialized...
+            setup: (editor) => {
+                editor.on('init', (event) => {
+                    // ...and get Flmngr API
+                    editor.getFlmngr((Flmngr) => {
+                        // In this demo we pass Flmngr API into inner functions and callbacks.
+                        // You can save it somewhere and reuse without passing as an argument.
+                        attachOnClickListenerToButton(Flmngr);
+                    });
+                });
+            }
         });
     }
+    
+    function attachOnClickListenerToButton(Flmngr) {
+        let elBtn = document.getElementById("btn");
+        // Style button as ready to be pressed
+        elBtn.style.opacity = 1;
+        elBtn.style.cursor = "pointer";
+        let elLoading = document.getElementById("loading");
+        elLoading.parentElement.removeChild(elLoading);
+        // Add a listener for selecting files
+        elBtn.addEventListener("click", () => {
+            selectFiles(Flmngr);
+        });
+    }
+    function selectFiles(Flmngr) {
+        // Collect URLs of images of existing gallery set
+        let elsExistingImages = document.querySelectorAll("#images img");
+        let urls = [];
+        for (let i = 0; i < elsExistingImages.length; i++)
+            urls.push(elsExistingImages.item(i).src);
+        Flmngr.open({
+            list: urls,
+            isMultiple: true,
+            acceptExtensions: ["png", "jpeg", "jpg", "webp", "gif"],
+            onFinish: (files) => {
+                showSelectedImages(Flmngr, files);
+            }
+        });
+    }
+    function showSelectedImages(Flmngr, files) {
+        let elImages = document.getElementById("images");
+        elImages.innerHTML = "";
+        /*let elP =  document.createElement("p");
+        elP.textContent = files.length + " images selected";
+        elImages.appendChild(elP);*/
+        for (let file of files) {
+            let urlOriginal = Flmngr.getNoCacheUrl(file.url);
+            let el = document.createElement("div");
+            el.className = "image";
+            elImages.appendChild(el);
+            let elDiv = document.createElement("div");
+            el.appendChild(elDiv);
+            let elImg = document.createElement("img");
+            elImg.src = urlOriginal;
+            elImg.alt = "Image selected in Flmngr";
+            elDiv.appendChild(elImg);
+            let elP = document.createElement("p");
+            elP.textContent = file.url;
+            el.appendChild(elP);
+        }
+    }
+    // End Ckeditor
 
     // Image 
     // const imageLists = {
@@ -72,7 +144,7 @@ $(function () {
                     previewImage.classList.remove('disable');
                     previewImage.querySelector('img').src = URL.createObjectURL(btnFile.files[0]);
                 }
-                
+
                 inputFile.value = btnFile.files[0].name;
             }
         }
