@@ -36,8 +36,7 @@
                             <div class="preview-image <%= checkImage %>">
                                 <img src="<%= process.env.IMAGE_PREFIX %>/thumbnails/<%= blogs.thumbnail %>" alt="">
                             </div>
-                            <input type="file" class="form-control-file" id="thumbnail-btn" placeholder=""
-                                aria-describedby="fileHelpId" accept=".jpg, .jpeg, .png">
+                            <div id="thumbnail-btn" class="btn btn-primary">Select image...</div>
                             <input type="text" name="thumbnail" id="thumbnail-input" value="<%= blogs.thumbnail %>" />
                             <small id="fileHelpId" class="form-text text-muted">image size below 10mb</small>
                         </div>

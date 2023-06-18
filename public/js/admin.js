@@ -55,7 +55,7 @@ $(function () {
                 apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
                 // urlFileManager: '/flmngr',
                 urlFiles: "/images/",
-                dirFiles: ".public/images"
+                dirFiles: "./public/images"
             },
             // Let's wait for TinyMCE is initialized...
             setup: (editor) => {
@@ -102,24 +102,23 @@ $(function () {
     }
     function showSelectedImages(Flmngr, files) {
         let elImages = document.getElementById("images");
-        elImages.innerHTML = "";
-        /*let elP =  document.createElement("p");
-        elP.textContent = files.length + " images selected";
-        elImages.appendChild(elP);*/
-        for (let file of files) {
-            let urlOriginal = Flmngr.getNoCacheUrl(file.url);
-            let el = document.createElement("div");
-            el.className = "image";
-            elImages.appendChild(el);
-            let elDiv = document.createElement("div");
-            el.appendChild(elDiv);
-            let elImg = document.createElement("img");
-            elImg.src = urlOriginal;
-            elImg.alt = "Image selected in Flmngr";
-            elDiv.appendChild(elImg);
-            let elP = document.createElement("p");
-            elP.textContent = file.url;
-            el.appendChild(elP);
+        if (elImages && elImages.length) {
+            elImages.innerHTML = "";
+            for (let file of files) {
+                let urlOriginal = Flmngr.getNoCacheUrl(file.url);
+                let el = document.createElement("div");
+                el.className = "image";
+                elImages.appendChild(el);
+                let elDiv = document.createElement("div");
+                el.appendChild(elDiv);
+                let elImg = document.createElement("img");
+                elImg.src = urlOriginal;
+                elImg.alt = "Image selected in Flmngr";
+                elDiv.appendChild(elImg);
+                let elP = document.createElement("p");
+                elP.textContent = file.url;
+                el.appendChild(elP);
+            }
         }
     }
     // End Ckeditor
@@ -143,16 +142,31 @@ $(function () {
     if (btnFile) {
         var inputFile = document.getElementById('thumbnail-input');
         var previewImage = document.querySelector('.preview-image');
-        btnFile.onchange = function () {
-            if (btnFile.files[0]) {
-                if (previewImage && previewImage.length) {
-                    previewImage.classList.remove('disable');
-                    previewImage.querySelector('img').src = URL.createObjectURL(btnFile.files[0]);
-                }
+        // btnFile.onchange = function () {
+        //     
+        // }
+        btnFile.addEventListener('click', () => {
+            const flmngr = window.flmngr && window.flmngr.create({
+                // urlFileManager: '',
+                urlFiles: "/images/",
+                dirFiles: "./public/images"
+            });
+            
+            flmngr && flmngr.pickFiles({
+                isMultiple: false,
+                acceptExtensions: ["png", "jpeg", "jpg", "webp", "gif"],
+                onFinish: function (files) {
+                    if (files && files.length) {
+                        if (previewImage) {
+                            previewImage.classList.remove('disable');
+                            previewImage.querySelector('img').src = files[0].url;
+                        }
 
-                inputFile.value = btnFile.files[0].name;
-            }
-        }
+                        inputFile.value = files[0].url;
+                    }
+                }
+            });
+        });
     }
 
     // Select2
