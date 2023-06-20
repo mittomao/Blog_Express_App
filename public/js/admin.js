@@ -121,41 +121,18 @@ $(function () {
             }
         }
     }
-    // End Ckeditor
-
-    // Image 
-    // const imageLists = {
-    //     'htmlcss': 'html-css.jpg',
-    //     'javascript': 'javascript.png',
-    //     'reactjs': 'reactjs.png',
-    //     'dotnet': 'dotnet.png',
-    //     'sitecore': 'sitecore.jpg',
-    // }
+    
     var btnFile = document.getElementById('thumbnail-btn');
-    // var tag = document.getElementById('select-tag');
-    // tag && tag.addEventListener('change', function (e) {
-    //     if (e.target.value) {
-    //         const value = e.target.value.replace(/\s/g, '').toLowerCase();
-    //         inputFile.value = imageLists[value] || "";
-    //     }
-    // });
+
     if (btnFile) {
         var inputFile = document.getElementById('thumbnail-input');
         var previewImage = document.querySelector('.preview-image');
-        // btnFile.onchange = function () {
-        //     
-        // }
+
         btnFile.addEventListener('click', () => {
-            const flmngr = window.flmngr && window.flmngr.create({
-                // urlFileManager: '',
-                urlFiles: "/images/",
-                dirFiles: "./public/images"
-            });
-            
-            flmngr && flmngr.pickFiles({
+            window.flmngr.open({
                 isMultiple: false,
                 acceptExtensions: ["png", "jpeg", "jpg", "webp", "gif"],
-                onFinish: function (files) {
+                onFinish: (files) => {
                     if (files && files.length) {
                         if (previewImage) {
                             previewImage.classList.remove('disable');
@@ -168,6 +145,7 @@ $(function () {
             });
         });
     }
+    // End Ckeditor
 
     // Select2
     $('#select-tag').each(function () {
