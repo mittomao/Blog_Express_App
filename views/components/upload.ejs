@@ -1,0 +1,33 @@
+<div class="page-upload">
+    <h1 class="h2 mb-0 ls-tight">Upload Image</h1>
+    <form id="file-upload-form" class="uploader">
+        <input id="file-upload" type="file" name="fileUpload"
+            accept=".jpeg, .doc, .docx, .xls, .xlsx, .txt, .jpg, .png, .gif" />
+
+        <label for="file-upload" id="file-drag">
+            <img id="file-image" src="#" alt="Preview" class="hidden">
+            <div id="start">
+                <i class="fa fa-download" aria-hidden="true"></i>
+                <div>Select a file or drag here</div>
+                <div id="notimage" class="hidden">Please select an image</div>
+                <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+            </div>
+            <div id="response" class="hidden">
+                <div id="messages"></div>
+                <progress class="progress" id="file-progress" value="0">
+                    <span>0</span>%
+                </progress>
+            </div>
+        </label>
+    </form>
+    <div class="gallery">
+        <% if (listImages && listImages.length) { %>
+            <% listImages.forEach((file)=> { %>
+                <div class="gallery__item js-gallery-item">
+                    <img src="<%= file.filename %>" alt="">
+                    <span>Copy</span>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>    
+</div>

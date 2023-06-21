@@ -5,9 +5,10 @@ const _BLOG_CON = require('./blogController')
 const _USER_CON = require('./usersController')
 const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController')
+const imagesModel = require('../models/imagesModel');
 
 class ResonposeDataAdmin {
-    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, account, action, dataComponent, componentName, useStyleClient }) {
+    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, account, action, dataComponent, componentName, useStyleClient, listImages }) {
         this.layout = layout;
         this.isAdmin = isAdmin;
         this.title = title;
@@ -21,6 +22,7 @@ class ResonposeDataAdmin {
         this.dataComponent = dataComponent;
         this.componentName = componentName;
         this.useStyleClient = useStyleClient;
+        this.listImages = listImages;
     }
 }
 
@@ -71,10 +73,10 @@ module.exports = {
         try {
             let add = await _BLOG_CON.Func_Create_Post({ author: req.session?.account?.username, ...req.body, tag: req.body.tag.toString() });
             if (add) {
-                let updateQuantity = _TAG_CON.Func_Increment_Quantity({name: { "$in" : req.body.tag}});
+                let updateQuantity = _TAG_CON.Func_Increment_Quantity({ name: { "$in": req.body.tag } });
                 if (updateQuantity) {
                     return res.redirect('/admin');
-                }  
+                }
             }
         } catch (error) {
             console.error('error', error)
@@ -115,7 +117,7 @@ module.exports = {
         try {
             let deletePost = await _BLOG_CON.Func_Delete_Post_By_Id(id);
             if (deletePost) {
-                let updateQuantity = _TAG_CON.Func_Decrement_Quantity({name: { "$in" : post.tag.split(',')}});
+                let updateQuantity = _TAG_CON.Func_Decrement_Quantity({ name: { "$in": post.tag.split(',') } });
                 return res.redirect('/admin');
             }
         } catch (error) {
@@ -230,7 +232,7 @@ module.exports = {
     updateTag: async (req, res) => {
         const { id } = req.query;
         try {
-            let update = await _TAG_CON.Func_Update_Tag_By_Query({_id: id}, { ...req.body });
+            let update = await _TAG_CON.Func_Update_Tag_By_Query({ _id: id }, { ...req.body });
             if (update) {
                 return res.redirect('/admin/tag');
             }
@@ -277,6 +279,43 @@ module.exports = {
             });
         } catch (error) {
             console.error(error)
+        }
+    },
+    //Upload Image
+    viewUpload: async (req, res) => {
+        try {
+            if (req.session?.account?.loggedin) {
+                const listImages = await imagesModel.find();
+                return res.render('upload.ejs',
+                    new ResonposeDataAdmin({
+                        account: req.session.account,
+                        title: 'Upload Image Page',
+                        layout: 'admin-layout',
+                        isAdmin: true,
+                        listImages: listImages || []
+                    }));
+            }
+            return res.redirect('/admin/login')
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    uploadImage: async (req, res) => {
+        try {
+            const { file } = req.body;
+            const addImage = await imagesModel.create({
+                filename: file,
+            });
+
+            if (addImage) {
+                res.status(200).json({
+                    message: `Upload ${file} Succses`
+                });
+            }   
+        } catch (error) {
+            res.status(400).json({
+                message: "Upload Fail"
+            })
         }
     }
 }

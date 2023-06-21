@@ -45,5 +45,9 @@ router.post('/delete-tag', index_Controller.deleteTag)
 router.get('/components/:name', index_Controller.components)
 router.post('/components/:name', index_Controller.components)
 
+//Upload Image
+router.get('/upload', index_Controller.viewUpload)
+router.post('/upload', index_Controller.uploadImage)
+
 
 module.exports = router;

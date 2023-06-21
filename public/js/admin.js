@@ -30,22 +30,6 @@ $(function () {
         hljs.highlightAll();
     }
 
-    // Ckeditor
-    // if ($('#editor-content').length) {
-    //     CKEDITOR.replace('editor-content');
-    //     CKEDITOR.on('instanceReady', function (evt) {
-    //         var editor = evt.editor;
-
-    //         editor.on('change', function (e) {
-    //             var contentSpace = editor.ui.space('contents');
-    //             var ckeditorFrameCollection = contentSpace.$.getElementsByTagName('iframe');
-    //             var ckeditorFrame = ckeditorFrameCollection[0];
-    //             var innerDoc = ckeditorFrame.contentDocument;
-    //             var innerDocTextAreaHeight = $(innerDoc.body).height();
-    //             console.log(innerDocTextAreaHeight);
-    //         });
-    //     });
-    // }
     if ($('#editor-content').length) {
         tinymce.init({
             selector: "#editor-content",
@@ -85,6 +69,7 @@ $(function () {
             });
         }
     }
+
     function selectFiles(Flmngr) {
         // Collect URLs of images of existing gallery set
         let elsExistingImages = document.querySelectorAll("#images img");
@@ -100,6 +85,7 @@ $(function () {
             }
         });
     }
+
     function showSelectedImages(Flmngr, files) {
         let elImages = document.getElementById("images");
         if (elImages && elImages.length) {
@@ -121,7 +107,7 @@ $(function () {
             }
         }
     }
-    
+
     var btnFile = document.getElementById('thumbnail-btn');
 
     if (btnFile) {
@@ -156,4 +142,162 @@ $(function () {
             allowClear: Boolean($(this).data('allow-clear')),
         });
     });
+
+    //Uplaod Image
+    // File Upload
+    // 
+    function ekUpload() {
+        function Init() {
+
+            console.log("Upload Initialised");
+
+            var fileSelect = document.getElementById('file-upload'),
+                fileDrag = document.getElementById('file-drag'),
+                submitButton = document.getElementById('submit-button');
+
+            fileSelect && fileSelect.addEventListener('change', fileSelectHandler, false);
+
+            // Is XHR2 available?
+            var xhr = new XMLHttpRequest();
+            if (xhr.upload) {
+                // File Drop
+                fileDrag.addEventListener('dragover', fileDragHover, false);
+                fileDrag.addEventListener('dragleave', fileDragHover, false);
+                fileDrag.addEventListener('drop', fileSelectHandler, false);
+            }
+        }
+
+        function fileDragHover(e) {
+            var fileDrag = document.getElementById('file-drag');
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            fileDrag.className = (e.type === 'dragover' ? 'hover' : 'modal-body file-upload');
+        }
+
+        function fileSelectHandler(e) {
+            // Fetch FileList object
+            var files = e.target.files || e.dataTransfer.files;
+
+            // Cancel event and hover styling
+            fileDragHover(e);
+
+            // Process all File objects
+            for (var i = 0, f; f = files[i]; i++) {
+                parseFile(f);
+                uploadFile(f);
+            }
+        }
+
+        // Output
+        function output(msg) {
+            // Response
+            var m = document.getElementById('messages');
+            m.innerHTML = msg;
+        }
+
+        function parseFile(file) {
+            output(
+                '<strong>' + encodeURI(file.name) + '</strong>'
+            );
+
+            // var fileType = file.type;
+            // console.log(fileType);
+            var imageName = file.name;
+
+            var isGood = (/\.(?=gif|jpg|png|jpeg)/gi).test(imageName);
+            if (isGood) {
+                document.getElementById('start').classList.add("hidden");
+                document.getElementById('response').classList.remove("hidden");
+                document.getElementById('notimage').classList.add("hidden");
+                // Thumbnail Preview
+                document.getElementById('file-image').classList.remove("hidden");
+                document.getElementById('file-image').src = URL.createObjectURL(file);
+            }
+            else {
+                document.getElementById('file-image').classList.add("hidden");
+                document.getElementById('notimage').classList.remove("hidden");
+                document.getElementById('start').classList.remove("hidden");
+                document.getElementById('response').classList.add("hidden");
+                document.getElementById("file-upload-form").reset();
+            }
+        }
+
+        function setProgressMaxValue(e) {
+            var pBar = document.getElementById('file-progress');
+
+            if (e.lengthComputable) {
+                pBar.max = e.total;
+            }
+        }
+
+        function updateFileProgress(e) {
+            var pBar = document.getElementById('file-progress');
+
+            if (e.lengthComputable) {
+                pBar.value = e.loaded;
+            }
+        }
+
+        async function uploadFile(file) {
+            const fileUrl = await uploadFileToUploadServer(file);
+            console.log('fileUrl', fileUrl);
+
+            $.post('/admin/upload', {
+                file: fileUrl
+            })
+                .done(function (res) {
+                    alert(res.message);
+                    window.location.reload();
+                })
+                .fail(function (err) {
+                    alert("error" + err);
+                })
+                .always(function () {
+
+                });
+        }
+
+        const $progressElm = $('#file-progress');
+        const $uploadButton = $('#file-upload');
+        async function uploadFileToUploadServer(file) {
+            const upload = Upload({ apiKey: "free" });
+            $uploadButton.remove();
+
+            const fileToUpload = file;
+
+            try {
+                const { fileUrl } = await upload.uploadFile(
+                    fileToUpload, {
+                    onProgress: ({ progress }) => {
+                        $progressElm.attr('value', progress);
+                    }
+                }
+                );
+                return fileUrl;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Check for the various File API support.
+        if (window.File && window.FileList && window.FileReader) {
+            Init();
+        } else {
+            $('#file-drag').css('display', 'none');
+        }
+    }
+    ekUpload();
+
+    const $gallerys = $('.js-gallery-item');
+    $gallerys.on('click', async function (e) {
+        // $(this).find('img')[0].select();
+        // 
+        const filename = $(this).find('img').attr('src');
+        $(this).find('span').html('Copied');
+        await navigator.clipboard.writeText(filename);
+    });
+
+    //End Upload Image
 });
