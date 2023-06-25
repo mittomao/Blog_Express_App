@@ -342,15 +342,6 @@ body {
 .page-add-post {
   width: 100%;
 }
-.page-add-post .preview-image {
-  margin-bottom: 16px;
-}
-.page-add-post .preview-image.disable {
-  display: none;
-}
-.page-add-post .preview-image img {
-  height: 100px;
-}
 .page-add-post .btn-file {
   position: relative;
   overflow: hidden;
@@ -411,6 +402,15 @@ body {
 .form-group label {
   font-weight: bold;
   font-size: 90%;
+}
+.form-group .preview-image {
+  margin-bottom: 16px;
+}
+.form-group .preview-image.disable {
+  display: none;
+}
+.form-group .preview-image img {
+  height: 100px;
 }
 
 .page-upload .uploader {

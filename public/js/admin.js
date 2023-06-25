@@ -30,30 +30,32 @@ $(function () {
         hljs.highlightAll();
     }
 
+    //Init editor
     if ($('#editor-content').length) {
-        tinymce.init({
-            selector: "#editor-content",
-            plugins: "file-manager,link,image",
-            toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
-            Flmngr: {
-                apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
-                // urlFileManager: '/flmngr',
-                urlFiles: "/images/",
-                dirFiles: "./public/images"
-            },
-            // Let's wait for TinyMCE is initialized...
-            setup: (editor) => {
-                editor.on('init', (event) => {
-                    // ...and get Flmngr API
-                    editor.getFlmngr((Flmngr) => {
-                        // In this demo we pass Flmngr API into inner functions and callbacks.
-                        // You can save it somewhere and reuse without passing as an argument.
-                        attachOnClickListenerToButton(Flmngr);
-                    });
-                });
-            }
-        });
+        
     }
+    tinymce && tinymce.init({
+        selector: "#editor-content",
+        plugins: "file-manager,link,image",
+        toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
+        Flmngr: {
+            apiKey: $('#editor-content').data('key') || 'cVGX2I8t',//"cVGX2I8t"//"FLMNFLMN", // default free key
+            // urlFileManager: '/flmngr',
+            urlFiles: "/images/",
+            dirFiles: "./public/images"
+        },
+        // Let's wait for TinyMCE is initialized...
+        setup: (editor) => {
+            editor.on('init', (event) => {
+                // ...and get Flmngr API
+                editor.getFlmngr((Flmngr) => {
+                    // In this demo we pass Flmngr API into inner functions and callbacks.
+                    // You can save it somewhere and reuse without passing as an argument.
+                    attachOnClickListenerToButton(Flmngr);
+                });
+            });
+        }
+    });
 
     function attachOnClickListenerToButton(Flmngr) {
         let elBtn = document.getElementById("btn");
@@ -115,7 +117,7 @@ $(function () {
         var previewImage = document.querySelector('.preview-image');
 
         btnFile.addEventListener('click', () => {
-            window.flmngr.open({
+            window.flmngr && window.flmngr.open({
                 isMultiple: false,
                 acceptExtensions: ["png", "jpeg", "jpg", "webp", "gif"],
                 onFinish: (files) => {
@@ -288,10 +290,16 @@ $(function () {
             $('#file-drag').css('display', 'none');
         }
     }
-    ekUpload();
+
+    const $uploadForm = $('#file-upload-form');
+
+    if ($uploadForm.length) {
+        ekUpload();
+    }
 
     const $gallerys = $('.js-gallery-item');
-    $gallerys.on('click', async function (e) {
+
+    $gallerys.length && $gallerys.on('click', async function (e) {
         // $(this).find('img')[0].select();
         // 
         const filename = $(this).find('img').attr('src');

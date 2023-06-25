@@ -12,7 +12,8 @@ module.exports = {
             {},
             {
                 title: params.title,
-                description: params.description
+                description: params.description,
+                bgimage: params.bgimage
             },
             {upsert: true, new: true, runValidators: true},
             function (err, result) {

@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const newsletterSchema = new Schema({
     title: { type: String, default: ''},
     description: { type: String, default: ''},
+    bgimage: { type: String, default: ''},
 }, 
 { collection: 'newsletter', timestamps: true })
 

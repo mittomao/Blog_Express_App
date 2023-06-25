@@ -7,7 +7,7 @@
                 <h5 class="mb-0">View Result</h5>
             </div>
             <div class="card-body">
-                <%- include('c_portfolio', { portfolio: dataComponent }) %>
+                <%- include('../components/c_portfolio', { portfolio: dataComponent }) %>
             </div>
         </div>
         <div class="card shadow border-0 mb-7">
@@ -17,7 +17,7 @@
             <div class="card-body">
                 <div class='code-frame'>
                     <textarea cols='30' id='source-code' name='' rows='10'>
-                    <%- include('c_portfolio', { portfolio: dataComponent }) %>
+                    <%- include('../components/c_portfolio', { portfolio: dataComponent }) %>
                 </textarea>
                 </div>
             </div>
@@ -33,16 +33,17 @@
                         <input type="text" class="form-control" name="name" placeholder="Name" value="<%= name %>"
                             required />
                     </div>
+
                     <div class="form-group mb-3">
-                        <label for="">Avatar</label>
-                        <div class="preview-image disable">
-                            <img src="" alt="">
+                        <label for="" class="mb-2">Avatar</label>
+                        <div class="preview-image <% !avatar ? 'disable' : '' %>">
+                            <img src="<%= avatar %>" alt="">
                         </div>
-                        <input type="file" class="form-control-file" id="thumbnail-btn" placeholder=""
-                            aria-describedby="fileHelpId" accept=".jpg, .jpeg, .png">
+                        <div id="thumbnail-btn" class="btn btn-primary">Select image...</div>
                         <input type="text" id="thumbnail-input" name="avatar" value="<%= avatar %>" />
                         <small id="fileHelpId" class="form-text text-muted">image size below 10mb</small>
                     </div>
+
                     <div class="form-group mb-3">
                         <label for="summary">Description</label>
                         <textarea class="form-control" name="description" id="description"

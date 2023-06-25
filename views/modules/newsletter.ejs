@@ -1,6 +1,7 @@
 <%
     let title = dataComponent?.title || "";
     let description = dataComponent?.description || "";
+    let bgimage = dataComponent?.bgimage || "";
     if (dataComponent) {
         dataComponent.isDemo = true;
     }
@@ -11,7 +12,7 @@
             <h5 class="mb-0">View Result</h5>
         </div>
         <div class="card-body">
-            <%- include('c_newsletter', { newsletter: dataComponent }) %>
+            <%- include('../components/c_newsletter', { newsletter: dataComponent }) %>
         </div>
     </div>
     <div class="card shadow border-0 mb-7">
@@ -21,7 +22,7 @@
         <div class="card-body">
             <div class='code-frame'>
                 <textarea cols='30' id='source-code' name='' rows='10'>
-                    <%- include('c_newsletter', { newsletter: dataComponent }) %>
+                    <%- include('../components/c_newsletter', { newsletter: dataComponent }) %>
                 </textarea>
               </div>
         </div>
@@ -40,10 +41,22 @@
                   <label for="summary">Description</label>
                   <textarea class="form-control" name="description" id="description" rows="3"><%= description %></textarea>
                 </div>
+
+                <div class="form-group mb-3">
+                    <label for="" class="mb-2">Background Image</label>
+                    <div class="preview-image <% !bgimage ? 'disable' : '' %>">
+                        <img src="<%= bgimage %>" alt="">
+                    </div>
+                    <div id="thumbnail-btn" class="btn btn-primary">Select image...</div>
+                    <input type="text" id="thumbnail-input" name="bgimage" value="<%= bgimage %>" />
+                    <small id="fileHelpId" class="form-text text-muted">image size below 10mb</small>
+                </div>
+
                 <div class="form-group">
                     <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
                 </div>
             </form>
         </div>
     </div>
+    <div id="editor-content" style="display: none;"></div>
 </div>

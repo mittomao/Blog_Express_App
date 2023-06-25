@@ -2,9 +2,10 @@
 <%
     let title = newsletter?.title || "";
     let description = newsletter?.description || "";
+    let bgimage = newsletter?.bgimage || "";
     let modifyClass = newsletter?.isDemo ? 'demo' : '';
 %>
-<section class="components newsletter sidebar-box subs-wrap img py-4 <%= modifyClass %>" style="background-image: url(<%=process.env.IMAGE_PREFIX%>/bg_1.jpg);">
+<section class="components newsletter sidebar-box subs-wrap img py-4 <%= modifyClass %>" style="background-image: url('<%= bgimage %>');">
     <div class="overlay"></div>
     <h3 class="mb-4 sidebar-heading"><%= title %></h3>
     <p class="mb-4">
