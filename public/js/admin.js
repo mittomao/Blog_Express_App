@@ -39,7 +39,7 @@ $(function () {
         plugins: "file-manager,link,image",
         toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
         Flmngr: {
-            apiKey: $('#editor-content').data('key') || 'cVGX2I8t',//"cVGX2I8t"//"FLMNFLMN", // default free key
+            apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
             // urlFileManager: '/flmngr',
             urlFiles: "/images/",
             dirFiles: "./public/images"
@@ -117,18 +117,21 @@ $(function () {
         var previewImage = document.querySelector('.preview-image');
 
         btnFile.addEventListener('click', () => {
-            window.flmngr && window.flmngr.open({
+            window.flmngr && window.flmngr.selectUrls({
                 isMultiple: false,
                 acceptExtensions: ["png", "jpeg", "jpg", "webp", "gif"],
                 onFinish: (files) => {
                     if (files && files.length) {
                         if (previewImage) {
                             previewImage.classList.remove('disable');
-                            previewImage.querySelector('img').src = files[0].url;
+                            previewImage.querySelector('img').src = files[0];
                         }
 
-                        inputFile.value = files[0].url;
+                        inputFile.value = files[0];
                     }
+                },
+                onCancel: () => {
+                    console.log('Cancel');
                 }
             });
         });

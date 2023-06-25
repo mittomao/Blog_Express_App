@@ -254,37 +254,32 @@ module.exports = {
     // Components
     components: async (req, res) => {
         let { name } = req.params;
-            if (req.method === "GET") {
-                try {
-                    const data = await _COMP_CON['Func_Get_Data_Component_' + name]();
-                    return res.render('components.ejs',
-                        new ResonposeDataAdmin({
-                            account: req.session.account,
-                            title: name + ' Page',
-                            layout: 'admin-layout',
-                            isAdmin: true,
-                            componentName: name,
-                            dataComponent: data[0],
-                            useStyleClient: true
-                        }));
-                } catch (error) {
-                    console.error(error)
-                }
-
-            }
-
+        if (req.method === "GET") {
             try {
-                console.log('req.body', req.body);
-                await _COMP_CON['Func_Update_Data_Component_' + name](req.body, (result) => {
-                    return res.redirect('/admin/components/' + name);
-                });
+                const data = await _COMP_CON['Func_Get_Data_Component_' + name]();
+                return res.render('components.ejs',
+                    new ResonposeDataAdmin({
+                        account: req.session.account,
+                        title: name + ' Page',
+                        layout: 'admin-layout',
+                        isAdmin: true,
+                        componentName: name,
+                        dataComponent: data[0],
+                        useStyleClient: true
+                    }));
             } catch (error) {
                 console.error(error)
             }
-        // if (req.session?.account?.loggedin) {
-            
-        // }
-        // return res.redirect('/admin/login')
+
+        }
+
+        try {
+            await _COMP_CON['Func_Update_Data_Component_' + name](req.body, (result) => {
+                return res.redirect('/admin/components/' + name);
+            });
+        } catch (error) {
+            console.error(error)
+        }
     },
     //Upload Image
     viewUpload: async (req, res) => {

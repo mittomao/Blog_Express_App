@@ -1,6 +1,6 @@
 <% let name=dataComponent?.name || "" ; let avatar=dataComponent?.avatar || "" ; let
-    description=dataComponent?.description || "" ; let
-    linkcv=dataComponent?.linkcv || "" ; if (dataComponent) { dataComponent.isDemo=true; } %>
+    description=dataComponent?.description || "" ; let linkcv=dataComponent?.linkcv || "" ; if (dataComponent) {
+    dataComponent.isDemo=true; } %>
     <div class="blog-table">
         <div class="card shadow border-0 mb-7">
             <div class="card-header">
@@ -51,8 +51,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="summary">Link Cv</label>
-                        <input type="text" class="form-control" name="linkcv" id="linkcv"
-                            value="<%= linkcv %>" />
+                        <input type="text" class="form-control" name="linkcv" id="linkcv" value="<%= linkcv %>" />
                     </div>
                     <div class="form-group">
                         <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
@@ -60,4 +59,5 @@
                 </form>
             </div>
         </div>
+        <div id="editor-content" style="display: none;" data-key="<%= process.env.FLMNGR_KEY %>"></div>
     </div>
