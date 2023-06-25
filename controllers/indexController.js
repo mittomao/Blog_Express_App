@@ -317,5 +317,20 @@ module.exports = {
                 message: "Upload Fail"
             })
         }
+    },
+    deleteImage: async (req, res) => {
+        const { id } = req.body;
+        try {
+            let deleteTag = await imagesModel.findByIdAndDelete(id);
+            if (deleteTag) {
+                return res.status(200).json({
+                    message: 'Delete Success'
+                })
+            }
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Delete Fail' + error
+            })
+        }
     }
 }

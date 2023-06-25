@@ -24,8 +24,13 @@
         <% if (listImages && listImages.length) { %>
             <% listImages.forEach((file)=> { %>
                 <div class="gallery__item js-gallery-item">
-                    <img src="<%= file.filename %>" alt="">
-                    <span>Copy</span>
+                    <img src="<%= file.filename %>" alt="" data-id="<%= file._id %>">
+                    <div class="action">
+                        <span class="bi bi-save js-copy">
+                        </span>
+                        <span class="bi bi-trash js-delete">
+                        </span>
+                    </div>
                 </div>
             <% }) %>
         <% } %>

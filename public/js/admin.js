@@ -32,7 +32,7 @@ $(function () {
 
     //Init editor
     if ($('#editor-content').length) {
-        
+
     }
     tinymce && tinymce.init({
         selector: "#editor-content",
@@ -303,11 +303,24 @@ $(function () {
     const $gallerys = $('.js-gallery-item');
 
     $gallerys.length && $gallerys.on('click', async function (e) {
-        // $(this).find('img')[0].select();
-        // 
-        const filename = $(this).find('img').attr('src');
-        $(this).find('span').html('Copied');
-        await navigator.clipboard.writeText(filename);
+        if (e.target.classList.contains('js-copy')) {
+            const filename = $(this).find('img').attr('src');
+            $(e.target).css({
+                'color': 'green'
+            })
+            await navigator.clipboard.writeText(filename);
+        } else if (e.target.classList.contains('js-delete')) {
+            $.post('/admin/images/delete', {
+                id: $(this).find('img').data('id')
+            })
+            .done(function (res) {
+                alert(res.message);
+                window.location.reload();
+            })
+            .fail(function (err) {
+                alert("error" + err);
+            })
+        }
     });
 
     //End Upload Image

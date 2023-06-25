@@ -48,6 +48,7 @@ router.post('/components/:name', index_Controller.components)
 //Upload Image
 router.get('/upload', index_Controller.viewUpload)
 router.post('/upload', index_Controller.uploadImage)
+router.post('/images/delete', index_Controller.deleteImage)
 
 
 module.exports = router;

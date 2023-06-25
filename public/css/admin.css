@@ -543,10 +543,9 @@ body {
   align-items: center;
   display: flex;
   justify-content: center;
-  cursor: pointer;
   position: relative;
 }
-.page-upload .gallery__item span {
+.page-upload .gallery__item .action {
   display: none;
   transition: all 0.4s;
   font-size: 18px;
@@ -555,10 +554,22 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 5;
-  color: #fff;
-  background-color: #3c3a3a;
+}
+.page-upload .gallery__item .action span {
   padding: 5px 10px;
   border-radius: 5px;
+  border: 1px solid;
+  margin: 0 3px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.page-upload .gallery__item .action span.bi-save {
+  color: white;
+}
+.page-upload .gallery__item .action span.bi-trash {
+  color: red;
 }
 .page-upload .gallery__item::before {
   content: "";
@@ -574,8 +585,10 @@ body {
 .page-upload .gallery__item:hover::before {
   opacity: 0.7;
 }
-.page-upload .gallery__item:hover span {
-  display: block;
+.page-upload .gallery__item:hover .action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .page-upload .gallery__item > img {
   height: 100%;
