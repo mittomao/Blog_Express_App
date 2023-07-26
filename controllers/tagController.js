@@ -9,7 +9,7 @@ module.exports = {
         const { name, quantity, prioritize } = obj;
         return await tagModel.create({
             name,
-            quantity,
+            // quantity,
             prioritize
         });
     },
