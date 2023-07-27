@@ -1,6 +1,30 @@
 #wainiidev-main .detail-post * {
   font-family: "Lora", Arial, serif !important;
 }
+#wainiidev-main .main-post .logo-mobile {
+  font-size: 45px;
+  font-weight: bold;
+  display: none;
+}
+#wainiidev-main .main-post .logo-mobile a {
+  display: inline-block;
+  text-align: left;
+  color: #000000;
+  overflow: hidden;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+@media (max-width: 576px) {
+  #wainiidev-main .main-post .logo-mobile {
+    display: flex;
+    justify-content: center;
+  }
+}
 #wainiidev-main h1.title-main {
   margin-bottom: 50px;
   color: #DD58D6;
@@ -13,15 +37,16 @@
   width: 60px;
   margin-right: 20px;
 }
+@media (max-width: 576px) {
+  #wainiidev-main h1.title-main {
+    display: flex;
+    justify-content: center;
+  }
+}
 #wainiidev-main .detail-post__content {
   font-family: "Times New Roman", Times, serif;
   margin-bottom: 30px;
 }
-
-#wainiidev-main .detail-post__content span{
-  color: #DD58D6;
-}
-
 #wainiidev-main .page_404 {
   padding: 40px 0;
   background: #fff;
