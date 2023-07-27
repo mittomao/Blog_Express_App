@@ -110,7 +110,7 @@ module.exports = {
                             title: dataPost.title,
                             layout: "home-layout",
                             fullLayout: true,
-                            aboutAuthor
+                            aboutAuthor: aboutAuthor[0]
                         }));
                 });
             }
