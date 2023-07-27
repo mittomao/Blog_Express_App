@@ -1,15 +1,27 @@
 #wainiidev-main .detail-post * {
   font-family: "Lora", Arial, serif !important;
 }
-#wainiidev-main h1 {
+#wainiidev-main h1.title-main {
   margin-bottom: 50px;
   color: #DD58D6;
   display: block;
+}
+#wainiidev-main h1.title-main span {
+  display: inline-block;
+}
+#wainiidev-main h1.title-main img {
+  width: 60px;
+  margin-right: 20px;
 }
 #wainiidev-main .detail-post__content {
   font-family: "Times New Roman", Times, serif;
   margin-bottom: 30px;
 }
+
+#wainiidev-main .detail-post__content span{
+  color: #DD58D6;
+}
+
 #wainiidev-main .page_404 {
   padding: 40px 0;
   background: #fff;
@@ -42,6 +54,14 @@
 }
 #wainiidev-main .page_404 .contant_box_404 {
   margin-top: -50px;
+}
+#wainiidev-main .statistical ul {
+  margin-left: 10px;
+  padding: 0;
+}
+#wainiidev-main .statistical ul li {
+  display: flex;
+  justify-content: space-between;
 }
 
 .components.demo {

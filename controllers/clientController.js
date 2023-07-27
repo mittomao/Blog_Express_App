@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -18,6 +18,7 @@ class ResonposeDataClient {
         this.popularArticle = popularArticle;
         this.portfolio = portfolio;
         this.categories = categories;
+        this.allPost = allPost;
     }
 }
 
@@ -60,6 +61,7 @@ module.exports = {
                         title: 'Home Page',
                         layout: "home-layout",
                         isAdmin: false,
+                        allPost: listPosts.allItems
                     }));
             }
         } catch (error) {

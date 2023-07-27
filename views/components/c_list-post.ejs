@@ -10,16 +10,25 @@
             if ( post.thumbnail ) {
                 urlImage = post.thumbnail;
             }
+            let listTags = post.tag && post.tag.split(',');
         %>
         <div class="col-md-12">
             <div class="blog-entry ftco-animate d-md-flex">
+                <span class="border-card"></span>
                 <a href="/post/<%= post._id %>" class="img img-2" style="background-image: url('<%= urlImage %>');"></a>
                 <div class="text text-2 pl-md-4">
                     <h3 class="mb-2"><a href="/post/<%= post._id %>"><%= post.title %></a></h3>
                     <div class="meta-wrap">
                         <p class="meta">
                             <span><i class="icon-calendar mr-2"></i><%= currentDay %> <%= currentMonth %> <%= currentYear %></span>
-                            <span><a href="/tag/<%= post.tag %>"><i class="icon-folder-o mr-2"></i><%= post.tag %></a></span>
+                            <span>
+                                <% listTags.forEach((tag) => { %>
+                                    <a href="/tag/<%= tag %>">
+                                        <i class="icon-folder-o"></i>
+                                        <span><%= tag %></span>
+                                    </a>
+                                <% }) %>  
+                            </span>
                             <span><i class="icon-comment2 mr-2"></i>5 Comment</span>
                         </p>
                     </div>

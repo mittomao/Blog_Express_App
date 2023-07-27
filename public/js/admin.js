@@ -32,30 +32,29 @@ $(function () {
 
     //Init editor
     if ($('#editor-content').length) {
-
-    }
-    tinymce && tinymce.init({
-        selector: "#editor-content",
-        plugins: "file-manager,link,image",
-        toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
-        Flmngr: {
-            apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
-            // urlFileManager: '/flmngr',
-            urlFiles: "/images/",
-            dirFiles: "./public/images"
-        },
-        // Let's wait for TinyMCE is initialized...
-        setup: (editor) => {
-            editor.on('init', (event) => {
-                // ...and get Flmngr API
-                editor.getFlmngr((Flmngr) => {
-                    // In this demo we pass Flmngr API into inner functions and callbacks.
-                    // You can save it somewhere and reuse without passing as an argument.
-                    attachOnClickListenerToButton(Flmngr);
+        tinymce && tinymce.init({
+            selector: "#editor-content",
+            plugins: "file-manager,link,image",
+            toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
+            Flmngr: {
+                apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
+                // urlFileManager: '/flmngr',
+                urlFiles: "/images/",
+                dirFiles: "./public/images"
+            },
+            // Let's wait for TinyMCE is initialized...
+            setup: (editor) => {
+                editor.on('init', (event) => {
+                    // ...and get Flmngr API
+                    editor.getFlmngr((Flmngr) => {
+                        // In this demo we pass Flmngr API into inner functions and callbacks.
+                        // You can save it somewhere and reuse without passing as an argument.
+                        attachOnClickListenerToButton(Flmngr);
+                    });
                 });
-            });
-        }
-    });
+            }
+        });
+    }
 
     function attachOnClickListenerToButton(Flmngr) {
         let elBtn = document.getElementById("btn");
