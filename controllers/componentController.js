@@ -1,6 +1,7 @@
 const newsletterModel = require('../models/newsletterModel');
 const popularArticlesModel = require('../models/popularArticlesModel');
 const portfolioModel = require('../models/portfolioModel');
+const aboutAuthorModel = require('../models/aboutAuthorModel');
 
 module.exports = {
     // Component newsletter
@@ -65,6 +66,27 @@ module.exports = {
             function (err, result) {
                 if (err) {
                     console.error('Func_Update_Data_Component_portfolio: ', err);
+                } else {
+                    callback(result)
+                }
+            }
+        );
+    },
+    // Component About Author
+    Func_Get_Data_Component_about_author: async () => {
+        return aboutAuthorModel.find();
+    },
+    Func_Update_Data_Component_about_author: async (params, callback) => {
+        aboutAuthorModel.findOneAndUpdate(
+            {},
+            {
+                name: params.name,
+                description: params.description,
+            },
+            {upsert: true, new: true, runValidators: true},
+            function (err, result) {
+                if (err) {
+                    console.error('Func_Update_Data_Component_about_author: ', err);
                 } else {
                     callback(result)
                 }

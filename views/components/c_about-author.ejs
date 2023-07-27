@@ -1,0 +1,12 @@
+<% if (aboutAuthor) { %>
+<%
+    let name = aboutAuthor[0]?.name || "";
+    let description = aboutAuthor[0]?.description || ""; 
+%>
+<div class="about-author d-flex p-4 bg-light">
+    <div class="desc">
+        <h3><%= name %></h3>
+        <p><%= description %></p>
+    </div>
+</div>
+<%}%>

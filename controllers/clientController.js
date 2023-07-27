@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -19,6 +19,7 @@ class ResonposeDataClient {
         this.portfolio = portfolio;
         this.categories = categories;
         this.allPost = allPost;
+        this.aboutAuthor = aboutAuthor;
     }
 }
 
@@ -94,6 +95,7 @@ module.exports = {
         try {
             const { id } = req.params;
             let dataPost = await _BLOG_CON.Func_Get_Post_By_Id(id);
+            let aboutAuthor = await _COMP_CON.Func_Get_Data_Component_about_author();
             const dataHome = await GetDataInHomePage();
             if (dataPost || dataHome) {
                 await _BLOG_CON.Func_Random_Post((result, id) => {
@@ -108,6 +110,7 @@ module.exports = {
                             title: dataPost.title,
                             layout: "home-layout",
                             fullLayout: true,
+                            aboutAuthor
                         }));
                 });
             }
