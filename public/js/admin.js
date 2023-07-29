@@ -34,8 +34,9 @@ $(function () {
     if ($('#editor-content').length) {
         tinymce && tinymce.init({
             selector: "#editor-content",
-            plugins: "file-manager,link,image",
-            toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
+            plugins: "file-manager,link,image,media,table,advlist,lists,preview",
+            toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist",
+            // lists_indent_on_tab: false,
             Flmngr: {
                 apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
                 // urlFileManager: '/flmngr',
@@ -55,6 +56,8 @@ $(function () {
             }
         });
     }
+
+    // add_new_field_to_tinymce_insert_tab();
 
     function attachOnClickListenerToButton(Flmngr) {
         let elBtn = document.getElementById("btn");
@@ -312,13 +315,13 @@ $(function () {
             $.post('/admin/images/delete', {
                 id: $(this).find('img').data('id')
             })
-            .done(function (res) {
-                alert(res.message);
-                window.location.reload();
-            })
-            .fail(function (err) {
-                alert("error" + err);
-            })
+                .done(function (res) {
+                    alert(res.message);
+                    window.location.reload();
+                })
+                .fail(function (err) {
+                    alert("error" + err);
+                })
         }
     });
 
