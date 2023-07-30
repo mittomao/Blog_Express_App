@@ -95,6 +95,17 @@
 #wainiidev-main .contact-info .into p {
   word-wrap: break-word;
 }
+#wainiidev-main .d-none {
+  display: none !important;
+}
+#wainiidev-main .sidebar {
+  padding-right: 30px;
+}
+@media (max-width: 576px) {
+  #wainiidev-main .sidebar {
+    padding-right: 15px;
+  }
+}
 
 .components.demo {
   pointer-events: none;

@@ -33,13 +33,17 @@
         <%- include('../../templates/c_nav-bar')%>
         <div id="wainiidev-main">
             <% if (fullLayout) { %>
+            <%
+                let clsLeft = isHideSidebar ? 'col-xl-12' : 'col-xl-8';
+                let clsRight = isHideSidebar ? 'd-none' : 'col-xl-4';
+            %>
             <section class="ftco-section ftco-no-pt ftco-no-pb">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row d-flex">
-                        <div class="col-xl-8 py-5 px-md-5">
+                        <div class="<%= clsLeft %> py-5 px-md-5">
                             <%- body %>
                         </div>
-                        <div class="col-xl-4 sidebar ftco-animate bg-light pt-5">
+                        <div class="<%= clsRight %> sidebar ftco-animate bg-light pt-5">
                             <div class="sidebar-box pt-md-4">
                                 <form method="post" action="/search" class="search-form">
                                     <div class="form-group">

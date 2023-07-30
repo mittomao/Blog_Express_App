@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar=false }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -20,6 +20,7 @@ class ResonposeDataClient {
         this.categories = categories;
         this.allPost = allPost;
         this.aboutAuthor = aboutAuthor;
+        this.isHideSidebar = isHideSidebar;
     }
 }
 
@@ -95,23 +96,18 @@ module.exports = {
         try {
             const { id } = req.params;
             let dataPost = await _BLOG_CON.Func_Get_Post_By_Id(id);
-            let aboutAuthor = await _COMP_CON.Func_Get_Data_Component_about_author();
             const dataHome = await GetDataInHomePage();
             if (dataPost || dataHome) {
                 await _BLOG_CON.Func_Random_Post((result, id) => {
-                    return res.render("detail-post.ejs",
-                        new ResonposeDataClient({
-                            posts: dataPost,
-                            tags: dataHome.tags,
-                            newsletter: dataHome.newsletters[0],
-                            popularArticle: dataHome.popularArticles[0],
-                            categories: dataHome.categories,
-                            related: result,
-                            title: dataPost.title,
-                            layout: "home-layout",
-                            fullLayout: true,
-                            aboutAuthor: aboutAuthor[0]
-                        }));
+                    const response = new ResonposeDataClient({
+                        posts: dataPost,
+                        related: result,
+                        title: dataPost.title,
+                        layout: "home-layout",
+                        fullLayout: true,
+                        isHideSidebar: true
+                    })
+                    return res.render("detail-post.ejs", response);
                 });
             }
 
