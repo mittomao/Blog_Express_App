@@ -1,5 +1,13 @@
-#wainiidev-main .detail-post * {
+#wainiidev-main .detail-post {
   font-family: "Lora", Arial, serif !important;
+}
+#wainiidev-main .detail-post__content {
+  font-family: "Times New Roman", Times, serif;
+  margin-bottom: 30px;
+}
+#wainiidev-main .detail-post .breadcrumb {
+  display: flex;
+  align-items: center;
 }
 #wainiidev-main .main-post .logo-mobile {
   font-size: 45px;
@@ -43,10 +51,6 @@
     justify-content: center;
   }
 }
-#wainiidev-main .detail-post__content {
-  font-family: "Times New Roman", Times, serif;
-  margin-bottom: 30px;
-}
 #wainiidev-main .page_404 {
   padding: 40px 0;
   background: #fff;
@@ -87,6 +91,9 @@
 #wainiidev-main .statistical ul li {
   display: flex;
   justify-content: space-between;
+}
+#wainiidev-main .contact-info .into p {
+  word-wrap: break-word;
 }
 
 .components.demo {
