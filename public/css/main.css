@@ -109,6 +109,14 @@
 #wainiidev-main .no-result {
   padding: 20px;
 }
+#wainiidev-main .pagination-detail {
+  margin-left: 20px;
+  display: flex;
+  margin-top: 5px;
+}
+#wainiidev-main .pagination-detail strong {
+  margin: 0 5px;
+}
 
 .components.demo {
   pointer-events: none;

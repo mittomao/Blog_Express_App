@@ -1,21 +1,30 @@
-<% if (posts) { %>
+<% if (posts.length) { %>
 <div class="list-post row pt-md-4">
+    <% if (isSearch) { %>
+    <div class="col-md-12 mb-3">
+        <p><strong><%= posts.length %></strong> kết quả được tìm thấy</p>
+    </div>
+    <% } %>
     <% posts.forEach((post, index)=> { %>
         <% 
             let date=new Date(post.createdAt);
             let currentDay=date.getDate(); 
             let currentYear=date.getFullYear(); 
-            let currentMonth=date.toLocaleString('default', { month: 'short' }); 
+            let currentMonth=date.toLocaleString('default', { month: 'short' });
             let urlImage = 'https://placehold.co/150x150';
             if ( post.thumbnail ) {
                 urlImage = post.thumbnail;
+            } else {
+                urlImage = `${process.env.IMAGE_PREFIX}/default-post-1.png`;
             }
             let listTags = post.tag && post.tag.split(',');
         %>
         <div class="col-md-12">
-            <div class="blog-entry ftco-animate d-md-flex">
+            <div class="blog-entry js-blog-entry ftco-animate d-md-flex">
                 <span class="border-card"></span>
-                <a href="/post/<%= post._id %>" class="img img-2" style="background-image: url('<%= urlImage %>');"></a>
+                <a href="/post/<%= post._id %>">
+                    <img class="img img-2 js-post-image" src="" data-src-image="<%= urlImage %>" alt="Post Image">
+                </a>
                 <div class="text text-2 pl-md-4">
                     <h3 class="mb-2"><a href="/post/<%= post._id %>"><%= post.title %></a></h3>
                     <div class="meta-wrap">
@@ -39,5 +48,8 @@
         </div>
     <% }) %>
     <%- include('pagination', {totalPage: totalPage, page: currentPage}) %>
+    <span class="text-muted text-sm ml-3 mt-2">Showing <%= posts.length%> items out of <%= allPost %> results found</span>
 </div>
+<% } else { %>
+    <p>Nội dung bạn tìm kiếm không được tìm thấy. Vui lòng tìm kiếm bằng 1 từ khóa khác. Thank you ♥️♥️♥️</p>
 <% } %>
