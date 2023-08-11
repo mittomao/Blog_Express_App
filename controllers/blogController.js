@@ -37,11 +37,12 @@ module.exports = {
     },
     // Action
     Func_Create_Post: async (obj) => {
-        const { author, tag, title, summary, thumbnail, content, status } = obj;
+        const { author, tag, title, topic, summary, thumbnail, content, status } = obj;
         return await blogModel.create({
             author,
             tag,
             title,
+            topic,
             summary,
             thumbnail,
             content,
@@ -57,5 +58,8 @@ module.exports = {
     },
     Func_Delete_Post_By_Id: async (id) => {
         return await blogModel.findByIdAndDelete(id);
+    },
+    Func_Get_Unique_By_Field: async (fieldName) => {
+        return await blogModel.distinct(fieldName);
     }
 }

@@ -10,6 +10,7 @@ const Schema = mongoose.Schema;
 const blogSchema = new Schema({
     author: { type: String, default: '', require },
     tag: { type: String, default: '' },
+    topic: { type: String, default: '' },
     title: { type: String, default: '', require },
     summary: { type: String, default: '' },
     thumbnail: { type: String, default: '' },

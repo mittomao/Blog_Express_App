@@ -31,8 +31,8 @@ const GetDataInHomePage = async () => {
     const newsletters = await _COMP_CON.Func_Get_Data_Component_newsletter();
     const popularArticles = await _COMP_CON.Func_Get_Data_Component_popular_articles();
     //Get Categories
-    const dataCategories = await _TAG_CON.Func_Get_ALl_Tag();
-    const categories = dataCategories && dataCategories.filter(x => x.prioritize);
+    const categories = await _BLOG_CON.Func_Get_Unique_By_Field("topic");
+    console.log("dataCategories", categories);
 
     return {
         tags,
@@ -96,7 +96,9 @@ module.exports = {
     detailPost: async (req, res) => {
         try {
             const { id } = req.params;
-            let dataPost = await _BLOG_CON.Func_Get_Post_By_Id(id);
+            const dataPost = await _BLOG_CON.Func_Get_Post_By_Id(id);
+            const aboutAuthor = await _COMP_CON.Func_Get_Data_Component_about_author();
+
             const dataHome = await GetDataInHomePage();
             if (dataPost || dataHome) {
                 await _BLOG_CON.Func_Random_Post((result, id) => {
@@ -108,7 +110,7 @@ module.exports = {
                         fullLayout: true,
                         isHideSidebar: true
                     })
-                    return res.render("detail-post.ejs", response);
+                    return res.render("detail-post.ejs", {...response, aboutAuthor: aboutAuthor[0]});
                 });
             }
 
