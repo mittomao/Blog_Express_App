@@ -11,7 +11,7 @@ clientRouter.get('/tag/:tag', clientController.tag)
 clientRouter.get('/life', clientController.life)
 clientRouter.get('/about', clientController.about)
 clientRouter.get('/contact', clientController.contact)
-clientRouter.post('/search', clientController.search)
+clientRouter.post('/search/:title', clientController.search)
 clientRouter.get('/page-404', clientController.pageNotFound)
 clientRouter.get('*', (req, res) => res.redirect('/page-404'))
 

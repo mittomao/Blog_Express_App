@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
@@ -31,42 +33,40 @@
     <div id="wainiidev-page">
         <a href="#" class="js-wainiidev-nav-toggle wainiidev-nav-toggle"><i></i></a>
         <%- include('../../templates/c_nav-bar')%>
-        <div id="wainiidev-main">
-            <% if (fullLayout) { %>
-            <%
-                let clsLeft = isHideSidebar ? 'col-xl-12' : 'col-xl-8';
-                let clsRight = isHideSidebar ? 'd-none' : 'col-xl-4';
-            %>
-            <section class="ftco-section ftco-no-pt ftco-no-pb">
-                <div class="container-fluid">
-                    <div class="row d-flex">
-                        <div class="<%= clsLeft %> py-5 px-md-5">
-                            <%- body %>
-                        </div>
-                        <div class="<%= clsRight %> sidebar ftco-animate bg-light pt-5">
-                            <div class="sidebar-box pt-md-4">
-                                <form method="post" action="/search" class="search-form">
-                                    <div class="form-group">
-                                        <span class="icon icon-search"></span>
-                                        <input type="text" class="form-control" name="title"
-                                            placeholder="Type a keyword and hit enter" onkeyup="this.submit();">
+            <div id="wainiidev-main">
+                <% if (fullLayout) { %>
+                    <% let clsLeft=isHideSidebar ? 'col-xl-12' : 'col-xl-8' ; let clsRight=isHideSidebar ? 'd-none'
+                        : 'col-xl-4' ; %>
+                        <section class="ftco-section ftco-no-pt ftco-no-pb">
+                            <div class="container-fluid">
+                                <div class="row d-flex">
+                                    <div class="<%= clsLeft %> py-5 px-md-5">
+                                        <%- body %>
                                     </div>
-                                </form>
+                                    <div class="<%= clsRight %> sidebar ftco-animate bg-light pt-5">
+                                        <div class="sidebar-box pt-md-4">
+                                            <form method="post" action="" class="search-form js-search-form">
+                                                <div class="form-group">
+                                                    <span class="icon icon-search"></span>
+                                                    <input type="text" class="form-control js-search-input" name="title"
+                                                        placeholder="Type a keyword and hit enter" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <%- include('../../components/c_categories')%>
+                                            <%- include('../../components/c_popular-articles')%>
+                                                <%- include('../../components/c_tag-cloud')%>
+                                                    <%- include('../../components/c_newsletter')%>
+                                                        <%- include('../../components/c_statistical')%>
+                                                            <!-- <%- include('../../components/c_archives')%> -->
+                                    </div>
+                                </div>
                             </div>
-                            <%- include('../../components/c_categories')%>
-                            <%- include('../../components/c_popular-articles')%>
-                            <%- include('../../components/c_tag-cloud')%>
-                            <%- include('../../components/c_newsletter')%>
-                            <%- include('../../components/c_statistical')%>
-                            <!-- <%- include('../../components/c_archives')%> -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <% } else { %>
-                <%- body %>
-            <% } %>
-        </div>
+                        </section>
+                        <% } else { %>
+                            <%- body %>
+                                <% } %>
+            </div>
     </div>
 
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
@@ -105,6 +105,20 @@
         data-cf-beacon="{"
         rayId":"7d0c2e320e7f06da","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2023.4.0","si":100}"
         crossorigin="anonymous"></script> -->
+    <script>
+        $(function () {
+            const valueSearch = window.location.pathname.includes("search") ? window.location.pathname.split("/").pop() : "";
+            if (valueSearch) {
+                $(".js-search-input").val(valueSearch);
+            }
+            
+            $(".js-search-input").on("change", (e) => {
+                const value = e.target.value;
+                $(".js-search-form").attr("action", `/search/${value}`);
+                $(".js-search-form").submit();
+            });
+        });
+    </script>
 </body>
 
 </html>

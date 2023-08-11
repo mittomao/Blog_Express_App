@@ -190,8 +190,7 @@ module.exports = {
     },
     search: async (req, res) => {
         try {
-            let { page = 1 } = req.params;
-            let { title } = req.body;
+            let { page = 1, title } = req.params;
             const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, {
                 status: true,
                 title: { "$regex": title, "$options": "i" },
