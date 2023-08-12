@@ -12,6 +12,7 @@ clientRouter.get('/life', clientController.life)
 clientRouter.get('/about', clientController.about)
 clientRouter.get('/contact', clientController.contact)
 clientRouter.post('/search/:title', clientController.search)
+clientRouter.get('/topic/:title', clientController.filterTopic)
 clientRouter.get('/page-404', clientController.pageNotFound)
 clientRouter.get('*', (req, res) => res.redirect('/page-404'))
 

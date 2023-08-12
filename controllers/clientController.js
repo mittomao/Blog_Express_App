@@ -220,5 +220,39 @@ module.exports = {
             console.error(error);
             res.redirect('/page-404');
         }
+    },
+    filterTopic: async (req, res) => {
+        try {
+            let { page = 1, title } = req.params;
+            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, {
+                status: true,
+                topic: title,
+            });
+            console.log("title-listPosts: ", title, listPosts);
+            const dataHome = await GetDataInHomePage();
+            // End 
+
+            if (listPosts || dataHome) {
+                return res.render("home.ejs",
+                    new ResonposeDataClient({
+                        fullLayout: true,
+                        tags: dataHome.tags,
+                        newsletter: dataHome.newsletters[0],
+                        popularArticle: dataHome.popularArticles[0],
+                        categories: dataHome.categories,
+                        posts: listPosts.posts,
+                        currentPage: listPosts.current,
+                        totalPage: listPosts.totalPage,
+                        allPost: listPosts.allItems,
+                        title: 'Home Page',
+                        layout: "home-layout",
+                        isAdmin: false,
+                        isSearch: true
+                    }));
+            }
+        } catch (error) {
+            console.error(error);
+            res.redirect('/page-404');
+        }
     }
 }

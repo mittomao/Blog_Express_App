@@ -1,9 +1,9 @@
 <% if (categories) { %>
 <div class="category sidebar-box ftco-animate">
-    <h3 class="sidebar-heading">Categories</h3>
+    <h3 class="sidebar-heading">Topic Hot</h3>
     <ul class="categories">
         <% categories.forEach((item, index) => { %>
-        <li><a href="/topic/<%= item.name %>"><%= item %> </a></li>
+        <li><a href="/topic/<%= item %>"><%= item %> </a></li>
         <% }) %>
     </ul>
 </div>
