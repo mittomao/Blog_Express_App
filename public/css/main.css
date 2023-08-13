@@ -36,8 +36,9 @@
 }
 #wainiidev-main h1.title-main {
   margin-bottom: 50px;
-  color: #DD58D6;
   display: block;
+  color: #DD58D6;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #DD58D6, 0 0 30px #DD58D6, 0 0 40px #DD58D6, 0 0 55px #DD58D6, 0 0 75px #DD58D6;
 }
 #wainiidev-main h1.title-main span {
   display: inline-block;
@@ -106,6 +107,10 @@
   #wainiidev-main .sidebar {
     padding-right: 15px;
   }
+}
+#wainiidev-main h3.sidebar-heading {
+  color: #DD58D6;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #DD58D6, 0 0 30px #DD58D6, 0 0 40px #DD58D6, 0 0 55px #DD58D6, 0 0 75px #DD58D6;
 }
 #wainiidev-main .no-result {
   padding: 20px;
