@@ -33,30 +33,41 @@ let countTwo = heading.dataset.title.length;
 setTimeout(myFunc, 1000);
 
 function myFunc() {
-  let name = heading.dataset.title;
-  heading.innerHTML = "";
+    let name = heading.dataset.title;
+    heading.innerHTML = "";
 
-  setInterval(() => {
-    runFunc();
-  }, 1200);
+    setInterval(() => {
+        runFunc();
+    }, 1200);
 
-  function runFunc() {
-    if (count < name.length) {
-      let createSpan = document.createElement("span");
-      createSpan.setAttribute("class", " ");
-      createSpan.setAttribute("class", "animationOne");
-      createSpan.innerHTML = name.charAt(count);
-      heading.append(createSpan);
-      count++;
-    } else {
-      heading.children[countTwo-1].className = "animationTwo";
-      countTwo--;
-      if (countTwo <= 0) {
-        heading.innerHTML = " ";
-        count = 0;
-        countTwo = heading.dataset.title.length;
-      }
+    function runFunc() {
+        if (count < name.length) {
+            let createSpan = document.createElement("span");
+            createSpan.setAttribute("class", " ");
+            createSpan.setAttribute("class", "animationOne");
+            createSpan.innerHTML = name.charAt(count);
+            heading.append(createSpan);
+            count++;
+        } else {
+            heading.children[countTwo - 1].className = "animationTwo";
+            countTwo--;
+            if (countTwo <= 0) {
+                heading.innerHTML = " ";
+                count = 0;
+                countTwo = heading.dataset.title.length;
+            }
+        }
     }
-  }
 }
 
+
+// Carousel topic
+
+$('.js-topic-carousel').slick({
+    arrows: true,
+    dots: false,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 1,
+    variableWidth: true,
+});
