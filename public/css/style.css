@@ -1999,7 +1999,7 @@ h5,
 }
 
 #wainiidev-aside {
-  padding-top: 5em;
+  /* padding-top: 5em; */
   padding-bottom: 40px;
   padding-left: 2em;
   padding-right: 2em;
@@ -2040,12 +2040,62 @@ h5,
 }
 
 #wainiidev-aside #wainiidev-logo {
-  display: block;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+#wainiidev-aside #wainiidev-logo a {
   width: 100%;
-  font-weight: normal;
-  font-size: 74px;
-  line-height: .8;
+  margin: 0 auto;
+  font-size: 36px;
   font-family: "Abril Fatface", cursive;
+  letter-spacing: 4px;
+  color: #1eafed;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #DD58D6, 0 0 30px #DD58D6, 0 0 40px #DD58D6, 0 0 55px #DD58D6, 0 0 75px #DD58D6;
+}
+
+.animationOne {
+  animation: animationOne .5s 5ms 1;
+}
+
+@keyframes animationOne {
+  from {
+    margin-left: 80px;
+    opacity: 0;
+    filter: blur(5px);
+  }
+
+  to {
+    margin-left: 0;
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.animationTwo {
+  animation: animationTwo 1s 5ms 1;
+  opacity: 0;
+  display: none;
+}
+
+@keyframes animationTwo {
+  from {
+    margin-left: 0;
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  to {
+    margin-left: 80px;
+    opacity: 0;
+    filter: blur(5px);
+  }
 }
 
 @media (max-width: 1199.98px) {
@@ -2054,25 +2104,10 @@ h5,
   }
 }
 
-#wainiidev-aside #wainiidev-logo span {
-  display: block;
-}
-
 @media (max-width: 991.98px) {
   #wainiidev-aside #wainiidev-logo {
     margin-bottom: 20px;
   }
-}
-
-#wainiidev-aside #wainiidev-logo a {
-  display: block !important;
-  margin: 20px auto;
-  line-height: 1.2;
-  font-size: 64px;
-  font-family: 'Great Vibes', serif;
-  font-weight: bold;
-  color: #0063c5;
-  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #1e8fff, 0 0 30px #1e8fff, 0 0 40px #1e8fff, 0 0 55px #1e8fff, 0 0 75px #1e8fff;
 }
 
 #wainiidev-aside #wainiidev-main-menu ul {
