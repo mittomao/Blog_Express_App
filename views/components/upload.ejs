@@ -1,7 +1,7 @@
 <div class="page-upload">
-    <h1 class="h2 mb-0 ls-tight">Upload Image</h1>
-    <form id="file-upload-form" class="uploader">
-        <input id="file-upload" type="file" name="fileUpload"
+    <h1 class="h2 mb-0 ls-tight">Media Library</h1>
+    <!-- <form method="post" action="/admin/upload" id="file-upload-form" class="uploader" enctype="multipart/form-data">
+        <input id="file-upload" type="file" name="file"
             accept=".jpeg, .doc, .docx, .xls, .xlsx, .txt, .jpg, .png, .gif" />
 
         <label for="file-upload" id="file-drag">
@@ -19,17 +19,17 @@
                 </progress>
             </div>
         </label>
-    </form>
+    </form> -->
     <div class="gallery">
         <% if (listImages && listImages.length) { %>
             <% listImages.forEach((file)=> { %>
                 <div class="gallery__item js-gallery-item">
-                    <img src="<%= file.filename %>" alt="" data-id="<%= file._id %>">
+                    <img src="<%= file.url %>" alt="" data-id="<%= file.asset_id %>">
                     <div class="action">
                         <span class="bi bi-save js-copy">
                         </span>
-                        <span class="bi bi-trash js-delete">
-                        </span>
+                        <!-- <span class="bi bi-trash js-delete">
+                        </span> -->
                     </div>
                 </div>
             <% }) %>

@@ -39,7 +39,7 @@ $(function () {
             // lists_indent_on_tab: false,
             Flmngr: {
                 apiKey: $('#editor-content').data('key'),//"cVGX2I8t"//"FLMNFLMN", // default free key
-                // urlFileManager: '/flmngr',
+                urlFileManager: '/flmngr',
                 urlFiles: "/images/",
                 dirFiles: "./public/images"
             },
@@ -84,7 +84,7 @@ $(function () {
             list: urls,
             isMultiple: true,
             acceptExtensions: ["png", "jpeg", "jpg", "webp", "gif"],
-            onFinish: (files) => {
+                        onFinish: (files) => {
                 showSelectedImages(Flmngr, files);
             }
         });
@@ -119,17 +119,17 @@ $(function () {
         var previewImage = document.querySelector('.preview-image');
 
         btnFile.addEventListener('click', () => {
-            window.flmngr && window.flmngr.selectUrls({
+            window.flmngr && window.flmngr.open({
                 isMultiple: false,
                 acceptExtensions: ["png", "jpeg", "jpg", "webp", "gif"],
                 onFinish: (files) => {
                     if (files && files.length) {
                         if (previewImage) {
                             previewImage.classList.remove('disable');
-                            previewImage.querySelector('img').src = files[0];
+                            previewImage.querySelector('img').src = files[0].url;
                         }
 
-                        inputFile.value = files[0];
+                        inputFile.value = files[0].url;
                     }
                 },
                 onCancel: () => {
@@ -150,157 +150,165 @@ $(function () {
         });
     });
 
-    //Uplaod Image
+    // var fileSelect = document.getElementById('file-upload');
+    // var formUpload = document.getElementById('file-upload-form');
+    // fileSelect && fileSelect.addEventListener("change", fileSelectHandler, false);
+
+    //Upload Image
     // File Upload
     // 
-    function ekUpload() {
-        function Init() {
+    // function ekUpload() {
+    //     function Init() {
 
-            console.log("Upload Initialised");
+    //         console.log("Upload Initialised");
 
-            var fileSelect = document.getElementById('file-upload'),
-                fileDrag = document.getElementById('file-drag'),
-                submitButton = document.getElementById('submit-button');
+    //         var fileSelect = document.getElementById('file-upload'),
+    //             fileDrag = document.getElementById('file-drag'),
+    //             submitButton = document.getElementById('submit-button');
 
-            fileSelect && fileSelect.addEventListener('change', fileSelectHandler, false);
+    //         fileSelect && fileSelect.addEventListener('change', fileSelectHandler, false);
 
-            // Is XHR2 available?
-            var xhr = new XMLHttpRequest();
-            if (xhr.upload) {
-                // File Drop
-                fileDrag.addEventListener('dragover', fileDragHover, false);
-                fileDrag.addEventListener('dragleave', fileDragHover, false);
-                fileDrag.addEventListener('drop', fileSelectHandler, false);
-            }
-        }
+    //         // Is XHR2 available?
+    //         var xhr = new XMLHttpRequest();
+    //         if (xhr.upload) {
+    //             // File Drop
+    //             fileDrag.addEventListener('dragover', fileDragHover, false);
+    //             fileDrag.addEventListener('dragleave', fileDragHover, false);
+    //             fileDrag.addEventListener('drop', fileSelectHandler, false);
+    //         }
+    //     }
 
-        function fileDragHover(e) {
-            var fileDrag = document.getElementById('file-drag');
+    //     function fileDragHover(e) {
+    //         var fileDrag = document.getElementById('file-drag');
 
-            e.stopPropagation();
-            e.preventDefault();
+    //         e.stopPropagation();
+    //         e.preventDefault();
 
-            fileDrag.className = (e.type === 'dragover' ? 'hover' : 'modal-body file-upload');
-        }
+    //         fileDrag.className = (e.type === 'dragover' ? 'hover' : 'modal-body file-upload');
+    //     }
 
-        function fileSelectHandler(e) {
-            // Fetch FileList object
-            var files = e.target.files || e.dataTransfer.files;
+        // function fileSelectHandler(e) {
+        //     // Fetch FileList object
+        //     // var files = e.target.files || e.dataTransfer.files;
 
-            // Cancel event and hover styling
-            fileDragHover(e);
+        //     // // Cancel event and hover styling
+        //     // // fileDragHover(e);
 
-            // Process all File objects
-            for (var i = 0, f; f = files[i]; i++) {
-                parseFile(f);
-                uploadFile(f);
-            }
-        }
+        //     // // Process all File objects
+        //     // for (var i = 0, f; f = files[i]; i++) {
+        //     //     // parseFile(f);
+        //     //     uploadFile(f);
+        //     // }
+        //     formUpload.submit();
+        // }
 
-        // Output
-        function output(msg) {
-            // Response
-            var m = document.getElementById('messages');
-            m.innerHTML = msg;
-        }
+    //     // Output
+    //     function output(msg) {
+    //         // Response
+    //         var m = document.getElementById('messages');
+    //         m.innerHTML = msg;
+    //     }
 
-        function parseFile(file) {
-            output(
-                '<strong>' + encodeURI(file.name) + '</strong>'
-            );
+    //     function parseFile(file) {
+    //         output(
+    //             '<strong>' + encodeURI(file.name) + '</strong>'
+    //         );
 
-            // var fileType = file.type;
-            // console.log(fileType);
-            var imageName = file.name;
+    //         // var fileType = file.type;
+    //         // console.log(fileType);
+    //         var imageName = file.name;
 
-            var isGood = (/\.(?=gif|jpg|png|jpeg)/gi).test(imageName);
-            if (isGood) {
-                document.getElementById('start').classList.add("hidden");
-                document.getElementById('response').classList.remove("hidden");
-                document.getElementById('notimage').classList.add("hidden");
-                // Thumbnail Preview
-                document.getElementById('file-image').classList.remove("hidden");
-                document.getElementById('file-image').src = URL.createObjectURL(file);
-            }
-            else {
-                document.getElementById('file-image').classList.add("hidden");
-                document.getElementById('notimage').classList.remove("hidden");
-                document.getElementById('start').classList.remove("hidden");
-                document.getElementById('response').classList.add("hidden");
-                document.getElementById("file-upload-form").reset();
-            }
-        }
+    //         var isGood = (/\.(?=gif|jpg|png|jpeg)/gi).test(imageName);
+    //         if (isGood) {
+    //             document.getElementById('start').classList.add("hidden");
+    //             document.getElementById('response').classList.remove("hidden");
+    //             document.getElementById('notimage').classList.add("hidden");
+    //             // Thumbnail Preview
+    //             document.getElementById('file-image').classList.remove("hidden");
+    //             document.getElementById('file-image').src = URL.createObjectURL(file);
+    //         }
+    //         else {
+    //             document.getElementById('file-image').classList.add("hidden");
+    //             document.getElementById('notimage').classList.remove("hidden");
+    //             document.getElementById('start').classList.remove("hidden");
+    //             document.getElementById('response').classList.add("hidden");
+    //             document.getElementById("file-upload-form").reset();
+    //         }
+    //     }
 
-        function setProgressMaxValue(e) {
-            var pBar = document.getElementById('file-progress');
+    //     function setProgressMaxValue(e) {
+    //         var pBar = document.getElementById('file-progress');
 
-            if (e.lengthComputable) {
-                pBar.max = e.total;
-            }
-        }
+    //         if (e.lengthComputable) {
+    //             pBar.max = e.total;
+    //         }
+    //     }
 
-        function updateFileProgress(e) {
-            var pBar = document.getElementById('file-progress');
+    //     function updateFileProgress(e) {
+    //         var pBar = document.getElementById('file-progress');
 
-            if (e.lengthComputable) {
-                pBar.value = e.loaded;
-            }
-        }
+    //         if (e.lengthComputable) {
+    //             pBar.value = e.loaded;
+    //         }
+    //     }
 
-        async function uploadFile(file) {
-            const fileUrl = await uploadFileToUploadServer(file);
-            console.log('fileUrl', fileUrl);
+    // function uploadFile(file) {
+    //     const fileUrl = file;
+    //     console.log('fileUrl', fileUrl);
 
-            $.post('/admin/upload', {
-                file: fileUrl
-            })
-                .done(function (res) {
-                    alert(res.message);
-                    window.location.reload();
-                })
-                .fail(function (err) {
-                    alert("error" + err);
-                })
-                .always(function () {
+    //     $.ajax({
+    //         type: "post",
+    //         url: '/admin/upload',
+    //         data: {
+    //             file: fileUrl
+    //         },
+    //         success: function (res) {
+    //             alert(res.message);
+    //             window.location.reload();
+    //         },
+    //         error: function (err) {
+    //             alert("error" + err);
+    //         }
+    //     });
+    // }
 
-                });
-        }
+    //     const $progressElm = $('#file-progress');
+    //     const $uploadButton = $('#file-upload');
+    //     async function uploadFileToUploadServer(file) {
+    //         const upload = Upload({ apiKey: "free" });
+    //         $uploadButton.remove();
 
-        const $progressElm = $('#file-progress');
-        const $uploadButton = $('#file-upload');
-        async function uploadFileToUploadServer(file) {
-            const upload = Upload({ apiKey: "free" });
-            $uploadButton.remove();
+    //         const fileToUpload = file;
 
-            const fileToUpload = file;
+    //         try {
+    //             const { fileUrl } = await upload.uploadFile(
+    //                 fileToUpload, {
+    //                 onProgress: ({ progress }) => {
+    //                     $progressElm.attr('value', progress);
+    //                 }
+    //             }
+    //             );
+    //             return fileUrl;
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     }
 
-            try {
-                const { fileUrl } = await upload.uploadFile(
-                    fileToUpload, {
-                    onProgress: ({ progress }) => {
-                        $progressElm.attr('value', progress);
-                    }
-                }
-                );
-                return fileUrl;
-            } catch (error) {
-                console.error(error);
-            }
-        }
+    //     // Check for the various File API support.
+    //     if (window.File && window.FileList && window.FileReader) {
+    //         Init();
+    //     } else {
+    //         $('#file-drag').css('display', 'none');
+    //     }
+    // }
 
-        // Check for the various File API support.
-        if (window.File && window.FileList && window.FileReader) {
-            Init();
-        } else {
-            $('#file-drag').css('display', 'none');
-        }
-    }
+    // const $uploadForm = $('#file-upload-form');
 
-    const $uploadForm = $('#file-upload-form');
+    // if ($uploadForm.length) {
+    //     ekUpload();
+    // }
 
-    if ($uploadForm.length) {
-        ekUpload();
-    }
+    //End Upload Image
 
     const $gallerys = $('.js-gallery-item');
 
@@ -312,18 +320,16 @@ $(function () {
             })
             await navigator.clipboard.writeText(filename);
         } else if (e.target.classList.contains('js-delete')) {
-            $.post('/admin/images/delete', {
-                id: $(this).find('img').data('id')
-            })
-                .done(function (res) {
-                    alert(res.message);
-                    window.location.reload();
-                })
-                .fail(function (err) {
-                    alert("error" + err);
-                })
+            // $.post('/admin/images/delete', {
+            //     id: $(this).find('img').data('id')
+            // })
+            //     .done(function (res) {
+            //         alert(res.message);
+            //         window.location.reload();
+            //     })
+            //     .fail(function (err) {
+            //         alert("error" + err);
+            //     })
         }
     });
-
-    //End Upload Image
 });

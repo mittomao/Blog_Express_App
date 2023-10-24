@@ -1,6 +1,6 @@
 'use strict'
 const _CONST = require('../config/constant')
-const _UTIL = require('../utils')
+const { getAllResources } = require('../utils/cloudinary')
 const _BLOG_CON = require('./blogController')
 const _USER_CON = require('./usersController')
 const _TAG_CON = require('./tagController')
@@ -285,7 +285,7 @@ module.exports = {
     viewUpload: async (req, res) => {
         try {
             if (req.session?.account?.loggedin) {
-                const listImages = await imagesModel.find();
+                const listImages = await getAllResources();
                 return res.render('upload.ejs',
                     new ResonposeDataAdmin({
                         account: req.session.account,
@@ -295,42 +295,38 @@ module.exports = {
                         listImages: listImages || []
                     }));
             }
-            return res.redirect('/admin/login')
+            return res.redirect('/admin/login');
         } catch (error) {
             console.error(error);
         }
     },
-    uploadImage: async (req, res) => {
-        try {
-            const { file } = req.body;
-            const addImage = await imagesModel.create({
-                filename: file,
-            });
+    // uploadImage: async (req, res) => {
+    //     try {
+    //         const { file } = req.body;
+    //         console.log('file upload', req.file);
 
-            if (addImage) {
-                res.status(200).json({
-                    message: `Upload ${file} Succses`
-                });
-            }
-        } catch (error) {
-            res.status(400).json({
-                message: "Upload Fail"
-            })
-        }
-    },
-    deleteImage: async (req, res) => {
-        const { id } = req.body;
-        try {
-            let deleteTag = await imagesModel.findByIdAndDelete(id);
-            if (deleteTag) {
-                return res.status(200).json({
-                    message: 'Delete Success'
-                })
-            }
-        } catch (error) {
-            return res.status(500).json({
-                message: 'Delete Fail' + error
-            })
-        }
-    }
+    //         res.status(200).send({
+    //             message: 'Image uploaded successfully',
+    //         });
+    //     } catch (error) {
+    //         res.status(400).json({
+    //             message: "Upload Fail"
+    //         })
+    //     }
+    // },
+    // deleteImage: async (req, res) => {
+    //     const { id } = req.body;
+    //     try {
+    //         let deleteTag = await imagesModel.findByIdAndDelete(id);
+    //         if (deleteTag) {
+    //             return res.status(200).json({
+    //                 message: 'Delete Success'
+    //             })
+    //         }
+    //     } catch (error) {
+    //         return res.status(500).json({
+    //             message: 'Delete Fail' + error
+    //         })
+    //     }
+    // }
 }
