@@ -35,6 +35,7 @@ module.exports = {
             {},
             {
                 title: params.title,
+                description: params.description,
                 image: params.image,
                 author: params.author,
                 link: params.link,

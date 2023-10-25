@@ -7,6 +7,7 @@ const popularArticles = new Schema({
         type: String,
         default: ''
     },
+    description: { type: String },
     image: { type: String, default: ''},
     author: { type: String, default: ''},
     link: { type: String, default: ''},

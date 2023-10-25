@@ -168,10 +168,13 @@
 }
 .featured-article__content {
   color: #000;
-  padding: 20px 0;
+  padding: 20px 15px;
 }
 .featured-article__content h4 {
   font-weight: bold;
+}
+.featured-article__date {
+  margin-bottom: 15px;
 }
 
 .topic__item {
@@ -208,21 +211,21 @@
 }
 .topic .slick-arrow {
   padding: 15px;
-  border: 1px solid #fd07bf;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
   border-radius: 5px;
+  background-color: #cccccc;
+}
+.topic .slick-arrow.slick-disabled {
+  cursor: not-allowed;
 }
 .topic .slick-arrow::before {
-  color: #000000;
+  color: #fff;
 }
 .topic .slick-arrow:hover {
-  background-color: rgba(1, 1, 1, 0.2078431373);
-}
-.topic .slick-arrow:hover::before {
-  color: #fd07bf;
+  background-color: #333333;
 }
 .topic .slick-prev {
   left: -15px;
