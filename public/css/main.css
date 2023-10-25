@@ -37,11 +37,18 @@
 #wainiidev-main h1.title-main {
   margin-bottom: 50px;
   display: block;
-  color: #DD58D6;
+}
+#wainiidev-main h1.title-main--top {
+  text-align: center;
+}
+#wainiidev-main h1.title-main--top strong{
+  display: block;
+  color: #dd58d65d;
   text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #DD58D6, 0 0 30px #DD58D6, 0 0 40px #DD58D6, 0 0 55px #DD58D6, 0 0 75px #DD58D6;
 }
 #wainiidev-main h1.title-main span {
   display: inline-block;
+  color: #1eafed;
 }
 #wainiidev-main h1.title-main img {
   width: 60px;
