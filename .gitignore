@@ -4,3 +4,4 @@
 /assets
 package-lock.json
 /.idea
+/public/images/.cache/previews
