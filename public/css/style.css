@@ -2050,10 +2050,12 @@ h5,
   padding: 0 20px;
 }
 
-#wainiidev-aside #wainiidev-logo a {
+#wainiidev-aside #wainiidev-logo > a {
+  display: flex;
+  flex-wrap: nowrap;
   width: 100%;
   margin: 0 auto;
-  font-size: 36px;
+  font-size: 30px;
   font-family: "Abril Fatface", cursive;
   letter-spacing: 4px;
   color: #1eafed;
@@ -2061,7 +2063,7 @@ h5,
 }
 
 .animationOne {
-  animation: animationOne .5s 5ms 1;
+  animation: animationOne .2s 3ms 1;
 }
 
 @keyframes animationOne {
