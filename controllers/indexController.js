@@ -300,6 +300,97 @@ module.exports = {
             console.error(error);
         }
     },
+    getAllProjects: async (req, res) => {
+        try {
+            return res.status(200).json({
+                data: {
+                    settings: {
+                        dots: false,
+                        infinite: true,
+                        speed: 500,
+                        slidesToShow: 3,
+                        slidesToScroll: 1,
+                        responsive: [
+                            {
+                                breakpoint: 767,
+                                settings: {
+                                    slidesToShow: 1,
+                                }
+                            }
+                        ]
+                    },
+                    cards: [
+                        {
+                            name: "Natural landscape",
+                            description:
+                                "Đây là trang web mà tôi muốn giới thiệu tới mọi người về cảnh quan thiên nhiên đẹp.",
+                            tags: [
+                                {
+                                    name: "HTML",
+                                    color: "blue-text-gradient",
+                                },
+                                {
+                                    name: "CSS",
+                                    color: "green-text-gradient",
+                                },
+                                {
+                                    name: "JAVASCRIPT",
+                                    color: "pink-text-gradient",
+                                },
+                            ],
+                            image: "./nature.png",
+                            source_code_link: "https://mittomao.github.io/Landing_01/",
+                        },
+                        {
+                            name: "Travel",
+                            description:
+                                "Đây là trang web giới thiệu về các tour du lịch",
+                            tags: [
+                                {
+                                    name: "HTML",
+                                    color: "blue-text-gradient",
+                                },
+                                {
+                                    name: "CSS",
+                                    color: "green-text-gradient",
+                                },
+                                {
+                                    name: "JAVASCRIPT",
+                                    color: "pink-text-gradient",
+                                },
+                            ],
+                            image: "./travel.png",
+                            source_code_link: "https://mittomao.github.io/travel1/",
+                        },
+                        {
+                            name: "Spa",
+                            description:
+                                "Đây là một trang web mà chắc hẳn chị em sẽ rất thích. Đó chính là spa làm đẹp.",
+                            tags: [
+                                {
+                                    name: "HTML",
+                                    color: "blue-text-gradient",
+                                },
+                                {
+                                    name: "CSS",
+                                    color: "green-text-gradient",
+                                },
+                                {
+                                    name: "JAVASCRIPT",
+                                    color: "pink-text-gradient",
+                                },
+                            ],
+                            image: "./spa.png",
+                            source_code_link: "https://mittomao.github.io/Cat_Layout_LepSpa/",
+                        },
+                    ],
+                },
+                succes: true
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    },
     // uploadImage: async (req, res) => {
     //     try {
     //         const { file } = req.body;

@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const adminRouter = require('./routes/');
 const clientRouter = require('./routes/client');
+const apiRouter = require('./routes/api');
 const bodyParser = require('body-parser');
 const session = require("express-session");
 const path = require("path");
@@ -56,6 +57,7 @@ app.use((req, res, next) => {
 
 //Routes
 app.use("/admin", adminRouter);
+app.use("/api", apiRouter);
 app.use("/", clientRouter);
 
 //connect db
