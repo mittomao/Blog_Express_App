@@ -338,7 +338,7 @@ module.exports = {
                                     color: "pink-text-gradient",
                                 },
                             ],
-                            image: "./nature.png",
+                            image: "./assets/nature.png",
                             source_code_link: "https://mittomao.github.io/Landing_01/",
                         },
                         {
@@ -359,7 +359,7 @@ module.exports = {
                                     color: "pink-text-gradient",
                                 },
                             ],
-                            image: "./travel.png",
+                            image: "./assets/travel.png",
                             source_code_link: "https://mittomao.github.io/travel1/",
                         },
                         {
@@ -380,7 +380,7 @@ module.exports = {
                                     color: "pink-text-gradient",
                                 },
                             ],
-                            image: "./spa.png",
+                            image: "./assets/spa.png",
                             source_code_link: "https://mittomao.github.io/Cat_Layout_LepSpa/",
                         },
                     ],
