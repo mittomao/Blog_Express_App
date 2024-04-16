@@ -6,6 +6,7 @@ const _USER_CON = require('./usersController')
 const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController')
 const imagesModel = require('../models/imagesModel');
+const dataApis = require('../api');
 
 class ResonposeDataAdmin {
     constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, account, action, dataComponent, componentName, useStyleClient, listImages }) {
@@ -300,91 +301,10 @@ module.exports = {
             console.error(error);
         }
     },
-    getAllProjects: async (req, res) => {
+    getAllJsonData: async (req, res) => {
         try {
             return res.status(200).json({
-                data: {
-                    settings: {
-                        dots: false,
-                        infinite: true,
-                        speed: 500,
-                        slidesToShow: 3,
-                        slidesToScroll: 1,
-                        responsive: [
-                            {
-                                breakpoint: 767,
-                                settings: {
-                                    slidesToShow: 1,
-                                }
-                            }
-                        ]
-                    },
-                    cards: [
-                        {
-                            name: "Natural landscape",
-                            description:
-                                "Đây là trang web mà tôi muốn giới thiệu tới mọi người về cảnh quan thiên nhiên đẹp.",
-                            tags: [
-                                {
-                                    name: "HTML",
-                                    color: "blue-text-gradient",
-                                },
-                                {
-                                    name: "CSS",
-                                    color: "green-text-gradient",
-                                },
-                                {
-                                    name: "JAVASCRIPT",
-                                    color: "pink-text-gradient",
-                                },
-                            ],
-                            image: "./assets/nature.png",
-                            source_code_link: "https://mittomao.github.io/Landing_01/",
-                        },
-                        {
-                            name: "Travel",
-                            description:
-                                "Đây là trang web giới thiệu về các tour du lịch",
-                            tags: [
-                                {
-                                    name: "HTML",
-                                    color: "blue-text-gradient",
-                                },
-                                {
-                                    name: "CSS",
-                                    color: "green-text-gradient",
-                                },
-                                {
-                                    name: "JAVASCRIPT",
-                                    color: "pink-text-gradient",
-                                },
-                            ],
-                            image: "./assets/travel.png",
-                            source_code_link: "https://mittomao.github.io/travel1/",
-                        },
-                        {
-                            name: "Spa",
-                            description:
-                                "Đây là một trang web mà chắc hẳn chị em sẽ rất thích. Đó chính là spa làm đẹp.",
-                            tags: [
-                                {
-                                    name: "HTML",
-                                    color: "blue-text-gradient",
-                                },
-                                {
-                                    name: "CSS",
-                                    color: "green-text-gradient",
-                                },
-                                {
-                                    name: "JAVASCRIPT",
-                                    color: "pink-text-gradient",
-                                },
-                            ],
-                            image: "./assets/spa.png",
-                            source_code_link: "https://mittomao.github.io/Cat_Layout_LepSpa/",
-                        },
-                    ],
-                },
+                data: dataApis,
                 succes: true
             });
         } catch (error) {
