@@ -60,6 +60,11 @@ module.exports = {
         return await blogModel.findByIdAndDelete(id);
     },
     Func_Get_Unique_By_Field: async (fieldName) => {
-        return await blogModel.distinct(fieldName);
+        return await blogModel.distinct(fieldName, {
+            $and: [
+                { [fieldName]: { $ne: null } },
+                { [fieldName]: { $ne: "" } }
+            ]
+        });
     }
 }
