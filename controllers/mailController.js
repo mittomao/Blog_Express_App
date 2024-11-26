@@ -15,14 +15,20 @@ const transporter = nodemailer.createTransport({
 exports.sendEmail = async (req, res) => {
 
     if (req.method !== "POST") {
-        return res.status(405).send("Phương thức không được hỗ trợ.");
+        return res.status(405).json({
+            success: false,
+            message: "Phương thức không được hỗ trợ.",
+        });
     }
 
     const { name, message } = req.body;
 
 
     if (!name || !message) {
-        return res.status(400).send("Thiếu thông tin cần thiết.");
+        return res.status(400).json({
+            success: false,
+            message: "Thiếu thông tin cần thiết.",
+        });
     }
 
     const mailOptions = {
@@ -39,9 +45,17 @@ exports.sendEmail = async (req, res) => {
         });
 
         await transporter.sendMail(mailOptions);
-        res.status(200).send("Email đã được gửi thành công.");
+
+        return res.status(200).json({
+            success: true,
+            message: "Email đã được gửi thành công.",
+        });
     } catch (error) {
         console.error("Lỗi gửi email:", error);
-        res.status(500).send("Gửi email thất bại.");
+        return res.status(500).json({
+            success: false,
+            message: "Gửi email thất bại.",
+            error: error.message,
+        });
     }
 };
