@@ -5,7 +5,7 @@ const mailController = require('../controllers/mailController')
 
 const apiRouter = express.Router();
 apiRouter.get('/datas', indexController.getAllJsonData);
-apiRouter.post('/sendemail', mailController.sendEmail);
+// apiRouter.post('/sendemail', mailController.sendEmail);
 
 
 module.exports = apiRouter;
