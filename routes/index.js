@@ -15,7 +15,7 @@ router.post('/login', index_Controller.login)
 router.get('/logout', index_Controller.logout)
 // Register
 router.get('/register', index_Controller.register)
-router.post('/register', index_Controller.register)
+//router.post('/register', index_Controller.register)
 // router.post('/login', index_Controller.login)
 // router.get('/profile', [middleware.checkLogin, index_Controller.profile])
 // router.get('/profile', [middleware.checkLogin, index_Controller.profile])
