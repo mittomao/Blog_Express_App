@@ -2180,7 +2180,7 @@ h5,
   color: #1eafed;
   padding: 5px;
   border-radius: 16% 42% / 35% 15%;
-  border: 1px solid #DD58D6; 
+  border: 1px solid #DD58D6;
   display: inline-block;
   text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #1eafed, 0 0 30px #1eafed, 0 0 40px #1eafed, 0 0 55px #1eafed, 0 0 75px #1eafed;
 }
@@ -2294,7 +2294,7 @@ h5,
 
 @media (min-width: 992px) {
   #wainiidev-main {
-    width: 75%;
+    width: 80%;
   }
 }
 
@@ -2387,7 +2387,7 @@ h5,
   position: fixed;
   left: -12px;
   top: 0px;
-  z-index: 9999;
+  z-index: 999999999;
   cursor: pointer;
   opacity: 1;
   visibility: hidden;
@@ -2451,6 +2451,13 @@ h5,
   background: transparent;
   color: #1eafed;
 }
+
+.btn.btn-success {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
 
 .btn.btn-white {
   background: #fff;

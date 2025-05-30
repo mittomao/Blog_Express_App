@@ -1,0 +1,337 @@
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100vh;
+        font-family: "Parisienne", cursive;
+        perspective: 1000px;
+        background: radial-gradient(circle at center, #200236, #000000 80%);
+        /* Đổi nền thành màu đen */
+    }
+
+    #scene {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.15s ease-out;
+    }
+
+    .falling-text {
+        position: absolute;
+        font-size: 20px;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 1;
+        transform-style: preserve-3d;
+        animation: fadeInOut 2s infinite alternate;
+        font-weight: bold;
+        user-select: none;
+        color: #fff;
+    }
+
+    .falling-text.text-1 {
+        text-shadow:
+            0 0 5px #25d7fb,
+            0 0 10px #25d7fb,
+            0 0 15px #25d7fb,
+            0 0 20px #25d7fb,
+            0 0 25px #25d7fb,
+            0 0 30px #25d7fb;
+    }
+
+    .falling-text.text-2 {
+        text-shadow:
+            0 0 5px #00ff66,
+            0 0 10px #00ff66,
+            0 0 15px #00ff66,
+            0 0 20px #00ff66,
+            0 0 25px #00ff66,
+            0 0 30px #00ff66;
+    }
+
+    .falling-text.text-3 {
+        text-shadow:
+            0 0 5px #ff63a2,
+            0 0 10px #ff63a2,
+            0 0 15px #ff63a2,
+            0 0 20px #ff63a2,
+            0 0 25px #ff63a2,
+            0 0 30px #ff63a2;
+    }
+
+    .heart,
+    .rose {
+        position: absolute;
+        pointer-events: none;
+        opacity: 1;
+        transform-style: preserve-3d;
+        animation: float 4s infinite ease-in-out;
+    }
+
+    .heart {
+        font-size: 30px;
+        transform: rotate(45deg);
+        color: #FF1177;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FF1177, 0 0 35px #FF1177, 0 0 40px #FF1177, 0 0 50px #FF1177, 0 0 75px #FF1177;
+        /* width: 50px;
+        height: 50px;
+        clip-path: url(#heart);
+        overflow: hidden; */
+    }
+
+    .heart img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        animation: scale3D 2s infinite ease-in-out;
+    }
+
+    .rose {
+        color: #e70a0a;
+        font-size: 20px;
+        transform: rotate(45deg);
+        text-shadow: 0 0 5px #5491a0, 0 0 10px #7092a7;
+    }
+
+    @keyframes fadeInOut {
+        from {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0.2;
+        }
+    }
+
+    @keyframes scale3D {
+        from {
+            transform: scale(1);
+        }
+
+        to {
+            transform: scale(1.2);
+        }
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+            opacity: 0;
+        }
+
+        50% {
+            transform: translateY(-10px);
+            opacity: 1;
+        }
+    }
+</style>
+
+<div class="back-love-form">
+    <a href="/qr-love" class="btn btn-primary">Chỉnh sửa lại</a>
+    <a href="" class="btn btn-success" onclick="copyLink()">Copy Link</a>
+</div>
+
+<div class="preview-love-page" id="preview-love-page" data-qr-text="<%= qrTexts.join(' ') %>">
+    <div id="scene"></div>
+    <svg width="0" height="0">
+        <defs>
+            <clipPath id="heart" clipPathUnits="objectBoundingBox">
+                <path d="M0.5,0.2 C0.35,-0.05,0,-0.01,0,0.3 
+               C0,0.5,0.25,0.7,0.5,1 
+               C0.75,0.7,1,0.5,1,0.3 
+               C1,-0.01,0.65,-0.05,0.5,0.2Z"></path>
+            </clipPath>
+        </defs>
+    </svg>
+</div>
+<script>
+    const qrTexts = document.getElementById("preview-love-page").dataset.qrText.split(",");
+
+    console.log("QR Texts:", qrTexts);
+
+    const texts = qrTexts;
+
+    let images = [
+        "https://i.pinimg.com/736x/77/86/1a/77861aa910507e41754f68b5d60699b6.jpg",
+        "https://i.pinimg.com/736x/c3/84/9e/c3849e2eba19a1e8155b7464f9b89da8.jpg",
+        "https://i.pinimg.com/736x/5f/3c/71/5f3c71b061d9d56cb00e5fc1dd9f5969.jpg",
+        "https://i.pinimg.com/736x/94/59/66/9459664d0858ec81ba249d98fdb4ee3c.jpg",
+        "https://i.pinimg.com/736x/d9/09/c0/d909c0b86ea1a4e65495785db03ef636.jpg"
+    ];
+
+    const scene = document.getElementById("scene");
+    let rotateX = 0, rotateY = 0;
+    let targetRotateX = 0, targetRotateY = 0;
+    const maxRotate = 30;
+
+    document.addEventListener("mousemove", (e) => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        targetRotateY = ((e.clientX - centerX) / centerX) * maxRotate;
+        targetRotateX = ((e.clientY - centerY) / centerY) * maxRotate;
+    });
+
+    let touchStartX = 0, touchStartY = 0;
+    document.addEventListener("touchstart", (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+
+    document.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        targetRotateY = ((touchX - centerX) / centerX) * maxRotate;
+        targetRotateX = ((touchY - centerY) / centerY) * maxRotate;
+    });
+
+    function copyLink() {
+        const url = window.location.href; // hoặc thay bằng link bạn muốn
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                alert("Đã copy link thành công!");
+            })
+            .catch(err => {
+                alert("Không thể copy link");
+                console.error(err);
+            });
+    }
+
+    function updateRotation() {
+        rotateX += (targetRotateX - rotateX) * 0.1;
+        rotateY += (targetRotateY - rotateY) * 0.1;
+        scene.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        requestAnimationFrame(updateRotation);
+    }
+    updateRotation();
+
+    function createFallingText(initial = false) {
+        const text = document.createElement("div");
+        text.className = `falling-text text-${Math.floor(Math.random() * 3) + 1}`;
+        text.innerText = texts[Math.floor(Math.random() * texts.length)];
+
+        const startX = Math.random() * window.innerWidth;
+        const zLayer = Math.random() * 400 - 200;
+        text.style.left = startX + "px";
+        text.style.fontSize = `${Math.random() * 20 + 18}px`;
+        text.style.transform = `translateZ(${zLayer}px)`;
+
+        // Xuất hiện ở vị trí ngẫu nhiên hoặc ở trên cùng
+        const randomStart = Math.random() < 0.5; // 50% bắt đầu từ vị trí ngẫu nhiên
+        const startY = randomStart
+            ? Math.random() * window.innerHeight // Ngẫu nhiên trong màn hình
+            : -50; // Từ trên rơi xuống
+
+        text.style.top = startY + "px";
+        scene.appendChild(text);
+
+        let posY = startY;
+        const speed = Math.random() * 2 + 0.5;
+
+        function animate() {
+            posY += speed;
+            text.style.top = posY + "px";
+
+            if (posY > window.innerHeight + 50) {
+                text.remove();
+            } else {
+                requestAnimationFrame(animate);
+            }
+        }
+
+        animate();
+    }
+
+
+    function createHeart(initial = false, initialY = -50) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "♡";//`<img src="${images[Math.floor(Math.random() * images.length)]}" alt="♡" />`;//"♡";
+
+        const startX = Math.random() * window.innerWidth;
+        const zLayer = Math.random() * 400 - 200;
+        heart.style.left = startX + "px";
+        heart.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-50px";
+        heart.style.transform = `translateZ(${zLayer}px)`;
+
+        scene.appendChild(heart);
+
+        let posY = initial ? parseFloat(heart.style.top) : -50;
+        const speed = Math.random() * 1.5 + 1;
+
+        function animateHeart() {
+            posY += speed;
+            heart.style.top = posY + "px";
+
+            if (posY > window.innerHeight + 50) {
+                heart.remove();
+            } else {
+                requestAnimationFrame(animateHeart);
+            }
+        }
+        animateHeart();
+    }
+
+    function createRose(initial = false, initialY = -50) {
+        const rose = document.createElement("div");
+        rose.className = "rose";
+        rose.innerText = "🌺";
+
+        const startX = Math.random() * window.innerWidth;
+        const zLayer = Math.random() * 400 - 200;
+        rose.style.left = startX + "px";
+        rose.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-50px";
+        rose.style.transform = `translateZ(${zLayer}px) rotate(${Math.random() * 360}deg)`;
+
+        scene.appendChild(rose);
+
+        let posY = initial ? parseFloat(rose.style.top) : -50;
+        const speed = Math.random() * 1.5 + 1;
+
+        function animateRose() {
+            posY += speed;
+            rose.style.top = posY + "px";
+
+            if (posY > window.innerHeight + 50) {
+                rose.remove();
+            } else {
+                requestAnimationFrame(animateRose);
+            }
+        }
+        animateRose();
+    }
+
+    // Kiểm tra nếu là mobile
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    // Điều chỉnh số lượng tùy theo thiết bị
+    const initialTextCount = isMobile ? 10 : 30;
+    const initialHeartCount = isMobile ? 3 : 10;
+    const initialRoseCount = isMobile ? 2 : 5;
+
+    const textInterval = isMobile ? 800 : 300;
+    const heartInterval = isMobile ? 2000 : 1000;
+    const roseInterval = isMobile ? 2500 : 1000;
+
+    // Khởi tạo ban đầu với mật độ phù hợp
+    for (let i = 0; i < initialTextCount; i++) {
+        createFallingText(true);
+    }
+    for (let i = 0; i < initialHeartCount; i++) {
+        createHeart(true);
+    }
+    for (let i = 0; i < initialRoseCount; i++) {
+        createRose(true);
+    }
+
+    // Sinh thêm phần tử theo chu kỳ
+    setInterval(createFallingText, textInterval);
+    setInterval(createHeart, heartInterval);
+    setInterval(createRose, roseInterval);
+</script>

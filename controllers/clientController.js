@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar=false, isSearch= false }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "" }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -22,6 +22,8 @@ class ResonposeDataClient {
         this.aboutAuthor = aboutAuthor;
         this.isHideSidebar = isHideSidebar;
         this.isSearch = isSearch;
+        this.qrLink = qrLink;
+        this.qrTexts = qrTexts;
     }
 }
 
@@ -46,7 +48,7 @@ module.exports = {
     home: async (req, res) => {
         try {
             let { page = 1 } = req.params;
-            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, {status: true});
+            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, { status: true });
             const dataHome = await GetDataInHomePage();
             // End 
 
@@ -110,7 +112,7 @@ module.exports = {
                         fullLayout: true,
                         isHideSidebar: true
                     })
-                    return res.render("detail-post.ejs", {...response, aboutAuthor: aboutAuthor[0]});
+                    return res.render("detail-post.ejs", { ...response, aboutAuthor: aboutAuthor[0] });
                 });
             }
 
@@ -124,7 +126,7 @@ module.exports = {
             let dataPost = await _BLOG_CON.Func_Get_ALl_Post(page, {
                 tag: { "$regex": tag, "$options": "i" },
                 status: true
-             });
+            });
             const dataHome = await GetDataInHomePage();
             // End 
 
@@ -252,6 +254,66 @@ module.exports = {
             }
         } catch (error) {
             console.error(error);
+            res.redirect('/page-404');
+        }
+    },
+    qrLove: async (req, res) => {
+        try {
+            return res.render("qr-love.ejs",
+                new ResonposeDataClient({
+                    fullLayout: false,
+                    title: "QR Love Page",
+                    layout: "home-layout",
+                    isAdmin: false
+                }));
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    createQRLove: async (req, res) => {
+        try {
+            const { texts } = req.body;
+            if (!texts || texts.length === 0) {
+                return res.redirect('/qr-love');
+            }
+
+            var loveText = texts.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
+                .join(",");
+
+            console.log("loveText: ", loveText);
+
+            var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveText });
+            return res.redirect(`/qr-love/preview?id=${id}`);
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    preview: async (req, res) => {
+        try {
+            const id = req.query.id;
+            console.log("id: ", id);
+
+            if (!id) {
+                return res.status(400).send('Thiếu tham số id');
+            }
+
+            const doc = await _BLOG_CON.Func_Get_QR_By_Id(id);
+            console.log("doc: ", doc);
+            
+            if (!doc) {
+                return res.status(404).send('Không tìm thấy dữ liệu');
+            }
+            return res.render("preview-love-page.ejs",
+                new ResonposeDataClient({
+                    fullLayout: false,
+                    title: "Preview Love Page",
+                    layout: "home-layout",
+                    isAdmin: false,
+                    qrTexts: doc.texts
+                }));
+        } catch (error) {
             res.redirect('/page-404');
         }
     }

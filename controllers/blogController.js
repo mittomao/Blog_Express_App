@@ -1,5 +1,6 @@
 const blogModel = require('../models/blogModel');
 const tagsModel = require('../models/tagsModel');
+const qrLoveModel = require('../models/qrLoveModel');
 
 module.exports = {
     // Get Post
@@ -66,5 +67,14 @@ module.exports = {
                 { [fieldName]: { $ne: "" } }
             ]
         });
-    }
+    },
+    // QR Code Love
+    Func_Create_QR_LOVE: async (obj) => {
+        const { texts } = obj;
+        const newQR = await qrLoveModel.create({ texts });
+        return newQR._id;
+    },
+    Func_Get_QR_By_Id: async (id) => {
+        return await qrLoveModel.findById(id);
+    },
 }
