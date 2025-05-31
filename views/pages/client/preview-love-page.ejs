@@ -211,6 +211,9 @@
     }
     updateRotation();
 
+    // Kiểm tra nếu là mobile
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
     function createFallingText(initial = false) {
         const text = document.createElement("div");
         text.className = `falling-text text-${Math.floor(Math.random() * 3) + 1}`;
@@ -219,20 +222,23 @@
         const startX = Math.random() * window.innerWidth;
         const zLayer = Math.random() * 400 - 200;
         text.style.left = startX + "px";
-        text.style.fontSize = `${Math.random() * 20 + 18}px`;
+        text.style.fontSize = `${Math.random() * 20 + (isMobile ? 14 : 18)}px`;
         text.style.transform = `translateZ(${zLayer}px)`;
 
         // Xuất hiện ở vị trí ngẫu nhiên hoặc ở trên cùng
-        const randomStart = Math.random() < 0.5; // 50% bắt đầu từ vị trí ngẫu nhiên
+        const randomStart = Math.random() < 0.6; // 60% bắt đầu từ vị trí ngẫu nhiên
         const startY = randomStart
             ? Math.random() * window.innerHeight // Ngẫu nhiên trong màn hình
             : -50; // Từ trên rơi xuống
 
         text.style.top = startY + "px";
         scene.appendChild(text);
+        setTimeout(() => {
+            text.remove();
+        }, (isMobile ? 3000 : 5000));
 
         let posY = startY;
-        const speed = Math.random() * 2 + 0.5;
+        const speed = Math.random() * 2 + (isMobile ? 2.00 : 0.5);
 
         function animate() {
             posY += speed;
@@ -257,13 +263,16 @@
         const startX = Math.random() * window.innerWidth;
         const zLayer = Math.random() * 400 - 200;
         heart.style.left = startX + "px";
-        heart.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-50px";
+        heart.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-20px";
         heart.style.transform = `translateZ(${zLayer}px)`;
 
         scene.appendChild(heart);
+        setTimeout(() => {
+            heart.remove();
+        }, (isMobile ? 3000 : 4000));
 
-        let posY = initial ? parseFloat(heart.style.top) : -50;
-        const speed = Math.random() * 1.5 + 1;
+        let posY = initial ? parseFloat(heart.style.top) : -20;
+        const speed = Math.random() * 1.5 + (isMobile ? 2.00 : 1);
 
         function animateHeart() {
             posY += speed;
@@ -286,13 +295,16 @@
         const startX = Math.random() * window.innerWidth;
         const zLayer = Math.random() * 400 - 200;
         rose.style.left = startX + "px";
-        rose.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-50px";
+        rose.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-20px";
         rose.style.transform = `translateZ(${zLayer}px) rotate(${Math.random() * 360}deg)`;
 
         scene.appendChild(rose);
+        setTimeout(() => {
+            rose.remove();
+        }, (isMobile ? 3000 : 4000));
 
-        let posY = initial ? parseFloat(rose.style.top) : -50;
-        const speed = Math.random() * 1.5 + 1;
+        let posY = initial ? parseFloat(rose.style.top) : -20;
+        const speed = Math.random() * 1.5 + (isMobile ? 2.00 : 1);
 
         function animateRose() {
             posY += speed;
@@ -307,17 +319,14 @@
         animateRose();
     }
 
-    // Kiểm tra nếu là mobile
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
     // Điều chỉnh số lượng tùy theo thiết bị
     const initialTextCount = isMobile ? 10 : 30;
     const initialHeartCount = isMobile ? 3 : 10;
     const initialRoseCount = isMobile ? 2 : 5;
 
-    const textInterval = isMobile ? 800 : 300;
-    const heartInterval = isMobile ? 2000 : 1000;
-    const roseInterval = isMobile ? 2500 : 1000;
+    const textInterval = isMobile ? 500 : 200;
+    const heartInterval = isMobile ? 800 : 500;
+    const roseInterval = isMobile ? 1000 : 600;
 
     // Khởi tạo ban đầu với mật độ phù hợp
     for (let i = 0; i < initialTextCount; i++) {
