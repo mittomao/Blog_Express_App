@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "" }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "", isPreview = false }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -24,6 +24,7 @@ class ResonposeDataClient {
         this.isSearch = isSearch;
         this.qrLink = qrLink;
         this.qrTexts = qrTexts;
+        this.isPreview = isPreview;
     }
 }
 
@@ -272,7 +273,7 @@ module.exports = {
     },
     createQRLove: async (req, res) => {
         try {
-            const { texts } = req.body;
+            const { texts, isPreview } = req.body;
             if (!texts || texts.length === 0) {
                 return res.redirect('/qr-love');
             }
@@ -285,14 +286,14 @@ module.exports = {
             console.log("loveText: ", loveText);
 
             var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveText });
-            return res.redirect(`/qr-love/preview?id=${id}`);
+            return res.redirect(`/qr-love/preview?id=${id}&isPreview=${isPreview}`);
         } catch (error) {
             res.redirect('/page-404');
         }
     },
     preview: async (req, res) => {
         try {
-            const id = req.query.id;
+            const { id, isPreview } = req.query;
             console.log("id: ", id);
 
             if (!id) {
@@ -309,9 +310,10 @@ module.exports = {
                 new ResonposeDataClient({
                     fullLayout: false,
                     title: "Preview Love Page",
-                    layout: "home-layout",
+                    layout: isPreview ? "home-layout" :"default-layout",
                     isAdmin: false,
-                    qrTexts: doc.texts
+                    qrTexts: doc.texts,
+                    isPreview: isPreview,
                 }));
         } catch (error) {
             res.redirect('/page-404');
