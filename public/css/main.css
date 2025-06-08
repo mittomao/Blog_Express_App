@@ -239,6 +239,12 @@
   right: -15px;
 }
 
+.preview-container img {
+  max-width: 150px;
+  margin: 10px;
+  border: 1px solid #ccc;
+}
+
 .qr-love-form {
   width: 75%;
   margin: 0 auto;
