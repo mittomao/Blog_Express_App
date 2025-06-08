@@ -173,8 +173,20 @@
                 </defs>
             </svg>
         </div>
-
+        <audio id="bgMusic" autoplay loop muted>
+            <source src="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749373498/uploads/hstlo7adlnkddneobkel.mp3"
+                type="audio/mpeg">
+            Trình duyệt của bạn không hỗ trợ audio.
+        </audio>
         <script>
+            document.addEventListener('click', () => {
+                const music = document.getElementById('bgMusic');
+                if (music) {
+                    music.muted = false;
+                    music.play();
+                }
+            });
+
             const previewLovePage = document.getElementById("preview-love-page");
 
             if (previewLovePage) {
