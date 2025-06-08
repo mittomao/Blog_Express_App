@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "", isPreview = false }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "", isPreview = false, qrImages = "" }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -25,6 +25,7 @@ class ResonposeDataClient {
         this.qrLink = qrLink;
         this.qrTexts = qrTexts;
         this.isPreview = isPreview;
+        this.qrImages = qrImages;
     }
 }
 
@@ -272,20 +273,21 @@ module.exports = {
         }
     },
     createQRLove: async (req, res) => {
-        try {
+        try {     
             const { texts, isPreview } = req.body;
             if (!texts || texts.length === 0) {
                 return res.redirect('/qr-love');
             }
 
-            var loveText = texts.split('\n')
+
+            var loveTexts = texts.split('\n')
                 .map(line => line.trim())
                 .filter(line => line.length > 0)
                 .join(",");
 
-            console.log("loveText: ", loveText);
+            const imageUrls = req.files.map(file => file.path).join(',');
 
-            var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveText });
+            var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls });
             return res.redirect(`/qr-love/preview?id=${id}&isPreview=${isPreview}`);
         } catch (error) {
             res.redirect('/page-404');
@@ -314,6 +316,7 @@ module.exports = {
                     isAdmin: false,
                     qrTexts: doc.texts,
                     isPreview: isPreview,
+                    qrImages: doc.images,
                 }));
         } catch (error) {
             res.redirect('/page-404');

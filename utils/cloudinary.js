@@ -1,5 +1,7 @@
 'use strict';
 
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
@@ -8,6 +10,17 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true
 });
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'uploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
+    public_id: (req, file) => `${Date.now()}-${file.originalname}`
+  }
+});
+
+const upload = multer({ storage });
 
 var self = module.exports = {
     getAllResources: async () => {
@@ -26,14 +39,5 @@ var self = module.exports = {
             });
         return allImage;
     },
-    // upload: async (image) => {
-    //     const otp = {
-    //         folder: "Blog",
-    //     };
-
-    //     await cloudinary.uploader
-    //         .upload(image, otp)
-    //         .then(result => console.log("Uploaded", result))
-    //         .catch(error => console.log(error));
-    // }
+    upload
 }

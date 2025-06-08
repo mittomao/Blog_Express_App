@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express')
 const clientController = require('../controllers/clientController')
+const { upload } = require('../utils/cloudinary')
 
 const clientRouter = express.Router();
 clientRouter.get('/', clientController.home)
@@ -14,7 +15,7 @@ clientRouter.get('/contact', clientController.contact)
 clientRouter.post('/search/:title', clientController.search)
 clientRouter.get('/topic/:title', clientController.filterTopic)
 clientRouter.get('/qr-love', clientController.qrLove)
-clientRouter.post('/qr-love', clientController.createQRLove)
+clientRouter.post('/qr-love', upload.array('images', 10),clientController.createQRLove)
 clientRouter.get('/qr-love/preview', clientController.preview)
 clientRouter.get('/page-404', clientController.pageNotFound)
 clientRouter.get('*', (req, res) => res.redirect('/page-404'))

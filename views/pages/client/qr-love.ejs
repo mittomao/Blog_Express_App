@@ -1,12 +1,18 @@
 <div class="qr-love-form">
     <h1 class="text-center">Dành tặng những điều tuyệt vời nhất đến với những người yêu thương</h1>
-    <form action="/qr-love" method="POST">
+    <form action="/qr-love" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Nhập văn bản bạn muốn hiển thị</label>
-            <textarea class="form-control"  id="exampleFormControlTextarea1" name="texts" rows="5"></textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="texts" rows="5"></textarea>
             <p class="note">Ghi chú: Mỗi dòng là 1 lời nhắn</p>
         </div>
         <input type="hidden" name="isPreview" value="true" />
+        <div class="form-group">
+            <label for="images" class="form-label">Chọn hình ảnh</label>
+            <input class="form-control" type="file" name="images" id="images" accept="image/*" multiple />
+            <div class="preview-container" id="previewContainer"></div>
+
+        </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary mb-3">Preview</button>
         </div>

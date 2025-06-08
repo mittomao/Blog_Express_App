@@ -7,6 +7,10 @@ const qrLove = new Schema({
         type: String,
         required: true
     }],
+    images: [{
+        type: String,
+        required: false
+    }],
 }, 
 { collection: 'qr-love', timestamps: true })
 

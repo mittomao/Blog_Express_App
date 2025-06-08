@@ -34,7 +34,7 @@ $(function () {
     if ($('#editor-content').length) {
         tinymce && tinymce.init({
             selector: "#editor-content",
-            plugins: "file-manager,link,image,media,table,advlist,lists,preview",
+            plugins: "file-manager,link,image,media,table,advlist,lists,preview,code",
             toolbar: "link | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist",
             // lists_indent_on_tab: false,
             Flmngr: {

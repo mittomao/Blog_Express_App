@@ -70,8 +70,8 @@ module.exports = {
     },
     // QR Code Love
     Func_Create_QR_LOVE: async (obj) => {
-        const { texts } = obj;
-        const newQR = await qrLoveModel.create({ texts });
+        const { texts, images } = obj;
+        const newQR = await qrLoveModel.create({ texts, images });
         return newQR._id;
     },
     Func_Get_QR_By_Id: async (id) => {
