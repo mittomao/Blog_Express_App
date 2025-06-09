@@ -1,4 +1,4 @@
-$('.js-topic-carousel').slick({
+$('.js-topic-carousel').length && $('.js-topic-carousel').slick({
     arrows: true,
     dots: false,
     infinite: false,

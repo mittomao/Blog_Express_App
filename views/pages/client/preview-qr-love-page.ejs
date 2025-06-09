@@ -9,28 +9,6 @@
         background: radial-gradient(circle at center, #200236, #000000 80%);
     }
 
-    .preview-love-page {
-        height: calc(100vh - 100px);
-        position: relative;
-    }
-
-    .back-love-form {
-        display: block;
-        position: relative;
-        z-index: 999999999;
-        margin-top: 15px;
-
-        @media (max-width: 576px) {
-            display: flex;
-            justify-content: end;
-            margin-top: 0px;
-
-            a {
-                margin: 0 5px;
-            }
-        }
-    }
-
     #scene {
         position: absolute;
         width: 100%;
@@ -148,13 +126,13 @@
 </style>
 <% if (isPreview) { %>
     <div class="back-love-form">
-        <a href="/qr-love" class="btn btn-primary">Chỉnh sửa lại</a>
-        <a href="" class="btn btn-success js-copy-link">Copy Link</a>
+        <a href="/projects/qr-love" class="btn btn-primary">Chỉnh sửa lại</a>
+        <a href="#" class="btn btn-success js-copy-link">Copy Link</a>
     </div>
     <% } %>
 
-        <div class="preview-love-page" id="preview-love-page" data-qr-text="<%= qrTexts.join(' ') %>"
-            data-qr-images="<%= qrImages.join(' ') %>">
+        <div class="preview-love-page" id="preview-qr-love-page" data-qr-text="<%= qrTexts.join(' ') %>"
+            data-qr-images="<%= projectImages.join(' ') %>" data-page-preview>
             <div id="scene"></div>
             <svg width="0" height="0">
                 <defs>
@@ -173,19 +151,11 @@
             Trình duyệt của bạn không hỗ trợ audio.
         </audio>
         <script>
-            document.addEventListener('click', () => {
-                const music = document.getElementById('bgMusic');
-                if (music) {
-                    music.muted = false;
-                    music.play();
-                }
-            });
-
-            const previewLovePage = document.getElementById("preview-love-page");
+            const previewLovePage = document.getElementById("preview-qr-love-page");
 
             if (previewLovePage) {
-                const qrTexts = previewLovePage && previewLovePage.dataset.qrText.split(",");
-                const qrImages = previewLovePage && previewLovePage.dataset.qrImages.split(",");
+                const qrTexts = previewLovePage.dataset.qrText.split(",");
+                const qrImages = previewLovePage.dataset.qrImages.split(",");
 
                 const texts = qrTexts;
                 let images = qrImages;
@@ -218,24 +188,6 @@
                     targetRotateY = ((touchX - centerX) / centerX) * maxRotate;
                     targetRotateX = ((touchY - centerY) / centerY) * maxRotate;
                 });
-
-                const copyLinkButton = document.querySelector(".js-copy-link");
-                copyLinkButton && copyLinkButton.addEventListener("click", copyLink);
-
-                function copyLink() {
-                    const url = window.location.href; // hoặc thay bằng link bạn muốn
-                    // Xóa tham số isPreview
-                    const urlObj = new URL(url);
-                    urlObj.searchParams.delete("isPreview");
-                    navigator.clipboard.writeText(urlObj.toString())
-                        .then(() => {
-                            alert("Đã copy link thành công!");
-                        })
-                        .catch(err => {
-                            alert("Không thể copy link");
-                            console.error(err);
-                        });
-                }
 
                 function updateRotation() {
                     rotateX += (targetRotateX - rotateX) * 0.1;

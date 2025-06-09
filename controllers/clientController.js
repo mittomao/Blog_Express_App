@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "", isPreview = false, qrImages = "" }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "", isPreview = false, projectImages = "", fireworkTexts = "" }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -25,7 +25,8 @@ class ResonposeDataClient {
         this.qrLink = qrLink;
         this.qrTexts = qrTexts;
         this.isPreview = isPreview;
-        this.qrImages = qrImages;
+        this.projectImages = projectImages;
+        this.fireworkTexts = fireworkTexts;
     }
 }
 
@@ -259,6 +260,7 @@ module.exports = {
             res.redirect('/page-404');
         }
     },
+    // StartProject QR Love
     qrLove: async (req, res) => {
         try {
             return res.render("qr-love.ejs",
@@ -276,7 +278,7 @@ module.exports = {
         try {     
             const { texts, isPreview } = req.body;
             if (!texts || texts.length === 0) {
-                return res.redirect('/qr-love');
+                return res.redirect('/projects/qr-love');
             }
 
 
@@ -288,12 +290,12 @@ module.exports = {
             const imageUrls = req.files.map(file => file.path).join(',');
 
             var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls });
-            return res.redirect(`/qr-love/preview?id=${id}&isPreview=${isPreview}`);
+            return res.redirect(`/projects/qr-love/preview?id=${id}&isPreview=${isPreview}`);
         } catch (error) {
             res.redirect('/page-404');
         }
     },
-    preview: async (req, res) => {
+    qrPreview: async (req, res) => {
         try {
             const { id, isPreview } = req.query;
             console.log("id: ", id);
@@ -303,23 +305,86 @@ module.exports = {
             }
 
             const doc = await _BLOG_CON.Func_Get_QR_By_Id(id);
-            console.log("doc: ", doc);
+            console.log("QR Item: ", doc);
             
             if (!doc) {
                 return res.status(404).send('Không tìm thấy dữ liệu');
             }
-            return res.render("preview-love-page.ejs",
+            return res.render("preview-qr-love-page.ejs",
                 new ResonposeDataClient({
                     fullLayout: false,
-                    title: "Preview Love Page",
+                    title: "Preview QR Love Page",
                     layout: isPreview ? "home-layout" :"default-layout",
                     isAdmin: false,
                     qrTexts: doc.texts,
                     isPreview: isPreview,
-                    qrImages: doc.images,
+                    projectImages: doc.images,
                 }));
         } catch (error) {
             res.redirect('/page-404');
         }
-    }
+    },
+    // End Project QR Love
+
+    // Start Project Firework Love
+    fireworkLove: async (req, res) => {
+        try {
+            return res.render("firework-love.ejs",
+                new ResonposeDataClient({
+                    fullLayout: false,
+                    title: "Firework Love Page",
+                    layout: "home-layout",
+                    isAdmin: false
+                }));
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+
+    createFireworkLove: async (req, res) => {
+        try {     
+            const { texts, isPreview } = req.body;
+            if (!texts || texts.length === 0) {
+                return res.redirect('/projects/firework-love');
+            }
+
+            const imageUrls = req.files.map(file => file.path).join(',');
+
+            var id = await _BLOG_CON.Func_Create_Firework_LOVE({ texts, images: imageUrls });
+            return res.redirect(`/projects/firework-love/preview?id=${id}&isPreview=${isPreview}`);
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+
+    fireworkPreview: async (req, res) => {
+        try {
+            const { id, isPreview } = req.query;
+            console.log("id: ", id);
+
+            if (!id) {
+                return res.status(400).send('Thiếu tham số id');
+            }
+
+            const doc = await _BLOG_CON.Func_Get_Firework_By_Id(id);
+            console.log("Firework Item: ", doc);
+            
+            if (!doc) {
+                return res.status(404).send('Không tìm thấy dữ liệu');
+            }
+            return res.render("preview-firework-love-page.ejs",
+                new ResonposeDataClient({
+                    fullLayout: false,
+                    title: "Preview Firework Love Page",
+                    layout: isPreview ? "home-layout" :"default-layout",
+                    isAdmin: false,
+                    fireworkTexts: doc.texts,
+                    isPreview: isPreview,
+                    projectImages: doc.images,
+                }));
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    // End Project Firework Love
 }

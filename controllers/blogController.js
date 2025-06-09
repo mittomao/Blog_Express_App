@@ -1,6 +1,7 @@
 const blogModel = require('../models/blogModel');
 const tagsModel = require('../models/tagsModel');
 const qrLoveModel = require('../models/qrLoveModel');
+const fireworkLoveModel = require('../models/fireworkLoveModel');
 
 module.exports = {
     // Get Post
@@ -76,5 +77,14 @@ module.exports = {
     },
     Func_Get_QR_By_Id: async (id) => {
         return await qrLoveModel.findById(id);
+    },
+    // Firework Love
+    Func_Create_Firework_LOVE: async (obj) => {
+        const { texts, images } = obj;
+        const newFirework = await fireworkLoveModel.create({ texts, images });
+        return newFirework._id;
+    },
+    Func_Get_Firework_By_Id: async (id) => {
+        return await fireworkLoveModel.findById(id);
     },
 }

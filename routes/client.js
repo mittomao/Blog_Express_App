@@ -14,9 +14,15 @@ clientRouter.get('/about', clientController.about)
 clientRouter.get('/contact', clientController.contact)
 clientRouter.post('/search/:title', clientController.search)
 clientRouter.get('/topic/:title', clientController.filterTopic)
-clientRouter.get('/qr-love', clientController.qrLove)
-clientRouter.post('/qr-love', upload.array('images', 10),clientController.createQRLove)
-clientRouter.get('/qr-love/preview', clientController.preview)
+// Router Project
+clientRouter.get('/projects/qr-love', clientController.qrLove)
+clientRouter.post('/projects/qr-love', upload.array('images', 10),clientController.createQRLove)
+clientRouter.get('/projects/qr-love/preview', clientController.qrPreview)
+
+clientRouter.get('/projects/firework-love', clientController.fireworkLove)
+clientRouter.post('/projects/firework-love', upload.array('images', 10),clientController.createFireworkLove)
+clientRouter.get('/projects/firework-love/preview', clientController.fireworkPreview)
+// End Router Project
 clientRouter.get('/page-404', clientController.pageNotFound)
 clientRouter.get('*', (req, res) => res.redirect('/page-404'))
 
