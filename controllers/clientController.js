@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "", isPreview = false, projectImages = "", fireworkTexts = "" }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "" }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -24,7 +24,6 @@ class ResonposeDataClient {
         this.isSearch = isSearch;
         this.qrLink = qrLink;
         this.qrTexts = qrTexts;
-        this.isPreview = isPreview;
         this.projectImages = projectImages;
         this.fireworkTexts = fireworkTexts;
     }
@@ -276,7 +275,7 @@ module.exports = {
     },
     createQRLove: async (req, res) => {
         try {     
-            const { texts, isPreview } = req.body;
+            const { texts } = req.body;
             if (!texts || texts.length === 0) {
                 return res.redirect('/projects/qr-love');
             }
@@ -290,14 +289,14 @@ module.exports = {
             const imageUrls = req.files.map(file => file.path).join(',');
 
             var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls });
-            return res.redirect(`/projects/qr-love/preview?id=${id}&isPreview=${isPreview}`);
+            return res.redirect(`/projects/qr-love/preview?id=${id}`);
         } catch (error) {
             res.redirect('/page-404');
         }
     },
     qrPreview: async (req, res) => {
         try {
-            const { id, isPreview } = req.query;
+            const { id } = req.query;
             console.log("id: ", id);
 
             if (!id) {
@@ -314,10 +313,9 @@ module.exports = {
                 new ResonposeDataClient({
                     fullLayout: false,
                     title: "Preview QR Love Page",
-                    layout: isPreview ? "home-layout" :"default-layout",
+                    layout: "default-layout",
                     isAdmin: false,
                     qrTexts: doc.texts,
-                    isPreview: isPreview,
                     projectImages: doc.images,
                 }));
         } catch (error) {
@@ -342,16 +340,19 @@ module.exports = {
     },
 
     createFireworkLove: async (req, res) => {
-        try {     
-            const { texts, isPreview } = req.body;
+        try {
+            const { texts } = req.body;
             if (!texts || texts.length === 0) {
                 return res.redirect('/projects/firework-love');
             }
 
             const imageUrls = req.files.map(file => file.path).join(',');
 
+            console.log("texts: ", texts);
+            console.log("imageUrls: ", imageUrls);
+
             var id = await _BLOG_CON.Func_Create_Firework_LOVE({ texts, images: imageUrls });
-            return res.redirect(`/projects/firework-love/preview?id=${id}&isPreview=${isPreview}`);
+            return res.redirect(`/projects/firework-love/?id=${id}`);
         } catch (error) {
             res.redirect('/page-404');
         }
@@ -359,7 +360,7 @@ module.exports = {
 
     fireworkPreview: async (req, res) => {
         try {
-            const { id, isPreview } = req.query;
+            const { id } = req.query;
             console.log("id: ", id);
 
             if (!id) {
@@ -376,10 +377,9 @@ module.exports = {
                 new ResonposeDataClient({
                     fullLayout: false,
                     title: "Preview Firework Love Page",
-                    layout: isPreview ? "home-layout" :"default-layout",
+                    layout: "default-layout",
                     isAdmin: false,
                     fireworkTexts: doc.texts,
-                    isPreview: isPreview,
                     projectImages: doc.images,
                 }));
         } catch (error) {
