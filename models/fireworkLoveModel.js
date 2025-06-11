@@ -11,6 +11,10 @@ const fireworkLove = new Schema({
         type: String,
         required: false
     }],
+    music: {
+        type: String,
+        required: false
+    },
 }, {
     collection: 'firework-love',
     timestamps: true

@@ -80,8 +80,8 @@ module.exports = {
     },
     // Firework Love
     Func_Create_Firework_LOVE: async (obj) => {
-        const { texts, images } = obj;
-        const newFirework = await fireworkLoveModel.create({ texts, images });
+        const { texts, images, music } = obj;
+        const newFirework = await fireworkLoveModel.create({ texts, images, music });
         return newFirework._id;
     },
     Func_Get_Firework_By_Id: async (id) => {

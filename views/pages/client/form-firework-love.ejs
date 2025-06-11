@@ -1,0 +1,79 @@
+<div class="firework-love-form" data-page-create>
+    <div class="intro-text text-center my-4 px-3">
+        <h4 class="font-weight-bold mb-2 text-love">Tình Yêu Luôn Đến Từ Những Thứ Nhỏ Nhặt Nhất</h4>
+        <p class="lead mb-0 text-muted">Hãy Dành Cho Những Người Bạn Yêu Thương Trang Web Này Nhé!</p>
+    </div>
+
+    <div class="container bg-white p-4 rounded shadow-sm">
+        <form action="/projects/firework-love" method="POST" enctype="multipart/form-data">
+            <h4 class="mb-3">📝 Nhập chữ:</h4>
+            <div id="text-container">
+                <div class="form-group mb-2 default">
+                    <input type="text" id="loveName" name="texts" aria-describedby="noteTexts" class="form-control"
+                        placeholder="Nhập văn bản..." />
+                    <small id="noteTexts" class="form-text text-muted">Văn bản lí tưởng là tên hoặc văn bản từ 3 - 5 kí
+                        tự</small>
+
+                    <!-- <div class="input-group-append">
+                        <button type="button" class="btn btn-white js-remove-input">✖</button>
+                    </div> -->
+                </div>
+            </div>
+            <!-- <button type="button" class="btn btn-outline-primary btn-sm js-add-input">+ Thêm chữ</button> -->
+
+            <hr class="my-4">
+
+            <div class="form-group">
+                <label for="images" class="form-label font-weight-bold">🖼 Chọn hình ảnh</label>
+
+                <div class="custom-file mb-2">
+                    <input type="file" class="custom-file-input" name="images" id="images" accept="image/*" multiple>
+                    <label class="custom-file-label" for="images">Chọn ảnh...</label>
+                </div>
+
+                <button type="button" class="btn btn-danger btn-sm mb-3" id="clearImages">
+                    🗑 Xóa tất cả ảnh
+                </button>
+
+                <div class="row" id="previewContainer"></div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="form-group">
+                <label for="music">🎵 Chọn nhạc nền (nếu muốn):</label>
+                <select id="music" class="form-control custom-select" name="music">
+                    <option value="">-- Không nhạc --</option>
+                    <option value="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749660484/uploads/musics/anh_nang_cua_anh.mp3">Ánh nắng của anh</option>
+                    <option value="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749660484/uploads/musics/bat_coc_con_tim.mp3">Bắt cóc con tim</option>
+                    <option value="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749660484/uploads/musics/yes_i_do.mp3">Yes I Do</option>
+                    <option value="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749660484/uploads/musics/don_gian_anh_yeu_em.mp3">Đơn giản anh yêu em</option>
+                    <option value="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749660484/uploads/musics/lo_nhu_anh_yeu_em.mp3">Lỡ như anh yêu em</option>
+                    <option value="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749660484/uploads/musics/hpbd.mp3">Happy Birth Day</option>
+                </select>
+            </div>
+
+            <hr class="my-4">
+
+            <button type="submit" class="btn btn-primary btn-block mb-3" id="generate-link">✨ Tạo Link</button>
+
+            <div class="form-group">
+                <label>🔗 Link kết quả:</label>
+                <input type="text" class="form-control" id="link-result" readonly>
+                <button type="button" class="btn btn-secondary copy-btn js-copy-link">📋 Copy link</button>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="form-group">
+                <h4 class="mt-3">🌎 Preview website</h4>
+                <div class="iframe-preview mt-3">
+                    <div class="thumbnail text-muted text-center">
+                        Trang web demo sẽ xuất hiện tại đây
+                    </div>
+                    <iframe id="iframePreview" src="" frameborder="0"></iframe>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

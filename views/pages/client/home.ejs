@@ -3,11 +3,12 @@
         <a href="/"><strong>............Wainii Blog..............</strong></a>
         <!-- <span>Welcome To Blog</span> -->
     </h1>
-
+    <h1 class="mb-4 logo-mobile"><a href="index.html"
+            style="background-image: url(<%=process.env.IMAGE_PREFIX%>/fire.jpg);">Wainii <span>Blogger</span></a></h1>
     <div class="home-component">
         <%- include('../../components/c_popular-articles.ejs') %>
     </div>
-    
+
     <!-- <h1 class="title-main">
         <img src="<%= process.env.IMAGE_PREFIX %>/gym.png" alt="">
         <span>Topic</span>   
@@ -16,15 +17,13 @@
     <div class="home-component">
         <%- include('../../components/c_topic.ejs') %>
     </div> -->
-    
-    <h1 class="mb-4 logo-mobile"><a href="index.html"
-        style="background-image: url(<%=process.env.IMAGE_PREFIX%>/fire.jpg);">Wainii <span>Blogger</span></a></h1>
+
     <h1 class="title-main">
         <img src="<%= process.env.IMAGE_PREFIX %>/gym.png" alt="">
-        <span>Top Post</span>   
+        <span>Top Post</span>
     </h1>
     <div class="home-component">
         <%- include('../../components/c_list-post') %>
     </div>
-    
+
 </div>

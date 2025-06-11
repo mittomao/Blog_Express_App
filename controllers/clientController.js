@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "" }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "", music = "" }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -26,6 +26,7 @@ class ResonposeDataClient {
         this.qrTexts = qrTexts;
         this.projectImages = projectImages;
         this.fireworkTexts = fireworkTexts;
+        this.music = music;
     }
 }
 
@@ -327,7 +328,7 @@ module.exports = {
     // Start Project Firework Love
     fireworkLove: async (req, res) => {
         try {
-            return res.render("firework-love.ejs",
+            return res.render("form-firework-love.ejs",
                 new ResonposeDataClient({
                     fullLayout: false,
                     title: "Firework Love Page",
@@ -341,17 +342,14 @@ module.exports = {
 
     createFireworkLove: async (req, res) => {
         try {
-            const { texts } = req.body;
+            const { texts, music } = req.body;
             if (!texts || texts.length === 0) {
                 return res.redirect('/projects/firework-love');
             }
 
             const imageUrls = req.files.map(file => file.path).join(',');
 
-            console.log("texts: ", texts);
-            console.log("imageUrls: ", imageUrls);
-
-            var id = await _BLOG_CON.Func_Create_Firework_LOVE({ texts, images: imageUrls });
+            var id = await _BLOG_CON.Func_Create_Firework_LOVE({ texts, images: imageUrls, music });
             return res.redirect(`/projects/firework-love/?id=${id}`);
         } catch (error) {
             res.redirect('/page-404');
@@ -381,6 +379,7 @@ module.exports = {
                     isAdmin: false,
                     fireworkTexts: doc.texts,
                     projectImages: doc.images,
+                    music: doc.music
                 }));
         } catch (error) {
             res.redirect('/page-404');
