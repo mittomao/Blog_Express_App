@@ -1582,6 +1582,13 @@ h5,
     font-size: 2rem;
   }
 }
+.qr-love-form .custom-file-label,
+.firework-love-form .custom-file-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+}
 .qr-love-form .intro-text,
 .firework-love-form .intro-text {
   background: linear-gradient(135deg, #ffe6e6, #fff);
@@ -1648,6 +1655,10 @@ h5,
   margin-top: 5px;
   color: #555;
   font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
 }
 .qr-love-form .custom-select-wrapper-fa,
 .firework-love-form .custom-select-wrapper-fa {
