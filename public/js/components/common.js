@@ -170,6 +170,6 @@ if (pagePreview) {
 
     document.addEventListener("DOMContentLoaded", () => {
         isPlaying = false;
-        updateIcon();
+        // updateIcon();
     });
 }
