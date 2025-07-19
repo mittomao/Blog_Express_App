@@ -20,16 +20,27 @@ if (pageCreate) {
         e.preventDefault();
     });
 
+    const jsInputTexts = document.querySelector('.js-input-texts');
+    let jsInputTextItems = document.querySelectorAll('.js-input-item');
+    if (jsInputTextItems.length) {
+        jsInputTextItems.forEach(item => {
+            item.addEventListener('input', function () {
+                jsInputTexts.value = Array.from(jsInputTextItems).map(item => item.value).join(',');
+            });
+        });
+    }
+
     const jsAddInput = document.querySelectorAll('.js-add-input');
     jsAddInput.forEach(item => {
         item.addEventListener('click', addInput);
     });
+    // Thêm input mới
     function addInput() {
         const container = document.getElementById("text-container");
         const div = document.createElement("div");
         div.className = "input-group mb-2";
         div.innerHTML = `
-                            <input type="text" class="form-control" placeholder="Nhập văn bản..." />
+                            <input type="text" class="form-control js-input-item" placeholder="Nhập văn bản..." />
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-white js-remove-input">✖</button>
                             </div>`;
@@ -39,10 +50,19 @@ if (pageCreate) {
         jsRemoveInput.forEach(item => {
             item.addEventListener('click', removeInput.bind(null, item));
         });
+
+        jsInputTextItems = document.querySelectorAll('.js-input-item');
+        jsInputTextItems.forEach(item => {
+            item.addEventListener('input', function () {
+                jsInputTexts.value = Array.from(jsInputTextItems).map(item => item.value).join(',');
+            });
+        })
     }
 
     function removeInput(button) {
         button.closest(".input-group").remove();
+        jsInputTextItems = document.querySelectorAll('.js-input-item');
+        jsInputTexts.value = Array.from(jsInputTextItems).map(item => item.value).join(',');
     }
 
     const jsCopyLink = document.querySelector('.js-copy-link');
@@ -140,6 +160,16 @@ if (pageCreate) {
         input.value = "";
         input.nextElementSibling.textContent = "Chọn ảnh...";
         document.getElementById('previewContainer').innerHTML = "";
+    });
+
+    // Preview Color
+    const colorPicker = document.getElementById("colorPicker");
+    const previewTextColor = document.getElementById("previewTextColor");
+
+    // Khi người dùng chọn màu mới
+    colorPicker.addEventListener("input", function () {
+        previewTextColor.style.color = this.value;
+        console.log(this.value)
     });
 }
 

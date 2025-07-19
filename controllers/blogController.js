@@ -71,8 +71,8 @@ module.exports = {
     },
     // QR Code Love
     Func_Create_QR_LOVE: async (obj) => {
-        const { texts, images } = obj;
-        const newQR = await qrLoveModel.create({ texts, images });
+        const { texts, images, color, music } = obj;
+        const newQR = await qrLoveModel.create({ texts, images, color, music });
         return newQR._id;
     },
     Func_Get_QR_By_Id: async (id) => {

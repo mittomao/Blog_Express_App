@@ -4,7 +4,7 @@ const _TAG_CON = require('./tagController')
 const _COMP_CON = require('./componentController');
 
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "", music = "" }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "", music = "" , textColor = ""}) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -27,6 +27,7 @@ class ResonposeDataClient {
         this.projectImages = projectImages;
         this.fireworkTexts = fireworkTexts;
         this.music = music;
+        this.textColor = textColor;
     }
 }
 
@@ -263,7 +264,7 @@ module.exports = {
     // StartProject QR Love
     qrLove: async (req, res) => {
         try {
-            return res.render("qr-love.ejs",
+            return res.render("form-qr-love.ejs",
                 new ResonposeDataClient({
                     fullLayout: false,
                     title: "QR Love Page",
@@ -275,22 +276,24 @@ module.exports = {
         }
     },
     createQRLove: async (req, res) => {
-        try {     
-            const { texts } = req.body;
+        try {
+            const { texts, color, music } = req.body;
+            console.log("texts: ", texts);
             if (!texts || texts.length === 0) {
                 return res.redirect('/projects/qr-love');
             }
 
+            var loveTexts = texts;
 
-            var loveTexts = texts.split('\n')
-                .map(line => line.trim())
-                .filter(line => line.length > 0)
-                .join(",");
+            const imageUrls = req.files && req.files.map(file => file.path).join(',');
 
-            const imageUrls = req.files.map(file => file.path).join(',');
+            console.log("loveTexts: ", loveTexts);
+            console.log("imageUrls: ", imageUrls);
+            console.log("color: ", color);
+            console.log("music: ", music);
 
-            var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls });
-            return res.redirect(`/projects/qr-love/preview?id=${id}`);
+            var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls, color, music });
+            return res.redirect(`/projects/qr-love/?id=${id}`);
         } catch (error) {
             res.redirect('/page-404');
         }
@@ -318,6 +321,8 @@ module.exports = {
                     isAdmin: false,
                     qrTexts: doc.texts,
                     projectImages: doc.images,
+                    textColor: doc.color,
+                    music: doc.music
                 }));
         } catch (error) {
             res.redirect('/page-404');

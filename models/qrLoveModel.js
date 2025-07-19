@@ -11,6 +11,14 @@ const qrLove = new Schema({
         type: String,
         required: false
     }],
+    color: {
+        type: String,
+        required: false
+    },
+    music: {
+        type: String,
+        required: false
+    },
 }, 
 { collection: 'qr-love', timestamps: true })
 

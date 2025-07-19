@@ -1,330 +1,406 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+    rel="stylesheet">
 <style>
     body {
         margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 100vh;
-        font-family: "Parisienne", cursive;
-        perspective: 1000px;
-        background: radial-gradient(circle at center, #200236, #000000 80%);
-    }
-
-    #scene {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        transition: transform 0.15s ease-out;
-    }
-
-    .falling-text {
-        position: absolute;
-        font-size: 20px;
-        white-space: nowrap;
-        pointer-events: none;
-        opacity: 1;
-        transform-style: preserve-3d;
-        animation: fadeInOut 2s infinite alternate;
-        font-weight: bold;
-        user-select: none;
+        background: #000;
         color: #fff;
+        font-weight: 100;
+        touch-action: none;
+        font-family: "Lora", serif;
     }
 
-    .falling-text.text-1 {
-        text-shadow:
-            0 0 5px #25d7fb,
-            0 0 10px #25d7fb,
-            0 0 15px #25d7fb,
-            0 0 20px #25d7fb,
-            0 0 25px #25d7fb,
-            0 0 30px #25d7fb;
+    #toggle-music {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        cursor: pointer;
+        color: #fff;
+        padding: 6px;
+        transition: transform 0.2s ease;
+        z-index: 999999;
     }
 
-    .falling-text.text-2 {
-        text-shadow:
-            0 0 5px #00ff66,
-            0 0 10px #00ff66,
-            0 0 15px #00ff66,
-            0 0 20px #00ff66,
-            0 0 25px #00ff66,
-            0 0 30px #00ff66;
+    #toggle-music.playing svg {
+        animation: spin 3s linear infinite;
     }
 
-    .falling-text.text-3 {
-        text-shadow:
-            0 0 5px #ff63a2,
-            0 0 10px #ff63a2,
-            0 0 15px #ff63a2,
-            0 0 20px #ff63a2,
-            0 0 25px #ff63a2,
-            0 0 30px #ff63a2;
-    }
-
-    .heart,
-    .rose {
-        position: absolute;
-        pointer-events: none;
-        opacity: 1;
-        transform-style: preserve-3d;
-        animation: float 4s infinite ease-in-out;
-    }
-
-    .heart {
-        width: 50px;
-        height: 50px;
-        clip-path: url(#heart);
-        overflow: hidden;
-    }
-
-    .heart img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        animation: scale3D 2s infinite ease-in-out;
-    }
-
-    .rose {
-        color: #e70a0a;
-        font-size: 20px;
-        transform: rotate(45deg);
-        text-shadow: 0 0 5px #5491a0, 0 0 10px #7092a7;
-    }
-
-    @keyframes fadeInOut {
+    @keyframes spin {
         from {
-            opacity: 1;
+            transform: rotate(0deg);
         }
 
         to {
-            opacity: 0.2;
-        }
-    }
-
-    @keyframes scale3D {
-        from {
-            transform: scale(1);
-        }
-
-        to {
-            transform: scale(1.2);
-        }
-    }
-
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0);
-            opacity: 0;
-        }
-
-        50% {
-            transform: translateY(-10px);
-            opacity: 1;
+            transform: rotate(360deg);
         }
     }
 </style>
 
 <div class="preview-love-page" id="preview-qr-love-page" data-qr-text="<%= qrTexts.join(' ') %>"
-    data-qr-images="<%= projectImages.join(' ') %>" data-page-preview>
-    <div id="scene"></div>
-    <svg width="0" height="0">
-        <defs>
-            <clipPath id="heart" clipPathUnits="objectBoundingBox">
-                <path d="M0.5,0.2 C0.35,-0.05,0,-0.01,0,0.3 
-        C0,0.5,0.25,0.7,0.5,1 
-        C0.75,0.7,1,0.5,1,0.3 
-        C1,-0.01,0.65,-0.05,0.5,0.2Z"></path>
-            </clipPath>
-        </defs>
-    </svg>
+    data-qr-images="<%= projectImages.join(' ') %>" data-qr-color="<%= textColor %>" data-page-preview>
+    <div id="threejs-canvas"></div>
+    <% if (music) { %>
+        <audio id="bg-audio" autoplay preload="auto" loop src="<%= music %>"></audio>
+
+        <button id="toggle-music" aria-label="Toggle Music">
+            <svg id="icon-note" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                style="display: none;">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" fill="currentColor"></path>
+            </svg>
+            <svg id="icon-note-slash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                style="display: block;">
+                <path d="M10 3v10.55A4 4 0 1 0 12 15.55V5h4V3h-6z" fill="currentColor"></path>
+                <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2"></line>
+            </svg>
+        </button>
+        <% } %>
 </div>
-<audio id="bgMusic" autoplay loop muted>
-    <source src="https://res.cloudinary.com/de0ghhr8k/video/upload/v1749373498/uploads/hstlo7adlnkddneobkel.mp3"
-        type="audio/mpeg">
-    Trình duyệt của bạn không hỗ trợ audio.
-</audio>
+
 <script>
     const previewLovePage = document.getElementById("preview-qr-love-page");
 
     if (previewLovePage) {
+        previewLovePage.style.display = "block";
+
+        const iconRegex = /^[^\w\s]+$/; // Regex đơn giản để phát hiện icon/emojis
+
         const qrTexts = previewLovePage.dataset.qrText.split(",");
-        const qrImages = previewLovePage.dataset.qrImages.split(",");
+        const qrImages = previewLovePage.dataset.qrImages.split(',');
+        const qrColors = previewLovePage.dataset.qrColor;
+        const texts = qrTexts.concat("💖").concat("🌺");
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 20;
+        camera.rotation.y = 0.5;
 
-        const texts = qrTexts;
-        let images = qrImages;
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById("threejs-canvas").appendChild(renderer.domElement);
 
-        const scene = document.getElementById("scene");
-
-        let rotateX = 0, rotateY = 0;
-        let targetRotateX = 0, targetRotateY = 0;
-        const maxRotate = 30;
-
-        document.addEventListener("mousemove", (e) => {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            targetRotateY = ((e.clientX - centerX) / centerX) * maxRotate;
-            targetRotateX = ((e.clientY - centerY) / centerY) * maxRotate;
-        });
-
-        let touchStartX = 0, touchStartY = 0;
-        document.addEventListener("touchstart", (e) => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        });
-
-        document.addEventListener("touchmove", (e) => {
+        renderer.domElement.addEventListener("wheel", (e) => {
             e.preventDefault();
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            const touchX = e.touches[0].clientX;
-            const touchY = e.touches[0].clientY;
-            targetRotateY = ((touchX - centerX) / centerX) * maxRotate;
-            targetRotateX = ((touchY - centerY) / centerY) * maxRotate;
+            camera.position.z += e.deltaY * 0.006;
+            camera.position.z = Math.max(3, Math.min(camera.position.z, 50));
         });
 
-        function updateRotation() {
-            rotateX += (targetRotateX - rotateX) * 0.1;
-            rotateY += (targetRotateY - rotateY) * 0.1;
-            scene.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            requestAnimationFrame(updateRotation);
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex.replace('#', ''), 16);
+            return [
+                (bigint >> 16) & 255, // R
+                (bigint >> 8) & 255,  // G
+                bigint & 255          // B
+            ];
         }
 
-        updateRotation();
+        function createTextTexture(text) {
+            const tempCanvas = document.createElement("canvas");
+            const ctx = tempCanvas.getContext("2d");
+            let size = 96;
+            ctx.font = `bold ${size}px Lora`;
+            let w = ctx.measureText(text).width;
+            if (w + 200 > 1200) {
+                size = Math.floor((size * 1000) / w);
+                ctx.font = `bold ${size}px Lora`;
+                w = ctx.measureText(text).width;
+            }
+            const fullCanvas = document.createElement("canvas");
+            fullCanvas.width = Math.ceil(w + 200);
+            fullCanvas.height = 384;
+            const ctx2 = fullCanvas.getContext("2d");
+            ctx2.font = `bold ${size}px createHeartTexture`;
+            ctx2.textAlign = "center";
+            ctx2.textBaseline = "middle";
 
-        // Kiểm tra nếu là mobile
-        const isMobile = window.matchMedia("(max-width: 768px)").matches;
+            if (!iconRegex.test(text)) {
+                ctx2.shadowColor = qrColors;
+                ctx2.shadowBlur = 100;
 
-        function createFallingText(initial = false) {
-            const text = document.createElement("div");
-            text.className = `falling-text text-${Math.floor(Math.random() * 3) + 1}`;
-            text.innerText = texts[Math.floor(Math.random() * texts.length)];
-
-            const startX = Math.random() * window.innerWidth;
-            const zLayer = Math.random() * 400 - 200;
-            text.style.left = startX + "px";
-            text.style.fontSize = `${Math.random() * 20 + (isMobile ? 14 : 18)}px`;
-            text.style.transform = `translateZ(${zLayer}px)`;
-
-            // Xuất hiện ở vị trí ngẫu nhiên hoặc ở trên cùng
-            const randomStart = Math.random() < 0.6; // 60% bắt đầu từ vị trí ngẫu nhiên
-            const startY = randomStart
-                ? Math.random() * window.innerHeight // Ngẫu nhiên trong màn hình
-                : -50; // Từ trên rơi xuống
-
-            text.style.top = startY + "px";
-            scene.appendChild(text);
-            setTimeout(() => {
-                text.remove();
-            }, (isMobile ? 3000 : 5000));
-
-            let posY = startY;
-            const speed = Math.random() * 2 + (isMobile ? 2.00 : 0.5);
-
-            function animate() {
-                posY += speed;
-                text.style.top = posY + "px";
-
-                if (posY > window.innerHeight + 50) {
-                    text.remove();
-                } else {
-                    requestAnimationFrame(animate);
-                }
+            } else {
+                ctx2.shadowColor = "#ffffff";
+                ctx2.shadowBlur = 300;
             }
 
-            animate();
+            ctx2.fillStyle = "rgb(255,255,255)";
+
+            ctx2.fillText(text, fullCanvas.width / 2, fullCanvas.height / 2);
+            ctx2.strokeStyle = "#fff";
+            ctx2.lineWidth = 2;
+            ctx2.strokeText(text, fullCanvas.width / 2, fullCanvas.height / 2);
+            return {
+                texture: new THREE.CanvasTexture(fullCanvas),
+                aspect: fullCanvas.width / fullCanvas.height
+            };
         }
 
+        function createHeartTexture(img) {
+            const canvas = document.createElement("canvas");
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, 256, 256);
+            ctx.shadowColor = "#ff69b4";
+            ctx.shadowBlur = 30;
+            ctx.drawImage(img, 64, 64, 128, 128);
+            return new THREE.CanvasTexture(canvas);
+        }
 
-        function createHeart(initial = false, initialY = -50) {
-            const heart = document.createElement("div");
-            heart.className = "heart";
-            heart.innerHTML = `<img src="${images[Math.floor(Math.random() * images.length)]}" alt="♡" />`;
+        const starMeshes = [], textMeshes = [], heartMeshes = [], shootingStars = [];
 
-            const startX = Math.random() * window.innerWidth;
-            const zLayer = Math.random() * 400 - 200;
-            heart.style.left = startX + "px";
-            heart.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-20px";
-            heart.style.transform = `translateZ(${zLayer}px)`;
-
-            scene.appendChild(heart);
-            setTimeout(() => {
-                heart.remove();
-            }, (isMobile ? 3000 : 4000));
-
-            let posY = initial ? parseFloat(heart.style.top) : -20;
-            const speed = Math.random() * 1.5 + (isMobile ? 2.00 : 1);
-
-            function animateHeart() {
-                posY += speed;
-                heart.style.top = posY + "px";
-
-                if (posY > window.innerHeight + 50) {
-                    heart.remove();
-                } else {
-                    requestAnimationFrame(animateHeart);
-                }
+        function createStars() {
+            const geom = new THREE.SphereGeometry(0.07, 6, 6);
+            const mat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            for (let i = 0; i < 800; i++) {
+                const star = new THREE.Mesh(geom, mat);
+                star.position.set((Math.random() - 0.5) * 120, Math.random() * 80 - 20, (Math.random() - 0.5) * 120 - 20);
+                scene.add(star);
+                starMeshes.push(star);
             }
-            animateHeart();
         }
 
-        function createRose(initial = false, initialY = -50) {
-            const rose = document.createElement("div");
-            rose.className = "rose";
-            rose.innerText = "🌺";
-
-            const startX = Math.random() * window.innerWidth;
-            const zLayer = Math.random() * 400 - 200;
-            rose.style.left = startX + "px";
-            rose.style.top = initial ? (Math.random() * window.innerHeight) + "px" : "-20px";
-            rose.style.transform = `translateZ(${zLayer}px) rotate(${Math.random() * 360}deg)`;
-
-            scene.appendChild(rose);
-            setTimeout(() => {
-                rose.remove();
-            }, (isMobile ? 3000 : 4000));
-
-            let posY = initial ? parseFloat(rose.style.top) : -20;
-            const speed = Math.random() * 1.5 + (isMobile ? 2.00 : 1);
-
-            function animateRose() {
-                posY += speed;
-                rose.style.top = posY + "px";
-
-                if (posY > window.innerHeight + 50) {
-                    rose.remove();
-                } else {
-                    requestAnimationFrame(animateRose);
-                }
+        function createFallingTexts() {
+            textMeshes.forEach(t => scene.remove(t));
+            textMeshes.length = 0;
+            for (let i = 0; i < 160; i++) {
+                const text = texts[Math.floor(Math.random() * texts.length)];
+                const { texture, aspect } = createTextTexture(text);
+                const geo = new THREE.PlaneGeometry(3 * aspect, 3);
+                const mat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false });
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.set((Math.random() - 0.5) * 100, Math.random() * 32 - 12, (Math.random() - 0.5) * 40);
+                mesh.userData.phase = Math.random() * Math.PI * 2;
+                mesh.userData.isIcon = iconRegex.test(text);
+                scene.add(mesh);
+                textMeshes.push(mesh);
             }
-            animateRose();
         }
 
-        // Điều chỉnh số lượng tùy theo thiết bị
-        const initialTextCount = isMobile ? 10 : 30;
-        const initialHeartCount = isMobile ? 3 : 10;
-        const initialRoseCount = isMobile ? 2 : 5;
+        function createFallingHearts(textureImageUrls) {
+            // Xóa trái tim cũ khỏi scene
+            heartMeshes.forEach((heartMesh) => scene.remove(heartMesh));
+            heartMeshes.length = 0;
 
-        const textInterval = isMobile ? 500 : 200;
-        const heartInterval = isMobile ? 800 : 500;
-        const roseInterval = isMobile ? 1000 : 600;
+            const loader = new THREE.TextureLoader();
+            const loadedTextures = [];
+            let loadedCount = 0;
 
-        // Khởi tạo ban đầu với mật độ phù hợp
-        for (let i = 0; i < initialTextCount; i++) {
-            createFallingText(true);
+            // Tải tất cả ảnh
+            textureImageUrls.forEach((url, index) => {
+                loader.load(url, (texture) => {
+                    loadedTextures[index] = texture;
+                    loadedCount++;
+
+                    // Khi tất cả ảnh đã được load
+                    if (loadedCount === textureImageUrls.length) {
+                        // Tạo trái tim từ các texture đã load
+                        for (let i = 0; i < 15; i++) {
+                            const randomTexture = loadedTextures[Math.floor(Math.random() * loadedTextures.length)];
+
+                            const plane = new THREE.PlaneGeometry(1, 1);
+                            const material = new THREE.MeshBasicMaterial({
+                                map: randomTexture,
+                                transparent: true,
+                                depthWrite: false,
+                                depthTest: true,
+                            });
+
+                            const heartMesh = new THREE.Mesh(plane, material);
+                            heartMesh.position.x = (Math.random() - 0.5) * 30;
+                            heartMesh.position.y = Math.random() * 32 - 12;
+                            heartMesh.position.z = (Math.random() - 0.5) * 20;
+
+                            const scale = 1 + Math.random() * 1.5;
+                            heartMesh.scale.set(scale, scale, 1);
+
+                            heartMesh.userData.velocityY = 0.03 + Math.random() * 0.02;
+                            heartMesh.userData.velocityX = (Math.random() - 0.5) * 0.02;
+
+                            scene.add(heartMesh);
+                            heartMeshes.push(heartMesh);
+                        }
+                    }
+                });
+            });
         }
-        for (let i = 0; i < initialHeartCount; i++) {
-            createHeart(true);
+
+
+        function spawnShootingStar() {
+            const sphere = new THREE.SphereGeometry(0.15, 8, 8);
+            const mesh = new THREE.MeshBasicMaterial({
+                color: 16777215,
+                transparent: true,
+            });
+            const shootingStarMesh = new THREE.Mesh(sphere, mesh);
+            shootingStarMesh.position.x = (Math.random() - 0.5) * 100;
+            shootingStarMesh.position.y = Math.random() * 80 - 20;
+            shootingStarMesh.position.z = -40 - Math.random() * 40;
+            shootingStarMesh.userData = {
+                vx: 0.4 + Math.random() * 0.3,
+                vy: -0.2 - Math.random() * 0.2,
+                vz: 0.7 + Math.random() * 0.5,
+                tail: [],
+            };
+            scene.add(shootingStarMesh);
+            shootingStars.push(shootingStarMesh);
         }
-        for (let i = 0; i < initialRoseCount; i++) {
-            createRose(true);
+        let isDragging = false;
+        let lastX = 0;
+        let isTouching = false;
+        let lastTouchX = 0;
+        let targetRotationY = 0.5;
+        renderer.domElement.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            lastX = e.clientX;
+        });
+        window.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+        window.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                const _0x4ad287 = e.clientX - lastX;
+                lastX = e.clientX;
+                targetRotationY += _0x4ad287 * 0.0015;
+            }
+        });
+        renderer.domElement.addEventListener("touchstart", (e) => {
+            if (e.touches.length === 1) {
+                isTouching = true;
+                lastTouchX = e.touches[0].clientX;
+            }
+        });
+        window.addEventListener("touchend", () => {
+            isTouching = false;
+        });
+        window.addEventListener("touchmove", (e) => {
+            if (isTouching && e.touches.length === 1) {
+                const clientX = e.touches[0].clientX;
+                const rotationY = clientX - lastTouchX;
+                lastTouchX = clientX;
+                targetRotationY += rotationY * 0.0015;
+            }
+        });
+        function animate() {
+            requestAnimationFrame(animate);
+            camera.rotation.y += (targetRotationY - camera.rotation.y) * 0.08;
+            const now = Date.now();
+            console.log('textMeshes', textMeshes);
+
+            textMeshes.forEach((fallingText) => {
+                fallingText.position.y -= 0.025 + Math.random() * 0.005;
+                if (fallingText.position.y < -12) {
+                    fallingText.position.y = Math.random() * 20 + 10;
+                    fallingText.position.x = (Math.random() - 0.5) * 30;
+                    fallingText.position.z = (Math.random() - 0.5) * 40;
+                }
+                if (fallingText.position.x > 16) {
+                    fallingText.position.x = -16;
+                }
+                if (fallingText.position.x < -16) {
+                    fallingText.position.x = 16;
+                }
+
+                if (fallingText.userData.isIcon) {
+                    return; // Không thay đổi màu sắc cho icon/emojis
+                }
+
+                const ratio = (Math.sin(now * 0.0005 + fallingText.userData.phase) + 1) / 2;
+                const hexColor = hexToRgb(qrColors);
+                const colors = [
+                    Math.round(
+                        [255, 255, 255][0] + (hexColor[0] - [255, 255, 255][0]) * ratio
+                    ),
+                    Math.round(
+                        [255, 255, 255][1] + (hexColor[1] - [255, 255, 255][1]) * ratio
+                    ),
+                    Math.round(
+                        [255, 255, 255][2] + (hexColor[2] - [255, 255, 255][2]) * ratio
+                    ),
+                ];
+                const interpolatedHexColor =
+                    (colors[0] << 16) | (colors[1] << 8) | colors[2];
+                fallingText.material.color.setHex(interpolatedHexColor);
+            });
+
+            heartMeshes.forEach((fallingHeart) => {
+                // Cập nhật vị trí theo velocity
+                fallingHeart.position.y -= fallingHeart.userData.velocityY;
+                fallingHeart.position.x += fallingHeart.userData.velocityX;
+
+                // Nếu rơi xuống quá thấp, reset lại vị trí và velocity mới
+                if (fallingHeart.position.y < -12) {
+                    fallingHeart.position.y = Math.random() * 20 + 10;
+                    fallingHeart.position.x = (Math.random() - 0.5) * 30;
+                    fallingHeart.position.z = (Math.random() - 0.5) * 20;
+
+                    fallingHeart.userData.velocityY = 0.03 + Math.random() * 0.02;
+                    fallingHeart.userData.velocityX = (Math.random() - 0.5) * 0.02;
+                }
+
+                // Giới hạn chuyển động trái/phải trong khung
+                if (fallingHeart.position.x > 16) {
+                    fallingHeart.position.x = -16;
+                }
+                if (fallingHeart.position.x < -16) {
+                    fallingHeart.position.x = 16;
+                }
+            });
+
+            shootingStars.forEach((star, index) => {
+                if (star.userData.tail.length > 20) {
+                    star.userData.tail.shift();
+                }
+                star.userData.tail.push({
+                    x: star.position.x,
+                    y: star.position.y,
+                    z: star.position.z,
+                });
+                star.position.x += star.userData.vx;
+                star.position.y += star.userData.vy;
+                star.position.z += star.userData.vz;
+                for (let i = 0; i < star.userData.tail.length - 1; i++) {
+                    const curItem = star.userData.tail[i];
+                    const nextItem = star.userData.tail[i + 1];
+                    const buffer = new THREE.BufferGeometry().setFromPoints([
+                        new THREE.Vector3(curItem.x, curItem.y, curItem.z),
+                        new THREE.Vector3(nextItem.x, nextItem.y, nextItem.z),
+                    ]);
+                    const lineBasic = new THREE.LineBasicMaterial({
+                        color: 16777215,
+                        transparent: true,
+                        opacity: 0.15 + 0.25 * (i / star.userData.tail.length),
+                    });
+                    const line = new THREE.Line(buffer, lineBasic);
+                    scene.add(line);
+                    setTimeout(() => scene.remove(line), 40);
+                }
+                star.material.opacity = 0.8;
+                if (star.position.z > 0 || star.position.y < -40) {
+                    scene.remove(star);
+                    shootingStars.splice(index, 1);
+                }
+            });
+            if (Math.random() < 0.012) {
+                spawnShootingStar();
+            }
+            renderer.render(scene, camera);
         }
 
-        // Sinh thêm phần tử theo chu kỳ
-        setInterval(createFallingText, textInterval);
-        setInterval(createHeart, heartInterval);
-        setInterval(createRose, roseInterval);
+        window.addEventListener("resize", () => {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        });
 
-
+        createStars();
+        createFallingTexts();
+        createFallingHearts(qrImages);
+        animate();
     }
+
 </script>
