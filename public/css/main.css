@@ -1330,7 +1330,7 @@ h5,
   }
 }
 #wainiidev-main h1.title-main {
-  text-align: center;
+  text-align: left;
   margin-bottom: 50px;
   display: block;
   color: #DD58D6;
@@ -1342,11 +1342,6 @@ h5,
 #wainiidev-main h1.title-main img {
   width: 60px;
   margin-right: 20px;
-}
-@media (max-width: 576px) {
-  #wainiidev-main h1.title-main {
-    display: none;
-  }
 }
 #wainiidev-main .page_404 {
   padding: 40px 0;
