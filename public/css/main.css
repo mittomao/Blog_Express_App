@@ -1330,7 +1330,7 @@ h5,
   }
 }
 #wainiidev-main h1.title-main {
-  text-align: left;
+  text-align: center;
   margin-bottom: 50px;
   display: block;
   color: #DD58D6;
@@ -1342,6 +1342,11 @@ h5,
 #wainiidev-main h1.title-main img {
   width: 60px;
   margin-right: 20px;
+}
+@media (max-width: 576px) {
+  #wainiidev-main h1.title-main {
+    display: none;
+  }
 }
 #wainiidev-main .page_404 {
   padding: 40px 0;
@@ -1560,6 +1565,7 @@ h5,
   border: 1px solid #ccc;
 }
 
+.project-love-form,
 .qr-love-form,
 .firework-love-form {
   width: 75%;
@@ -1567,16 +1573,19 @@ h5,
   margin-top: 30px;
   font-family: "Playfair Display", serif;
 }
+.project-love-form h1,
 .qr-love-form h1,
 .firework-love-form h1 {
   margin-top: 30px;
 }
 @media (max-width: 576px) {
+  .project-love-form h1,
   .qr-love-form h1,
   .firework-love-form h1 {
     font-size: 2rem;
   }
 }
+.project-love-form .custom-file-label,
 .qr-love-form .custom-file-label,
 .firework-love-form .custom-file-label {
   white-space: nowrap;
@@ -1584,6 +1593,7 @@ h5,
   text-overflow: ellipsis;
   -webkit-line-clamp: 1;
 }
+.project-love-form .intro-text,
 .qr-love-form .intro-text,
 .firework-love-form .intro-text {
   background: linear-gradient(135deg, #ffe6e6, #fff);
@@ -1591,38 +1601,47 @@ h5,
   padding: 24px 16px;
   box-shadow: 0 2px 10px rgba(255, 192, 203, 0.3);
 }
+.project-love-form .intro-text .text-love,
 .qr-love-form .intro-text .text-love,
 .firework-love-form .intro-text .text-love {
   color: #e91e63;
 }
+.project-love-form .intro-text p,
 .qr-love-form .intro-text p,
 .firework-love-form .intro-text p {
   font-style: italic;
 }
+.project-love-form .note,
 .qr-love-form .note,
 .firework-love-form .note {
   font-size: 13px;
   color: red;
 }
+.project-love-form .input-group .btn-danger,
 .qr-love-form .input-group .btn-danger,
 .firework-love-form .input-group .btn-danger {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+.project-love-form .btn-white,
 .qr-love-form .btn-white,
 .firework-love-form .btn-white {
   color: red;
 }
+.project-love-form .input-group.default button,
+.project-love-form .form-group.default button,
 .qr-love-form .input-group.default button,
 .qr-love-form .form-group.default button,
 .firework-love-form .input-group.default button,
 .firework-love-form .form-group.default button {
   display: none;
 }
+.project-love-form .copy-btn,
 .qr-love-form .copy-btn,
 .firework-love-form .copy-btn {
   margin-top: 10px;
 }
+.project-love-form .preview-card,
 .qr-love-form .preview-card,
 .firework-love-form .preview-card {
   border: 1px solid #dee2e6;
@@ -1632,10 +1651,12 @@ h5,
   transition: transform 0.2s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
+.project-love-form .preview-card:hover,
 .qr-love-form .preview-card:hover,
 .firework-love-form .preview-card:hover {
   transform: scale(1.03);
 }
+.project-love-form .preview-card img,
 .qr-love-form .preview-card img,
 .firework-love-form .preview-card img {
   border-radius: 4px;
@@ -1643,6 +1664,7 @@ h5,
   object-fit: cover;
   width: 100%;
 }
+.project-love-form .preview-card small,
 .qr-love-form .preview-card small,
 .firework-love-form .preview-card small {
   display: block;
@@ -1655,10 +1677,12 @@ h5,
   text-overflow: ellipsis;
   -webkit-line-clamp: 1;
 }
+.project-love-form .custom-select-wrapper-fa,
 .qr-love-form .custom-select-wrapper-fa,
 .firework-love-form .custom-select-wrapper-fa {
   position: relative;
 }
+.project-love-form .custom-select-wrapper-fa::after,
 .qr-love-form .custom-select-wrapper-fa::after,
 .firework-love-form .custom-select-wrapper-fa::after {
   content: "\f0dc";
@@ -1672,11 +1696,13 @@ h5,
   pointer-events: none;
   color: #666;
 }
+.project-love-form .custom-select-wrapper-fa select,
 .qr-love-form .custom-select-wrapper-fa select,
 .firework-love-form .custom-select-wrapper-fa select {
   appearance: none;
   padding-right: 2rem;
 }
+.project-love-form .iframe-preview,
 .qr-love-form .iframe-preview,
 .firework-love-form .iframe-preview {
   position: relative;
@@ -1688,6 +1714,7 @@ h5,
   border-radius: 8px;
   overflow: hidden;
 }
+.project-love-form .iframe-preview iframe,
 .qr-love-form .iframe-preview iframe,
 .firework-love-form .iframe-preview iframe {
   position: absolute;
@@ -1699,6 +1726,7 @@ h5,
   display: none;
   /* Mặc định ẩn iframe */
 }
+.project-love-form .iframe-preview .thumbnail,
 .qr-love-form .iframe-preview .thumbnail,
 .firework-love-form .iframe-preview .thumbnail {
   position: absolute;
@@ -1712,6 +1740,7 @@ h5,
   border-radius: 8px;
 }
 @media (max-width: 576px) {
+  .project-love-form,
   .qr-love-form,
   .firework-love-form {
     width: 100%;

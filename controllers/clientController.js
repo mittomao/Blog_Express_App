@@ -1,36 +1,11 @@
 'use strict'
-const _BLOG_CON = require('./blogController')
-const _TAG_CON = require('./tagController')
+const _BLOG_CON = require('./blogController');
+const _PROJECT_LOVE_CON = require('./projectLoveController');
+const _TAG_CON = require('./tagController');
 const _COMP_CON = require('./componentController');
+const { viewFormProjectLove, createProjectLove, previewProjectLove } = require('./utils/ProjectLove/index');
 
-class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "", music = "" , textColor = ""}) {
-        this.layout = layout;
-        this.fullLayout = fullLayout;
-        this.isAdmin = isAdmin;
-        this.title = title;
-        this.currentPage = currentPage;
-        this.totalPage = totalPage;
-        this.posts = posts;
-        this.tags = tags;
-        this.related = related;
-        this.newsletter = newsletter;
-        this.popularArticle = popularArticle;
-        this.portfolio = portfolio;
-        this.categories = categories;
-        this.allPost = allPost;
-        this.aboutAuthor = aboutAuthor;
-        this.isHideSidebar = isHideSidebar;
-        this.isSearch = isSearch;
-        this.qrLink = qrLink;
-        this.qrTexts = qrTexts;
-        this.projectImages = projectImages;
-        this.fireworkTexts = fireworkTexts;
-        this.music = music;
-        this.textColor = textColor;
-    }
-}
-
+const ResonposeDataClient = require('./ResonposeDataClient');
 
 const GetDataInHomePage = async () => {
     const tags = await _TAG_CON.Func_Get_ALl_Tag();
@@ -292,7 +267,7 @@ module.exports = {
             console.log("color: ", color);
             console.log("music: ", music);
 
-            var id = await _BLOG_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls, color, music });
+            var id = await _PROJECT_LOVE_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls, color, music });
             return res.redirect(`/projects/qr-love/?id=${id}`);
         } catch (error) {
             res.redirect('/page-404');
@@ -307,9 +282,9 @@ module.exports = {
                 return res.status(400).send('Thiếu tham số id');
             }
 
-            const doc = await _BLOG_CON.Func_Get_QR_By_Id(id);
+            const doc = await _PROJECT_LOVE_CON.Func_Get_QR_By_Id(id);
             console.log("QR Item: ", doc);
-            
+
             if (!doc) {
                 return res.status(404).send('Không tìm thấy dữ liệu');
             }
@@ -354,7 +329,7 @@ module.exports = {
 
             const imageUrls = req.files.map(file => file.path).join(',');
 
-            var id = await _BLOG_CON.Func_Create_Firework_LOVE({ texts, images: imageUrls, music });
+            var id = await _PROJECT_LOVE_CON.Func_Create_Firework_LOVE({ texts, images: imageUrls, music });
             return res.redirect(`/projects/firework-love/?id=${id}`);
         } catch (error) {
             res.redirect('/page-404');
@@ -370,9 +345,9 @@ module.exports = {
                 return res.status(400).send('Thiếu tham số id');
             }
 
-            const doc = await _BLOG_CON.Func_Get_Firework_By_Id(id);
+            const doc = await _PROJECT_LOVE_CON.Func_Get_Firework_By_Id(id);
             console.log("Firework Item: ", doc);
-            
+
             if (!doc) {
                 return res.status(404).send('Không tìm thấy dữ liệu');
             }
@@ -391,4 +366,14 @@ module.exports = {
         }
     },
     // End Project Firework Love
+
+    // Start Project Love
+    viewFormProjectLove: async (req, res) => {
+        try {
+            return await viewFormProjectLove(req, res, "Project Love Page");
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    // End Project Love
 }

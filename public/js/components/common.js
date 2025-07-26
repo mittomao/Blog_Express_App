@@ -1,5 +1,5 @@
 
-const pageCreate = document.querySelector('[data-page-create]');
+const pageCreate = document.querySelector('[data-form-create]');
 if (pageCreate) {
     // Hiện popup loading khi submit form
     const uploadForm = pageCreate.querySelector('form');

@@ -15,6 +15,8 @@ clientRouter.get('/contact', clientController.contact)
 clientRouter.post('/search/:title', clientController.search)
 clientRouter.get('/topic/:title', clientController.filterTopic)
 // Router Project
+clientRouter.get('/projects/form', clientController.viewFormProjectLove)
+
 clientRouter.get('/projects/qr-love', clientController.qrLove)
 clientRouter.post('/projects/qr-love', upload.array('images', 10),clientController.createQRLove)
 clientRouter.get('/projects/qr-love/preview', clientController.qrPreview)

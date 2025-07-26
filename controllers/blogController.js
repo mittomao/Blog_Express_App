@@ -1,7 +1,4 @@
 const blogModel = require('../models/blogModel');
-const tagsModel = require('../models/tagsModel');
-const qrLoveModel = require('../models/qrLoveModel');
-const fireworkLoveModel = require('../models/fireworkLoveModel');
 
 module.exports = {
     // Get Post
@@ -68,23 +65,5 @@ module.exports = {
                 { [fieldName]: { $ne: "" } }
             ]
         });
-    },
-    // QR Code Love
-    Func_Create_QR_LOVE: async (obj) => {
-        const { texts, images, color, music } = obj;
-        const newQR = await qrLoveModel.create({ texts, images, color, music });
-        return newQR._id;
-    },
-    Func_Get_QR_By_Id: async (id) => {
-        return await qrLoveModel.findById(id);
-    },
-    // Firework Love
-    Func_Create_Firework_LOVE: async (obj) => {
-        const { texts, images, music } = obj;
-        const newFirework = await fireworkLoveModel.create({ texts, images, music });
-        return newFirework._id;
-    },
-    Func_Get_Firework_By_Id: async (id) => {
-        return await fireworkLoveModel.findById(id);
-    },
-}
+    }
+};
