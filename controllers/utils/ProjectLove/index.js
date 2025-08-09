@@ -1,12 +1,12 @@
 const _PROJECT_LOVE_CON = require('../../projectLoveController');
 const ResonposeDataClient = require('../../ResonposeDataClient');
 
-const ViewFormProjectLove = async (req, res, title) => {
+const ViewFormProjectLove = async (req, res, name) => {
     try {
         return res.render("projects/form-project-love.ejs",
             new ResonposeDataClient({
                 fullLayout: false,
-                title: title,
+                title: name + " - Love Project",
                 layout: "home-layout",
                 isAdmin: false
             }));
@@ -17,8 +17,7 @@ const ViewFormProjectLove = async (req, res, title) => {
 
 const CreateProjectLove = async (req, res, name) => {
     try {
-        const { texts, color, music } = req.body;
-        console.log("texts: ", texts);
+        const { texts, color, music, time } = req.body;
         if (!texts || texts.length === 0) {
             return res.redirect('/projects/' + name);
         }
@@ -31,10 +30,13 @@ const CreateProjectLove = async (req, res, name) => {
         console.log("imageUrls: ", imageUrls);
         console.log("color: ", color);
         console.log("music: ", music);
+        console.log("time: ", time);
 
-        var id = await _PROJECT_LOVE_CON.Func_Create_Project_Love({ texts: loveTexts, images: imageUrls, color, music });
-        return res.redirect(`/projects/${name}/?id=${id}`);
+        var id = await _PROJECT_LOVE_CON.Func_Create_Project_Love({ project: name, texts: loveTexts, images: imageUrls, color, music, time });
+
+        return res.redirect(`/projects/form/?project=${name}&id=${id}`);
     } catch (error) {
+        console.error("Error creating project love: ", error);
         res.redirect('/page-404');
     }
 }
@@ -61,9 +63,12 @@ const PreviewProjectLove = async (req, res, title, filename) => {
                 qrTexts: doc.texts,
                 projectImages: doc.images,
                 textColor: doc.color,
-                music: doc.music
+                music: doc.music,
+                time: doc.time,
             }));
     } catch (error) {
+        console.error("Error previewing project love: ", error);
+        // Redirect to 404 page if there's an error
         res.redirect('/page-404');
     }
 }

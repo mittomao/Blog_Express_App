@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const projectLove = new Schema({
+    project: {
+        type: String,
+        required: true
+    },
     texts: [{
         type: String,
         required: true
@@ -17,6 +21,10 @@ const projectLove = new Schema({
     },
     music: {
         type: String,
+        required: false
+    },
+    time: {
+        type: Date,
         required: false
     },
 }, {

@@ -5,8 +5,8 @@ const fireworkLoveModel = require('../models/fireworkLoveModel');
 module.exports = {
     // Project Love
     Func_Create_Project_Love: async (obj) => {
-        const { texts, images, color, music } = obj;
-        const newProject = await projectLoveModel.create({ texts, images, color, music });
+        const { project, texts, images, color, music, time } = obj;
+        const newProject = await projectLoveModel.create({ project, texts, images, color, music, time });
         return newProject._id;
     },
     Func_Get_Project_Love_By_Id: async (id) => {

@@ -5,7 +5,7 @@
     </div>
 
     <div class="container bg-white p-4 rounded shadow-sm">
-        <form action="/projects/create" method="POST" enctype="multipart/form-data">
+        <form action="/projects/{0}" method="POST" enctype="multipart/form-data">
             <h4 class="mb-3">📝 Nhập chữ:</h4>
             <div id="text-container">
                 <div class="form-group mb-2 default">
@@ -35,7 +35,7 @@
             <hr class="my-4">
 
             <div class="form-group">
-                <label for="images" class="form-label font-weight-bold">🖼 Chọn hình ảnh</label>
+                <label for="images" class="form-label font-weight-bold">🖼 Chọn hình ảnh (3 -5 ảnh)</label>
 
                 <div class="custom-file mb-2">
                     <input type="file" class="custom-file-input" name="images" id="images" accept="image/*" multiple>
@@ -77,6 +77,11 @@
             </div>
 
             <hr class="my-4">
+
+            <div class="form-group">
+                <label for="timeLove" class="mb-2">📅 Chọn Ngày Yêu:</label>
+                <input type="date" name="time" class="form-control mb-2" id="timeLove" value="" required />
+            </div>
 
             <button type="submit" class="btn btn-primary btn-block mb-3" id="generate-link">✨ Tạo Link</button>
 

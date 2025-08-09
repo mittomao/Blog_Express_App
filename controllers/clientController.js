@@ -370,7 +370,22 @@ module.exports = {
     // Start Project Love
     viewFormProjectLove: async (req, res) => {
         try {
-            return await viewFormProjectLove(req, res, "Project Love Page");
+            const { project } = req.query || "";
+            return await viewFormProjectLove(req, res, project);
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    createProjectTreeStory: async (req, res) => {
+        try {            
+            return await createProjectLove(req, res, "tree-story");
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    projectTreeStoryPreview: async (req, res) => {
+        try {
+            return await previewProjectLove(req, res, "Tree Story", "projects/preview-tree-story-page.ejs");
         } catch (error) {
             res.redirect('/page-404');
         }

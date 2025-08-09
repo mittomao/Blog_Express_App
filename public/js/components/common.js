@@ -4,6 +4,9 @@ if (pageCreate) {
     // Hiện popup loading khi submit form
     const uploadForm = pageCreate.querySelector('form');
 
+    if (getQueryParamByUrl('project')) {
+        uploadForm.setAttribute('action', `/projects/${getQueryParamByUrl('project')}`);
+    }
     uploadForm && uploadForm.addEventListener('submit', function (e) {
         // Hiện popup loading
         Swal.fire({
@@ -98,15 +101,15 @@ if (pageCreate) {
     }
 
 
-    function getQueryParamByUrl(param, url = window.location.href) {
-        const urlObj = new URL(url);
-        return urlObj.searchParams.get(param);
-    }
-
     function loadByQuery() {
         let id = getQueryParamByUrl('id');
         if (id) {
-            const base = `${window.location.origin}${window.location.pathname}`;
+            let base = `${window.location.origin}`;
+            if (getQueryParamByUrl('project')) {
+                base += `/projects/${getQueryParamByUrl('project')}/`;
+            } else {
+                base += `${window.location.pathname}`;
+            }
             const query = `preview?id=${id}`;
             const url = base + query;
             document.getElementById("link-result").value = url;
@@ -202,4 +205,9 @@ if (pagePreview) {
         isPlaying = false;
         // updateIcon();
     });
+}
+
+function getQueryParamByUrl(param, url = window.location.href) {
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get(param);
 }
