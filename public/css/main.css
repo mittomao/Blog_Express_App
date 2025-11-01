@@ -1035,8 +1035,24 @@ h5,
 }
 
 .search-form .form-group input {
-  padding-right: 50px;
   font-size: 14px;
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 12px;
+  border: 1px solid #e6e9ef;
+  border-radius: 8px;
+  outline: none;
+  padding-right: 50px;
+}
+
+.search-form .form-group input:focus {
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+  border-color: #2563eb;
+}
+
+.search-form .form-group input::placeholder {
+  font-size: 12px;
+  padding-right: 50px;
 }
 
 .search-form .icon {
@@ -1046,8 +1062,62 @@ h5,
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+  z-index: 999;
+  cursor: pointer;
+  color: #2563eb;
 }
 
+.hint-list {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hint {
+  background: #f1f5f9;
+  color: #6b7280;
+  padding: 8px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.15s, transform 0.05s;
+  border: none;
+  text-align: left;
+  font-size: 12px;
+  white-space: nowrap;
+  /* Không cho xuống dòng */
+  overflow: hidden;
+  /* Ẩn phần vượt quá khung */
+  text-overflow: ellipsis;
+}
+
+.hint:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+.placeholder-caret {
+  display: inline-block;
+  width: 10px;
+  height: 1.1em;
+  vertical-align: middle;
+  margin-left: 3px;
+  background: var(--muted);
+  opacity: 0.9;
+  animation: blink 1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (max-width: 480px) {
+  .card {
+    padding: 16px;
+  }
+}
 .subs-wrap {
   display: block;
   width: 100%;

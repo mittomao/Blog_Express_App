@@ -53,11 +53,12 @@
                                         <div class="sidebar-box pt-md-4">
                                             <form method="post" action="" class="search-form js-search-form">
                                                 <div class="form-group">
-                                                    <span class="icon icon-search"></span>
+                                                    <span class="icon icon-search js-icon-search-input"></span>
                                                     <input type="text" class="form-control js-search-input" name="title"
                                                         placeholder="Type a keyword and hit enter" />
                                                 </div>
                                             </form>
+                                            <div class="hint-list" id="hintList" data-hints="<%= hints %>" aria-hidden="false"></div>
                                         </div>
                                         <%- include('../../components/c_categories')%>
                                             <!-- <%- include('../../components/c_popular-articles')%> -->

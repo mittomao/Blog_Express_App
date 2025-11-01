@@ -34,6 +34,51 @@ module.exports = {
             }
         });
     },
+    Func_Get_Random_Hint_Title: async () => {
+        // Lấy 3 bài viết random có title
+        const titleDocs = await blogModel.aggregate([
+            { $match: { title: { $exists: true, $ne: "" } } },
+            { $sample: { size: 3 } },
+            { $project: { _id: 0, value: "$title", type: { $literal: "title" } } }
+        ]);
+
+        // Lấy ngẫu nhiên tag
+        const tagDocs = await blogModel.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { tag: { $type: "array", $ne: [] } },
+                        { tag: { $type: "string", $ne: "" } }
+                    ]
+                }
+            },
+            { $sample: { size: 2 } },
+            {
+                $project: {
+                    _id: 0,
+                    value: {
+                        $cond: [
+                            { $isArray: "$tag" },
+                            {
+                                $arrayElemAt: [
+                                    "$tag",
+                                    { $floor: { $multiply: [{ $rand: {} }, { $size: "$tag" }] } }
+                                ]
+                            },
+                            "$tag"
+                        ]
+                    },
+                    type: { $literal: "tag" }
+                }
+            }
+        ]);
+
+        // Gộp 2 mảng lại và shuffle thêm 1 lần cho ngẫu nhiên hoàn toàn
+        const mixed = [...titleDocs, ...tagDocs]
+            .sort(() => Math.random() - 0.5)
+            .map(x => x.value);
+        return mixed;
+    },
     // Action
     Func_Create_Post: async (obj) => {
         const { author, tag, title, topic, summary, thumbnail, content, status } = obj;

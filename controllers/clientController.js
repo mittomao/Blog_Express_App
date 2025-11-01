@@ -14,12 +14,15 @@ const GetDataInHomePage = async () => {
     //Get Categories
     const categories = await _BLOG_CON.Func_Get_Unique_By_Field("topic");
     console.log("dataCategories", categories);
+    // Get Hints
+    const hints = await _BLOG_CON.Func_Get_Random_Hint_Title();
 
     return {
         tags,
         newsletters,
         popularArticles,
-        categories
+        categories,
+        hints
     }
 }
 
@@ -29,7 +32,7 @@ module.exports = {
             let { page = 1 } = req.params;
             const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, { status: true });
             const dataHome = await GetDataInHomePage();
-            // End 
+            // End
 
             if (listPosts || dataHome) {
                 return res.render("home.ejs",
@@ -45,7 +48,8 @@ module.exports = {
                         title: 'Home Page',
                         layout: "home-layout",
                         isAdmin: false,
-                        allPost: listPosts.allItems
+                        allPost: listPosts.allItems,
+                        hints: dataHome.hints.join('|'),
                     }));
             }
         } catch (error) {
