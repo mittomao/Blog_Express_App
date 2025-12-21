@@ -328,7 +328,7 @@
 
     function createPhotos() {
         const geo = new THREE.PlaneGeometry(8, 8);
-        const borderGeo = new THREE.PlaneGeometry(9, 9);
+        const borderGeo = new THREE.PlaneGeometry(2, 2);
         const borderMat = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
 
         for (let i = 0; i < 5; i++) {
@@ -543,7 +543,7 @@
         hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
 
         hands.onResults(results => {
-            ctx.clearRect(0, 0, 100, 75); ctx.drawImage(results.image, 0, 0, 100, 75);
+            ctx.clearRect(0, 0, 150, 100); ctx.drawImage(results.image, 0, 0, 150, 100);
 
             if (results.multiHandLandmarks.length === 2) {
                 const h1 = results.multiHandLandmarks[0]; const h2 = results.multiHandLandmarks[1];
