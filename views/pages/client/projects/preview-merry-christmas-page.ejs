@@ -506,7 +506,7 @@
         loveCanvas.width = 1024; loveCanvas.height = 256;
         const lCtx = loveCanvas.getContext('2d');
         lCtx.font = 'bold 120px "Segoe UI", sans-serif';
-        lCtx.fillStyle = '#FF69B4'; lCtx.textAlign = 'center';
+        lCtx.fillStyle = projectColors; lCtx.textAlign = 'center';
         lCtx.shadowColor = projectColors; lCtx.shadowBlur = 40;
         lCtx.fillText(projectTexts[0], 512, 130);
         const loveTex = new THREE.CanvasTexture(loveCanvas);
