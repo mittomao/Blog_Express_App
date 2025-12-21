@@ -66,8 +66,8 @@
     /* Camera Preview Vandiep */
     #camera-preview {
         position: absolute;
-        bottom: 15px;
-        left: 15px;
+        bottom: 0px;
+        left: 0px;
         width: 150px;
         height: 100px;
         border: 1px solid rgba(255, 255, 255, 0.5);
@@ -101,11 +101,7 @@
     }
 
     .input_video {
-        position: absolute;
-        opacity: 0;
-        width: 1px;
-        height: 1px;
-        pointer-events: none;
+        display: none;
     }
 </style>
 
@@ -543,7 +539,7 @@
         hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
 
         hands.onResults(results => {
-            ctx.clearRect(0, 0, 150, 100); ctx.drawImage(results.image, 0, 0, 150, 100);
+            ctx.clearRect(0, 0, 320, 240); ctx.drawImage(results.image, 0, 0, 320, 240);
 
             if (results.multiHandLandmarks.length === 2) {
                 const h1 = results.multiHandLandmarks[0]; const h2 = results.multiHandLandmarks[1];
