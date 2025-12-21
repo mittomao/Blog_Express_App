@@ -175,6 +175,7 @@
     const previewLovePage = document.getElementById("preview-project-love-page");
     const projectTexts = previewLovePage.dataset.projectText.split(",");
     const projectImages = previewLovePage.dataset.projectImages.split(",");
+    const projectColors = previewLovePage.dataset.projectColor;
 
     // ==========================================
     // 1. RESOURCE CONFIG
@@ -506,7 +507,7 @@
         const lCtx = loveCanvas.getContext('2d');
         lCtx.font = 'bold 120px "Segoe UI", sans-serif';
         lCtx.fillStyle = '#FF69B4'; lCtx.textAlign = 'center';
-        lCtx.shadowColor = "#FF1493"; lCtx.shadowBlur = 40;
+        lCtx.shadowColor = projectColors; lCtx.shadowBlur = 40;
         lCtx.fillText(projectTexts[0], 512, 130);
         const loveTex = new THREE.CanvasTexture(loveCanvas);
         const loveMat = new THREE.MeshBasicMaterial({ map: loveTex, transparent: true, blending: THREE.AdditiveBlending });
