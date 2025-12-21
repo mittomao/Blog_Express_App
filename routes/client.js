@@ -16,8 +16,14 @@ clientRouter.post('/search/:title', clientController.search)
 clientRouter.get('/topic/:title', clientController.filterTopic)
 // Router Project
 clientRouter.get('/projects/form', clientController.viewFormProjectLove)
+
+// Tree Story Love Project
 clientRouter.post('/projects/tree-story', upload.array('images', 10), clientController.createProjectTreeStory)
 clientRouter.get('/projects/tree-story/preview', clientController.projectTreeStoryPreview)
+
+// Tree Story Love Project
+clientRouter.post('/projects/merry-christmas', upload.array('images', 10), clientController.createProjectMerryChristmas)
+clientRouter.get('/projects/merry-christmas/preview', clientController.projectMerryChristmasPreview)
 
 clientRouter.get('/projects/qr-love', clientController.qrLove)
 clientRouter.post('/projects/qr-love', upload.array('images', 10), clientController.createQRLove)

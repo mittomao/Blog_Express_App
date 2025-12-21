@@ -394,5 +394,20 @@ module.exports = {
             res.redirect('/page-404');
         }
     },
+
+    createProjectMerryChristmas: async (req, res) => {
+        try {            
+            return await createProjectLove(req, res, "merry-christmas");
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
+    projectMerryChristmasPreview: async (req, res) => {
+        try {
+            return await previewProjectLove(req, res, "Merry Christmas", "projects/preview-merry-christmas-page.ejs");
+        } catch (error) {
+            res.redirect('/page-404');
+        }
+    },
     // End Project Love
 }
