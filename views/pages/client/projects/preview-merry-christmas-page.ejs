@@ -21,6 +21,25 @@
         display: block;
     }
 
+    .badge {
+        display: block;
+        background: rgba(0, 0, 0, 0.7);
+        border: 2px solid #FFD700;
+        color: #FFD700;
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        text-shadow: 0 0 10px #FFD700;
+        max-width: 50%;
+        width: 100%;
+        margin-inline: auto;
+    }
+
     #ui-layer {
         position: absolute;
         top: 50%;
@@ -39,7 +58,7 @@
     }
 
     #ui-layer.started {
-        bottom: 30px;
+        bottom: 10px;
         top: inherit;
         transform: translate(-50%, 0);
     }
@@ -49,6 +68,10 @@
         font-size: 13px;
         margin-bottom: 20px;
         text-shadow: 0 2px 4px black;
+    }
+
+    #ui-layer.started .guide {
+        margin-bottom: 10px;
     }
 
     button {
@@ -130,6 +153,10 @@
         #ui-layer.started {
             bottom: 15px;
         }
+
+        .badge {
+            max-width: 100%;
+        }
     }
 </style>
 
@@ -155,6 +182,7 @@
 
 <div id="ui-layer">
     <img src="/images/caythong.png" alt="" class="image-preview" />
+    <div id="status" class="badge">🎄 Giáng Sinh An Lành 🎄</div>
     <div class="guide">
         🖐 <b>Open:</b> Show ảnh &nbsp;|&nbsp; 🫶 <b>Heart:</b> Hiện Chữ &nbsp;|&nbsp; ✊ <b>Fist:</b> Cây &nbsp;|&nbsp;
         👌
@@ -722,6 +750,7 @@
         const video = document.getElementsByClassName('input_video')[0];
         const canvas = document.getElementById('camera-preview');
         const ctx = canvas.getContext('2d');
+        const statusDiv = document.getElementById('status');
 
         const hands = new Hands({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}` });
         hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
@@ -748,13 +777,18 @@
 
                 if (avgDist < 0.25) {
                     state = 'TREE';
+                    statusDiv.innerText = "✊ Thu Cây Thông"; statusDiv.style.color = projectColors;
                 } else if (pinchDist < 0.05) {
                     state = 'PHOTO';
-                } else {
+                    statusDiv.innerText = "👌 Xem Ảnh"; statusDiv.style.color = projectColors;
+                }   
+                else {
                     state = 'EXPLODE';
+                    statusDiv.innerText = "🖐 Mở Quà & Ảnh"; statusDiv.style.color = projectColors;
                 }
             } else {
                 state = 'TREE';
+                statusDiv.innerText = "🎄 Giáng Sinh An Lành 🎄"; statusDiv.style.color = "#FFF";
             }
         });
 
