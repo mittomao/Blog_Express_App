@@ -454,22 +454,62 @@
         }
     }
 
+    function applyCoverTexture(texture, planeWidth, planeHeight) {
+        const imageAspect = texture.image.width / texture.image.height;
+        const planeAspect = planeWidth / planeHeight;
+
+        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+
+        if (imageAspect > planeAspect) {
+            const scale = planeAspect / imageAspect;
+            texture.repeat.set(scale, 1);
+            texture.offset.set((1 - scale) / 2, 0);
+        } else {
+            const scale = imageAspect / planeAspect;
+            texture.repeat.set(1, scale);
+            texture.offset.set(0, (1 - scale) / 2);
+        }
+
+        texture.needsUpdate = true;
+    }
+
+    function hexToThreeColor(hex) {
+        return Number(hex.replace('#', '0x'));
+    }
+
     function createPhotos() {
-        const geo = new THREE.PlaneGeometry(8, 8);
-        const borderGeo = new THREE.PlaneGeometry(6, 6);
-        const borderMat = new THREE.MeshBasicMaterial({ color: 0xFA11DB });
+        const planeW = 8;
+        const planeH = 8;
+
+        const geo = new THREE.PlaneGeometry(planeW, planeH);
+        const borderGeo = new THREE.PlaneGeometry(8.5, 8.5);
+
+        const borderMat = new THREE.MeshBasicMaterial({ color: hexToThreeColor(projectColors || '#FA11DB') });
 
         for (let i = 0; i < projectImages.length; i++) {
-            const mat = new THREE.MeshBasicMaterial({ map: photoTextures[i], side: THREE.DoubleSide });
+            const texture = photoTextures[i];
+
+            applyCoverTexture(texture, planeW, planeH);
+
+            const mat = new THREE.MeshBasicMaterial({
+                map: texture,
+                side: THREE.DoubleSide
+            });
+
             const mesh = new THREE.Mesh(geo, mat);
+
             const border = new THREE.Mesh(borderGeo, borderMat);
             border.position.z = -0.1;
+
             mesh.add(border);
-            mesh.visible = false; mesh.scale.set(0, 0, 0);
+            mesh.visible = false;
+            mesh.scale.set(0, 0, 0);
+
             scene.add(mesh);
             photoMeshes.push(mesh);
         }
     }
+
 
     function createDecorations() {
         const canvas = document.createElement('canvas');
