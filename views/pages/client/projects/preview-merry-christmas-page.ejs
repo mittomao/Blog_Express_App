@@ -252,7 +252,7 @@
     // 2. SYSTEM CONFIG
     // ==========================================
     const CONFIG = {
-        goldCount: 2000,
+        goldCount: 1000,
         redCount: 300,
         giftCount: 150,
         explodeRadius: 65,
@@ -294,7 +294,7 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
-        groupGold = createParticleSystem('gold', CONFIG.goldCount, 2.0);
+        groupGold = createParticleSystem('gold', CONFIG.goldCount, 5.0);
         groupRed = createParticleSystem('red', CONFIG.redCount, 3.5);
         groupGift = createParticleSystem('gift', CONFIG.giftCount, 3.0);
 
@@ -475,7 +475,7 @@
         const canvas = document.createElement('canvas');
         canvas.width = 1024; canvas.height = 256;
         const ctx = canvas.getContext('2d');
-        ctx.font = 'bold italic 90px "Times New Roman"';
+        ctx.font = 'bold italic 90px "Sour Gummy"';
         ctx.fillStyle = '#FFD700'; ctx.textAlign = 'center';
         ctx.shadowColor = "#FF0000"; ctx.shadowBlur = 40;
         ctx.fillText("MERRY CHRISTMAS", 512, 130);
@@ -505,7 +505,7 @@
         const loveCanvas = document.createElement('canvas');
         loveCanvas.width = 1024; loveCanvas.height = 256;
         const lCtx = loveCanvas.getContext('2d');
-        lCtx.font = 'bold 120px "Segoe UI", sans-serif';
+        lCtx.font = 'bold 120px "Sour Gummy", sans-serif';
         lCtx.fillStyle = projectColors; lCtx.textAlign = 'center';
         lCtx.shadowColor = projectColors; lCtx.shadowBlur = 40;
         lCtx.fillText(projectTexts[0], 512, 130);
