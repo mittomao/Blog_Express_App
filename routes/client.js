@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express')
+const multer = require('multer')
 const clientController = require('../controllers/clientController')
 const { upload } = require('../utils/cloudinary')
 
@@ -22,7 +23,44 @@ clientRouter.post('/projects/tree-story', upload.array('images', 10), clientCont
 clientRouter.get('/projects/tree-story/preview', clientController.projectTreeStoryPreview)
 
 // Tree Story Love Project
-clientRouter.post('/projects/merry-christmas', upload.array('images', 10), clientController.createProjectMerryChristmas)
+//clientRouter.post('/projects/merry-christmas', upload.array('images', 10), clientController.createProjectMerryChristmas)//
+clientRouter.post('/projects/merry-christmas', (req, res) => {
+  upload.array('images', 10)(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      // Lỗi từ Multer
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        // return res.status(400).render('projects/form/?project=merry-christmas', {
+        //     errorMessage: 'File quá lớn (tối đa 1MB). Vui lòng tải lại trang và Chọn ảnh có size nhỏ hơn',
+        //     oldData: req.body
+        // });
+        return res.status(400).json({
+          message: 'File quá lớn (tối đa 1MB). Vui lòng quay lại trang trước và chọn ảnh có size nhỏ hơn'
+        });
+      }
+
+      if (err.code === 'LIMIT_FILE_COUNT') {
+        return res.status(400).json({
+          message: 'Bạn Chỉ Có Thể Upload Tối đa 10 ảnh. Vui lòng quay lại trang trước và chọn lại số lượng ảnh'
+        });
+      }
+
+      return res.status(400).json({
+        message: err.message
+      });
+    }
+
+    if (err) {
+      // Lỗi khác (fileFilter, Cloudinary, ...)
+      return res.status(400).json({
+        message: err.message
+      });
+    }
+
+    // Không lỗi → tiếp tục controller
+    clientController.createProjectMerryChristmas(req, res);
+  });
+});
+
 clientRouter.get('/projects/merry-christmas/preview', clientController.projectMerryChristmasPreview)
 
 clientRouter.get('/projects/qr-love', clientController.qrLove)

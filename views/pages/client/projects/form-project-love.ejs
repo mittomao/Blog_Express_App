@@ -4,6 +4,8 @@
         <p class="lead mb-0 text-muted">Hãy Dành Cho Những Người Bạn Yêu Thương Trang Web Này Nhé!</p>
     </div>
 
+    <div><%= errorMessage ? `<div class="alert alert-danger">${errorMessage}</div>` : '' %></div>
+
     <div class="container bg-white p-4 rounded shadow-sm">
         <form action="/projects/{0}" method="POST" enctype="multipart/form-data">
             <h4 class="mb-3">📝 Nhập chữ:</h4>
@@ -35,7 +37,7 @@
             <hr class="my-4">
 
             <div class="form-group">
-                <label for="images" class="form-label font-weight-bold">🖼 Chọn hình ảnh (3 -5 ảnh)</label>
+                <label for="images" class="form-label font-weight-bold">🖼 Chọn hình ảnh (3 -5 ảnh  <strong style="color: red;">size &lt; 1MB</strong>)</label>
 
                 <div class="custom-file mb-2">
                     <input type="file" class="custom-file-input" name="images" id="images" accept="image/*" multiple>

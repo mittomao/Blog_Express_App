@@ -8,7 +8,8 @@ const ViewFormProjectLove = async (req, res, name) => {
                 fullLayout: false,
                 title: name + " - Love Project",
                 layout: "home-layout",
-                isAdmin: false
+                isAdmin: false,
+                errorMessage: res.errorMessage || null,
             }));
     } catch (error) {
         res.redirect('/page-404');

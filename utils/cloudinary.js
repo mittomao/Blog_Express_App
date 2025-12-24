@@ -8,7 +8,8 @@ cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: true
+    secure: true,
+    timeout: 120000
 });
 
 const storage = new CloudinaryStorage({
@@ -16,11 +17,27 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'uploads',
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
+    transformation: [
+      { width: 2000, height: 2000, crop: 'limit' }
+    ],
     public_id: (req, file) => `${Date.now()}-${file.originalname}`
   }
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 1 * 1024 * 1024 // 1MB
+  },
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowed.includes(file.mimetype)) {
+      return cb(new Error('Only image files are allowed'), false);
+    }
+    cb(null, true);
+  }
+});
+
 
 var self = module.exports = {
     getAllResources: async () => {

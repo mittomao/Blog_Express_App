@@ -1,5 +1,5 @@
 class ResonposeDataClient {
-    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "", music = "" , textColor = "", time = "", hints = "" }) {
+    constructor({ layout, fullLayout, isAdmin, title, currentPage, totalPage, posts, tags, related, newsletter, popularArticle, portfolio, categories, allPost, aboutAuthor, isHideSidebar = false, isSearch = false, qrLink = "", qrTexts = "",  projectImages = "", fireworkTexts = "", music = "" , textColor = "", time = "", hints = "", errorMessage = ""  }) {
         this.layout = layout;
         this.fullLayout = fullLayout;
         this.isAdmin = isAdmin;
@@ -25,6 +25,7 @@ class ResonposeDataClient {
         this.textColor = textColor;
         this.time = time;
         this.hints = hints;
+        this.errorMessage = errorMessage;
     }
 }
 

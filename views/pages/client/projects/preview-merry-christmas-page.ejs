@@ -133,6 +133,11 @@
         text-shadow: 0 2px 4px black;
     }
 
+    .preview-love-page {
+        display: block !important;
+        height: 0 !important;
+    }
+
     @media (max-width: 768px) {
         #camera-preview {
             width: 100px;
@@ -516,6 +521,7 @@
 
         for (let i = 0; i < projectImages.length; i++) {
             const texture = photoTextures[i];
+            if (!texture.image) continue;
 
             applyCoverTexture(texture, planeW, planeH);
 
