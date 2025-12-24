@@ -30,11 +30,11 @@ clientRouter.post('/projects/merry-christmas', (req, res) => {
       // Lỗi từ Multer
       if (err.code === 'LIMIT_FILE_SIZE') {
         // return res.status(400).render('projects/form/?project=merry-christmas', {
-        //     errorMessage: 'File quá lớn (tối đa 1MB). Vui lòng tải lại trang và Chọn ảnh có size nhỏ hơn',
+        //     errorMessage: 'File quá lớn (tối đa 10MB). Vui lòng tải lại trang và Chọn ảnh có size nhỏ hơn',
         //     oldData: req.body
         // });
         return res.status(400).json({
-          message: 'File quá lớn (tối đa 1MB). Vui lòng quay lại trang trước và chọn ảnh có size nhỏ hơn'
+          message: 'File quá lớn (tối đa 10MB). Vui lòng quay lại trang trước và chọn ảnh có size nhỏ hơn'
         });
       }
 

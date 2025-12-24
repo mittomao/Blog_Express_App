@@ -18,7 +18,13 @@ const storage = new CloudinaryStorage({
     folder: 'uploads',
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
     transformation: [
-      { width: 2000, height: 2000, crop: 'limit' }
+      { 
+        width: 1024,
+        height: 1024,
+        crop: 'limit',
+        quality: 'auto',
+        fetch_format: 'auto'
+      }
     ],
     public_id: (req, file) => `${Date.now()}-${file.originalname}`
   }
@@ -27,10 +33,10 @@ const storage = new CloudinaryStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: 1 * 1024 * 1024 // 1MB
+    fileSize: 10 * 1024 * 1024 // 10MB
   },
   fileFilter: (req, file, cb) => {
-    const allowed = ['image/jpeg', 'image/png', 'image/gif'];
+    const allowed = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
     if (!allowed.includes(file.mimetype)) {
       return cb(new Error('Only image files are allowed'), false);
     }
