@@ -1,23 +1,57 @@
-<header class="bg-surface-primary border-bottom pt-6">
-    <div class="container-fluid">
-        <div class="mb-npx">
-            <div class="row align-items-center">
-                <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                    <!-- Title -->
-                    <h1 class="h2 mb-0 ls-tight">Application</h1>
-                </div>
-                <!-- Actions -->
-                <div class="col-sm-6 col-12 text-sm-end">
-                    <div class="mx-n1">
-                        <a href="/admin/<%= action %>" class="btn d-inline-flex btn-sm btn-primary mx-1">
-                            <span class=" pe-2">
-                                <i class="bi bi-plus"></i>
-                            </span>
-                            <span>Create</span>
-                        </a>
+<header class="navbar navbar-expand-md d-none d-lg-flex d-print-none border-bottom sticky-top bg-body">
+    <div class="container-xl">
+        <!-- Page Title & Section Header -->
+        <div class="d-flex align-items-center">
+            <h2 class="page-title mb-0 fs-3 fw-bold text-heading">
+                <%= typeof title !== 'undefined' ? title : 'Admin Management' %>
+            </h2>
+        </div>
+
+        <!-- Right Side: Theme Toggle, Action Button & Profile -->
+        <div class="navbar-nav flex-row order-md-last ms-auto align-items-center gap-2">
+            <!-- Theme Toggle Button -->
+            <div class="nav-item">
+                <a href="javascript:void(0);" class="nav-link px-2 text-muted" data-theme-toggle title="Toggle Light/Dark Theme" data-bs-toggle="tooltip">
+                    <i class="ti ti-sun theme-icon-sun fs-2"></i>
+                    <i class="ti ti-moon theme-icon-moon fs-2"></i>
+                </a>
+            </div>
+
+            <!-- Action Button (+ Create) -->
+            <% if (typeof action !== 'undefined' && action) { %>
+            <div class="nav-item">
+                <a href="/admin/<%= action %>" class="btn btn-primary d-inline-flex align-items-center gap-1 shadow-sm">
+                    <i class="ti ti-plus"></i>
+                    <span>Create</span>
+                </a>
+            </div>
+            <% } %>
+
+            <!-- User Menu -->
+            <% if (typeof account !== 'undefined' && account) { %>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                    <span class="avatar avatar-sm rounded-circle"
+                        style="background-image: url('<%= process.env.IMAGE_PREFIX %>/<%= account.avatar %>')"></span>
+                    <div class="d-none d-xl-block ps-2 text-start">
+                        <div class="fw-semibold"><%= account.username %></div>
+                        <div class="mt-1 small text-muted">Administrator</div>
                     </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <div class="dropdown-header">
+                        <small class="text-muted">Account Menu</small>
+                    </div>
+                    <a href="/" target="_blank" class="dropdown-item">
+                        <i class="ti ti-external-link me-2 text-muted"></i> View Site
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/admin/logout" class="dropdown-item text-danger">
+                        <i class="ti ti-logout me-2"></i> Logout
+                    </a>
                 </div>
             </div>
+            <% } %>
         </div>
     </div>
 </header>

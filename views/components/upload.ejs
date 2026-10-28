@@ -1,38 +1,45 @@
 <div class="page-upload">
-    <h1 class="h2 mb-0 ls-tight">Media Library</h1>
-    <!-- <form method="post" action="/admin/upload" id="file-upload-form" class="uploader" enctype="multipart/form-data">
-        <input id="file-upload" type="file" name="file"
-            accept=".jpeg, .doc, .docx, .xls, .xlsx, .txt, .jpg, .png, .gif" />
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="card-title fw-bold m-0 d-flex align-items-center gap-2">
+                <i class="ti ti-photo text-primary"></i>
+                <span>Cloudinary Media Library</span>
+            </h3>
+            <span class="badge bg-primary-lt">
+                <%= (typeof listImages !== 'undefined' && listImages) ? listImages.length : 0 %> assets
+            </span>
+        </div>
+        <div class="card-body">
+            <p class="text-muted small mb-0">
+                Browse images hosted on your Cloudinary CDN. Hover over an image and click <strong>Copy URL</strong> to grab its direct link for blog articles and widgets.
+            </p>
+        </div>
+    </div>
 
-        <label for="file-upload" id="file-drag">
-            <img id="file-image" src="#" alt="Preview" class="hidden">
-            <div id="start">
-                <i class="fa fa-download" aria-hidden="true"></i>
-                <div>Select a file or drag here</div>
-                <div id="notimage" class="hidden">Please select an image</div>
-                <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
-            </div>
-            <div id="response" class="hidden">
-                <div id="messages"></div>
-                <progress class="progress" id="file-progress" value="0">
-                    <span>0</span>%
-                </progress>
-            </div>
-        </label>
-    </form> -->
     <div class="gallery">
-        <% if (listImages && listImages.length) { %>
-            <% listImages.forEach((file)=> { %>
+        <% if (typeof listImages !== 'undefined' && listImages && listImages.length) { %>
+            <% listImages.forEach((file) => { %>
                 <div class="gallery__item js-gallery-item">
-                    <img src="<%= file.url %>" alt="" data-id="<%= file.asset_id %>">
+                    <img src="<%= file.url %>" alt="Media item" data-id="<%= file.asset_id %>" loading="lazy">
                     <div class="action">
-                        <span class="bi bi-save js-copy">
+                        <span class="js-copy">
+                            <i class="ti ti-copy"></i> Copy URL
                         </span>
-                        <!-- <span class="bi bi-trash js-delete">
-                        </span> -->
                     </div>
                 </div>
             <% }) %>
+        <% } else { %>
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-center py-5">
+                        <div class="empty">
+                            <div class="empty-icon text-muted"><i class="ti ti-photo-off fs-1"></i></div>
+                            <p class="empty-title fw-bold">No media files found</p>
+                            <p class="empty-subtitle text-muted">Uploaded Cloudinary images in your folder will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <% } %>
-    </div>    
+    </div>
 </div>

@@ -2,20 +2,19 @@
 <html lang="en">
 
 <head>
-    <%- include('../../templates/meta')%>
-    <link rel="stylesheet" href="/css/common.css">
+    <%- include('../../templates/meta') %>
     <link rel="stylesheet" href="/css/admin.css">
-    <%if( useStyleClient ) { %>
+    <% if (useStyleClient) { %>
         <link rel="stylesheet" href="/css/main.css">
     <% } %>
 </head>
 
-<body>
-    <div class="admin-page">
+<body class="layout-fluid">
+    <div class="page">
         <%- body %>
     </div>
 
-    <%- include('../../templates/block_script')%>
+    <%- include('../../templates/block_script') %>
     <script type="module" src="/js/admin.js"></script>
 </body>
 

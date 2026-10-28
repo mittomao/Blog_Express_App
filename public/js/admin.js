@@ -143,9 +143,9 @@ $(function () {
     // Select2
     $('#select-tag').each(function () {
         $(this).select2({
-            theme: 'bootstrap4',
-            width: 'style',
-            placeholder: $(this).attr('placeholder'),
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: $(this).attr('placeholder') || 'Choose tag...',
             allowClear: Boolean($(this).data('allow-clear')),
         });
     });
@@ -313,23 +313,15 @@ $(function () {
     const $gallerys = $('.js-gallery-item');
 
     $gallerys.length && $gallerys.on('click', async function (e) {
-        if (e.target.classList.contains('js-copy')) {
+        const copyTarget = e.target.closest('.js-copy');
+        if (copyTarget) {
             const filename = $(this).find('img').attr('src');
-            $(e.target).css({
-                'color': 'green'
-            })
             await navigator.clipboard.writeText(filename);
-        } else if (e.target.classList.contains('js-delete')) {
-            // $.post('/admin/images/delete', {
-            //     id: $(this).find('img').data('id')
-            // })
-            //     .done(function (res) {
-            //         alert(res.message);
-            //         window.location.reload();
-            //     })
-            //     .fail(function (err) {
-            //         alert("error" + err);
-            //     })
+            const originalHTML = $(copyTarget).html();
+            $(copyTarget).html('<i class="ti ti-check text-success"></i> Copied!');
+            setTimeout(() => {
+                $(copyTarget).html(originalHTML);
+            }, 2000);
         }
     });
 });

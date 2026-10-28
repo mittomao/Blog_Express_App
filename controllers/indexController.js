@@ -126,25 +126,7 @@ module.exports = {
         }
     },
     register: async (req, res) => {
-        if (req.method === "GET") {
-            return res.render('register.ejs', new ResonposeDataAdmin({ title: 'Register Page', layout: 'admin-layout' }))
-        }
-        try {
-            const { username, password, email, phone, avatar } = req.body;
-            const register = await _USER_CON.FUNC_REGISTER_USER({
-                username,
-                password,
-                email,
-                phone,
-                avatar
-            });
-
-            if (register) {
-                return res.redirect('/admin')
-            }
-        } catch (error) {
-            console.error(error)
-        }
+        return res.redirect('/admin/login');
     },
     login: async (req, res) => {
         if (req.method === 'GET') {

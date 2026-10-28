@@ -1,20 +1,39 @@
-<% if (totalPage > 1) { %>
+<% if (typeof totalPage !== 'undefined' && totalPage > 1) { %>
 <% 
-    let pathName = isAdmin ? '/admin' : '';
+    let pathName = (typeof isAdmin !== 'undefined' && isAdmin) ? '/admin' : '';
     let p = parseInt(page);
     let prevBtn = p > 1 ? p - 1 : p; 
     let nextBtn = p < totalPage ? p + 1 : p;
 
-    let isPrev = (p - 1 == 0) ? 'disable' : '';
-    let isNext = (p + 1 > totalPage) ? 'disable' : '';
+    let isPrevDisabled = (p <= 1);
+    let isNextDisabled = (p >= totalPage);
 %>
 
-<div class="pagination <%= page %>">
-    <a class="<%=  isPrev %>" href="<%= pathName %>/p/<%=prevBtn%>">&laquo;</a>
-    <% for (let i = 1; i <= totalPage; i++ ) { %>
-        <% let isActive = (page == i) ? 'active' : '' %>
-        <a href="<%= pathName %>/p/<%= i %>" class="<%= isActive %>"> <%= i %> </a>
-    <% } %>
-    <a class="<%=  isNext %>" href="<%= pathName %>/p/<%= nextBtn %>">&raquo;</a>
-</div>
+<nav aria-label="Page navigation">
+    <ul class="pagination pagination-sm m-0 align-items-center">
+        <!-- Previous Button -->
+        <li class="page-item <%= isPrevDisabled ? 'disabled' : '' %>">
+            <a class="page-link" href="<%= isPrevDisabled ? '#' : pathName + '/p/' + prevBtn %>" tabindex="<%= isPrevDisabled ? '-1' : '0' %>" aria-disabled="<%= isPrevDisabled %>">
+                <i class="ti ti-chevron-left"></i>
+            </a>
+        </li>
+
+        <!-- Page Numbers -->
+        <% for (let i = 1; i <= totalPage; i++) { %>
+            <% let isActive = (p === i); %>
+            <li class="page-item <%= isActive ? 'active' : '' %>">
+                <a class="page-link" href="<%= pathName %>/p/<%= i %>">
+                    <%= i %>
+                </a>
+            </li>
+        <% } %>
+
+        <!-- Next Button -->
+        <li class="page-item <%= isNextDisabled ? 'disabled' : '' %>">
+            <a class="page-link" href="<%= isNextDisabled ? '#' : pathName + '/p/' + nextBtn %>" tabindex="<%= isNextDisabled ? '-1' : '0' %>" aria-disabled="<%= isNextDisabled %>">
+                <i class="ti ti-chevron-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
 <% } %>

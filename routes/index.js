@@ -13,12 +13,9 @@ router.post('/login', index_Controller.login)
 
 // Logout
 router.get('/logout', index_Controller.logout)
-// Register
-// router.get('/register', index_Controller.register)
-// router.post('/register', index_Controller.register)
-// router.post('/login', index_Controller.login)
-// router.get('/profile', [middleware.checkLogin, index_Controller.profile])
-// router.get('/profile', [middleware.checkLogin, index_Controller.profile])
+
+// Register route has been decommissioned
+router.all('/register', (req, res) => res.redirect('/admin/login'));
 
 //Create Post
 router.get('/add-post', index_Controller.addPost)

@@ -1,33 +1,47 @@
-<div class="page-add-post">
-    <div class="container">
-        <h2 class="text-center">ADD NEW TAG</h2>
-        <div class="row">
-            <div class="col-md-12">
-                <form method="post" role="form" action="/admin/add-tag">
-                    <div class="form-group mb-3">
-                        <label> Name </label>
-                        <input type="text" class="form-control" name="name" placeholder="Tag Name" required/>
-                    </div>
+<%- include('../../components/navbar', { account: typeof account !== 'undefined' ? account : null }) %>
 
-                    <!-- <div class="form-group mb-3">
-                      <label> Quantity </label>
-                      <input type="number" class="form-control" name="quantity" placeholder="Quantity" required/>
-                  </div> -->
+<div class="page-wrapper">
+    <%- include('../../components/header', { account: typeof account !== 'undefined' ? account : null, action: null, title: 'Add New Tag' }) %>
 
-                    <div class="form-group mb-3">
-                        <label class="form-check-label">
-                            Prioritize  
-                        </label>
-                        <select name="prioritize" id="" class="form-control">
-                            <option value="0" selected>Secondary</option>
-                            <option value="1">Primary</option>
-                        </select>
-                    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <form method="post" role="form" action="/admin/add-tag">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header">
+                                <h3 class="card-title fw-bold d-flex align-items-center gap-2">
+                                    <i class="ti ti-tag text-primary"></i>
+                                    <span>Create Tag</span>
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label required">Tag Name</label>
+                                    <input type="text" class="form-control" name="name" placeholder="e.g. React, Node.js, Architecture" required autofocus />
+                                    <small class="form-hint">Unique identifier used for categorizing blog posts.</small>
+                                </div>
 
-                    <div class="form-group">
-                        <input type="submit" name="Submit" value="Create" class="btn btn-primary form-control" />
-                    </div>
-                </form>
+                                <div class="mb-3">
+                                    <label class="form-label">Priority Level</label>
+                                    <select name="prioritize" id="prioritize" class="form-select">
+                                        <option value="0" selected>Secondary (Standard tag)</option>
+                                        <option value="1">Primary (Featured / Highlighted tag)</option>
+                                    </select>
+                                    <small class="form-hint">Primary tags will be prioritized on client cloud tags.</small>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex gap-2">
+                                <button type="submit" class="btn btn-primary flex-fill">
+                                    <i class="ti ti-plus me-1"></i> Create Tag
+                                </button>
+                                <a href="/admin/tag" class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

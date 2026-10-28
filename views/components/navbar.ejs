@@ -1,155 +1,147 @@
-<% %>
-    <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
-        id="navbarVertical">
-        <div class="container-fluid">
-            <!-- Toggler -->
-            <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
-                data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="/admin">
-                <img src="<%= process.env.IMAGE_PREFIX %>/logo.png" alt="...">
-            </a>
+<aside class="navbar navbar-vertical navbar-expand-lg border-end">
+    <div class="container-fluid">
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+            aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!-- User menu (mobile) -->
-            <div class="navbar-user d-lg-none">
-                <!-- Dropdown -->
-                <div class="dropdown">
-                    <!-- Toggle -->
-                    <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        <div class="avatar-parent-child">
-                            <img alt="Image Placeholder"
-                                src="<%= process.env.IMAGE_PREFIX %>/logo1.png"
-                                class="avatar avatar- rounded-circle">
-                            <span class="avatar-child avatar-badge bg-success"></span>
-                        </div>
-                    </a>
-                    <!-- Menu -->
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarAvatar">
-                        <a href="#" class="dropdown-item">Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        <a href="#" class="dropdown-item">Billing</a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">Logout</a>
+        <!-- Brand / Logo -->
+        <h1 class="navbar-brand navbar-brand-autodark px-2 py-3 mb-0">
+            <a href="/admin" class="d-flex align-items-center gap-2 text-decoration-none">
+                <img src="<%= process.env.IMAGE_PREFIX %>/logo.png" alt="Blog Admin" class="navbar-brand-image" style="height: 32px; object-fit: contain;">
+                <span class="fw-bold fs-3 text-heading">CMS Admin</span>
+            </a>
+        </h1>
+
+        <!-- Mobile Quick Actions: Theme & User -->
+        <div class="navbar-nav flex-row d-lg-none align-items-center gap-2">
+            <!-- Mobile Dark/Light Toggle -->
+            <div class="nav-item">
+                <a href="javascript:void(0);" class="nav-link px-2" data-theme-toggle title="Toggle theme">
+                    <i class="ti ti-sun theme-icon-sun fs-2"></i>
+                    <i class="ti ti-moon theme-icon-moon fs-2"></i>
+                </a>
+            </div>
+            <% if (typeof account !== 'undefined' && account) { %>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                    <span class="avatar avatar-sm rounded-circle"
+                        style="background-image: url('<%= process.env.IMAGE_PREFIX %>/<%= account.avatar %>')"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <div class="dropdown-header">
+                        <small class="text-muted">Signed in as</small>
+                        <div class="fw-bold"><%= account.username %></div>
                     </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="/" target="_blank" class="dropdown-item">
+                        <i class="ti ti-external-link me-2"></i> View Site
+                    </a>
+                    <a href="/admin/logout" class="dropdown-item text-danger">
+                        <i class="ti ti-logout me-2"></i> Logout
+                    </a>
                 </div>
             </div>
-            <!-- Collapse -->
-            <div class="collapse navbar-collapse" id="sidebarCollapse">
-                <!-- Navigation -->
-                <ul class="navbar-nav" id="accordion">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">
-                            <i class="bi bi-bar-chart"></i> View Site
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-house"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">
-                            <i class="bi bi-house"></i> Posts
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/tag">
-                            <i class="bi bi-bar-chart"></i> Tag
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseOne"
-                            aria-expanded="true" aria-controls="collapseOne">
-                            <i class="bi bi-chat"></i> Components
-                        </a>
-                        <ul id="collapseOne" class="collapse" data-parent="#accordion">
-                            <li class="nav-item">
-                                <a href="/admin/components/popular_articles" class="nav-link">Popular Articles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/admin/components/newsletter" class="nav-link">Newsletter</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/admin/components/portfolio" class="nav-link">Portfolio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/admin/components/about_author" class="nav-link">About Author</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/media-library">
-                            <i class="bi bi-card-image"></i> Media Library
-                        </a>
-                    </li>
-                </ul>
-                <!-- Divider -->
-                <hr class="navbar-divider my-5 opacity-20">
-                <!-- Navigation -->
-                <ul class="navbar-nav mb-md-4">
-                    <li>
-                        <div class="nav-link text-xs font-semibold text-uppercase text-muted ls-wide" href="#">
-                            Contacts
-                            <span
-                                class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4">13</span>
-                        </div>
-                    </li>
-                    <!-- <li>
-                    <a href="#" class="nav-link d-flex align-items-center">
-                        <div class="me-4">
-                            <div class="position-relative d-inline-block text-white">
-                                <img alt="Image Placeholder"
-                                    src="<%= process.env.IMAGE_PREFIX %>/avatar1.png"
-                                    class="avatar rounded-circle">
-                                <span
-                                    class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-success rounded-circle"></span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="d-block text-sm font-semibold">
-                                Wainii Dev
-                            </span>
-                            <span class="d-block text-xs text-muted font-regular">
-                                Hanoi, VN
-                            </span>
-                        </div>
-                        <div class="ms-auto">
-                            <i class="bi bi-chat"></i>
-                        </div>
+            <% } %>
+        </div>
+
+        <!-- Sidebar Navigation Menu (Desktop & Collapsed Mobile) -->
+        <div class="collapse navbar-collapse" id="sidebar-menu">
+            <ul class="navbar-nav pt-lg-3">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="ti ti-world"></i>
+                        </span>
+                        <span class="nav-link-title">View Public Site</span>
                     </a>
-                </li>  -->
-                </ul>
-                <!-- Push content down -->
-                <div class="mt-auto"></div>
-                <!-- User (md) -->
-                <ul class="navbar-nav">
-                    <% if (account) { %>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <img alt="Avatar" src="<%= process.env.IMAGE_PREFIX %>/<%= account.avatar %>"
-                                    class="avatar rounded-circle mr-3" />
-                                <span class="username">
-                                    <%= account.username %>
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/logout">
-                                <i class="bi bi-box-arrow-left"></i> Logout
-                            </a>
-                        </li>
-                        <% } else { %>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/login">
-                                    <i class="bi bi-person-fill"></i> Login
-                                </a>
-                            </li>
-                        <% } %>  
-                </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="ti ti-file-text"></i>
+                        </span>
+                        <span class="nav-link-title">Posts</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/tag">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="ti ti-tags"></i>
+                        </span>
+                        <span class="nav-link-title">Tags</span>
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-components" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="ti ti-puzzle"></i>
+                        </span>
+                        <span class="nav-link-title">Components</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/admin/components/popular_articles">
+                            <i class="ti ti-flame me-2 text-muted"></i> Popular Articles
+                        </a>
+                        <a class="dropdown-item" href="/admin/components/newsletter">
+                            <i class="ti ti-mail me-2 text-muted"></i> Newsletter
+                        </a>
+                        <a class="dropdown-item" href="/admin/components/portfolio">
+                            <i class="ti ti-briefcase me-2 text-muted"></i> Portfolio
+                        </a>
+                        <a class="dropdown-item" href="/admin/components/about_author">
+                            <i class="ti ti-user me-2 text-muted"></i> About Author
+                        </a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/media-library">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="ti ti-photo"></i>
+                        </span>
+                        <span class="nav-link-title">Media Library</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Theme Mode Toggle on Desktop Sidebar -->
+            <div class="my-3 px-3 d-none d-lg-block">
+                <button type="button" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2" data-theme-toggle>
+                    <i class="ti ti-sun theme-icon-sun fs-2"></i>
+                    <i class="ti ti-moon theme-icon-moon fs-2"></i>
+                    <span>Toggle Theme</span>
+                </button>
+            </div>
+
+            <!-- User Footer on Desktop -->
+            <div class="mt-auto pt-3 border-top">
+                <% if (typeof account !== 'undefined' && account) { %>
+                <div class="d-flex align-items-center px-2 py-2">
+                    <span class="avatar avatar-sm rounded-circle me-3"
+                        style="background-image: url('<%= process.env.IMAGE_PREFIX %>/<%= account.avatar %>')"></span>
+                    <div class="flex-fill text-truncate me-2">
+                        <div class="fw-semibold text-truncate"><%= account.username %></div>
+                        <div class="small text-muted">Administrator</div>
+                    </div>
+                    <a href="/admin/logout" class="btn btn-icon btn-ghost-danger btn-sm" title="Logout" data-bs-toggle="tooltip">
+                        <i class="ti ti-logout fs-2"></i>
+                    </a>
+                </div>
+                <% } else { %>
+                <div class="px-2 py-2">
+                    <a href="/admin/login" class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                        <i class="ti ti-login"></i>
+                        <span>Login</span>
+                    </a>
+                </div>
+                <% } %>
             </div>
         </div>
-    </nav>
+    </div>
+</aside>

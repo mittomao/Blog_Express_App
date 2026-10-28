@@ -1,54 +1,69 @@
-    <% 
-    let name=dataComponent?.name || "" ; 
-    let description=dataComponent?.description || "" ; 
+<% 
+    let name = dataComponent?.name || ""; 
+    let description = dataComponent?.description || ""; 
     if (dataComponent) {
-        dataComponent.isDemo=true; 
+        dataComponent.isDemo = true; 
     } 
-    %>
-    <div class="blog-table">
-        <div class="card shadow border-0 mb-7">
-            <div class="card-header">
-                <h5 class="mb-0">View Result</h5>
-            </div>
-            <div class="card-body">
-                <%- include('../components/c_about-author', { aboutAuthor: dataComponent }) %>
-            </div>
-        </div>
-        <div class="card shadow border-0 mb-7">
-            <div class="card-header">
-                <h5 class="mb-0">Highlight Code</h5>
-            </div>
-            <div class="card-body">
-                <div class='code-frame'>
-                    <textarea cols='30' id='source-code' name='' rows='10'>
-                    <%- include('../components/c_about-author', { aboutAuthor: dataComponent }) %>
-                </textarea>
-                </div>
-            </div>
-        </div>
-        <div class="card shadow border-0 mb-7">
-            <div class="card-header">
-                <h5 class="mb-0">Edit Value</h5>
-            </div>
-            <div class="card-body">
+%>
+<div class="card shadow-sm border-0">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a href="#tab-edit" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab">
+                    <i class="ti ti-edit me-1"></i> Edit Configuration
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="#tab-preview" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
+                    <i class="ti ti-eye me-1"></i> Live Preview
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="#tab-code" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
+                    <i class="ti ti-code me-1"></i> HTML Source
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <!-- Tab 1: Edit Form -->
+            <div class="tab-pane active show" id="tab-edit" role="tabpanel">
                 <form action="/admin/components/<%= componentName %>" method="post">
-                    <div class="form-group mb-3">
-                        <label> Name </label>
-                        <input type="text" class="form-control" name="name" placeholder="Name" value="<%= name %>"
-                            required />
+                    <div class="mb-3">
+                        <label class="form-label required">Author Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Author Name" value="<%= name %>" required />
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label for="summary">Description</label>
-                        <textarea class="form-control" name="description" id="description"
-                            rows="3"><%= description %></textarea>
+                    <div class="mb-3">
+                        <label class="form-label">Description / Bio</label>
+                        <textarea class="form-control" name="description" id="description" rows="4" placeholder="Short biography..."><%= description %></textarea>
                     </div>
-                   
-                    <div class="form-group">
-                        <input type="submit" name="Submit" value="Update" class="btn btn-primary form-control" />
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ti ti-device-floppy me-1"></i> Save Changes
+                        </button>
                     </div>
                 </form>
             </div>
+
+            <!-- Tab 2: Live Preview -->
+            <div class="tab-pane" id="tab-preview" role="tabpanel">
+                <div class="p-3 border rounded bg-surface">
+                    <%- include('../components/c_about-author', { aboutAuthor: dataComponent }) %>
+                </div>
+            </div>
+
+            <!-- Tab 3: Highlight Code -->
+            <div class="tab-pane" id="tab-code" role="tabpanel">
+                <div class="code-frame">
+                    <textarea cols="30" id="source-code" name="" rows="10" class="form-control font-monospace">
+<%- include('../components/c_about-author', { aboutAuthor: dataComponent }) %>
+                    </textarea>
+                </div>
+            </div>
         </div>
-        <div id="editor-content" style="display: none;" data-key="<%= process.env.FLMNGR_KEY %>"></div>
     </div>
+    <div id="editor-content" style="display: none;" data-key="<%= process.env.FLMNGR_KEY %>"></div>
+</div>
