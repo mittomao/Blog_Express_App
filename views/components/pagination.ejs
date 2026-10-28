@@ -1,39 +1,77 @@
 <% if (typeof totalPage !== 'undefined' && totalPage > 1) { %>
 <% 
-    let pathName = (typeof isAdmin !== 'undefined' && isAdmin) ? '/admin' : '';
-    let p = parseInt(page);
-    let prevBtn = p > 1 ? p - 1 : p; 
-    let nextBtn = p < totalPage ? p + 1 : p;
+    let p = parseInt(page, 10) || 1;
+    let total = parseInt(totalPage, 10) || 1;
+    let base = (typeof basePath !== 'undefined' && basePath) 
+        ? basePath 
+        : ((typeof isAdmin !== 'undefined' && isAdmin) ? '/admin' : '');
+
+    let prevBtn = p > 1 ? p - 1 : 1; 
+    let nextBtn = p < total ? p + 1 : total;
 
     let isPrevDisabled = (p <= 1);
-    let isNextDisabled = (p >= totalPage);
+    let isNextDisabled = (p >= total);
+
+    // Ellipsis Pagination: Calculate page numbers and ellipses
+    // If total <= 7, display all page numbers
+    // If total > 7:
+    //   - Near start (p <= 4): [1, 2, 3, 4, 5, '...', total]
+    //   - Near end (p >= total - 3): [1, '...', total - 4, total - 3, total - 2, total - 1, total]
+    //   - In middle: [1, '...', p - 1, p, p + 1, '...', total]
+    let paginationItems = [];
+    if (total <= 7) {
+        for (let i = 1; i <= total; i++) {
+            paginationItems.push(i);
+        }
+    } else if (p <= 4) {
+        paginationItems = [1, 2, 3, 4, 5, '...', total];
+    } else if (p >= total - 3) {
+        paginationItems = [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+    } else {
+        paginationItems = [1, '...', p - 1, p, p + 1, '...', total];
+    }
 %>
 
 <nav aria-label="Page navigation">
-    <ul class="pagination pagination-sm m-0 align-items-center">
+    <ul class="pagination <%= (typeof isAdmin !== 'undefined' && isAdmin) ? 'pagination-sm' : '' %> m-0 align-items-center">
         <!-- Previous Button -->
         <li class="page-item <%= isPrevDisabled ? 'disabled' : '' %>">
-            <a class="page-link" href="<%= isPrevDisabled ? '#' : pathName + '/p/' + prevBtn %>" tabindex="<%= isPrevDisabled ? '-1' : '0' %>" aria-disabled="<%= isPrevDisabled %>">
-                <i class="ti ti-chevron-left"></i>
+            <a class="page-link" href="<%= isPrevDisabled ? '#' : base + '/p/' + prevBtn %>" tabindex="<%= isPrevDisabled ? '-1' : '0' %>" aria-disabled="<%= isPrevDisabled %>" aria-label="Previous page">
+                <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+                    <i class="ti ti-chevron-left" aria-hidden="true"></i>
+                <% } else { %>
+                    <span class="ion-ios-arrow-back" aria-hidden="true"></span>
+                <% } %>
             </a>
         </li>
 
-        <!-- Page Numbers -->
-        <% for (let i = 1; i <= totalPage; i++) { %>
-            <% let isActive = (p === i); %>
-            <li class="page-item <%= isActive ? 'active' : '' %>">
-                <a class="page-link" href="<%= pathName %>/p/<%= i %>">
-                    <%= i %>
-                </a>
-            </li>
-        <% } %>
+        <!-- Page Numbers & Ellipsis -->
+        <% paginationItems.forEach(function(item) { %>
+            <% if (item === '...') { %>
+                <li class="page-item disabled" aria-disabled="true">
+                    <span class="page-link" aria-hidden="true">&hellip;</span>
+                </li>
+            <% } else { %>
+                <% let isActive = (p === item); %>
+                <li class="page-item <%= isActive ? 'active' : '' %>" <%= isActive ? 'aria-current="page"' : '' %>>
+                    <a class="page-link" href="<%= base %>/p/<%= item %>">
+                        <%= item %>
+                    </a>
+                </li>
+            <% } %>
+        <% }); %>
 
         <!-- Next Button -->
         <li class="page-item <%= isNextDisabled ? 'disabled' : '' %>">
-            <a class="page-link" href="<%= isNextDisabled ? '#' : pathName + '/p/' + nextBtn %>" tabindex="<%= isNextDisabled ? '-1' : '0' %>" aria-disabled="<%= isNextDisabled %>">
-                <i class="ti ti-chevron-right"></i>
+            <a class="page-link" href="<%= isNextDisabled ? '#' : base + '/p/' + nextBtn %>" tabindex="<%= isNextDisabled ? '-1' : '0' %>" aria-disabled="<%= isNextDisabled %>" aria-label="Next page">
+                <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+                    <i class="ti ti-chevron-right" aria-hidden="true"></i>
+                <% } else { %>
+                    <span class="ion-ios-arrow-forward" aria-hidden="true"></span>
+                <% } %>
             </a>
         </li>
     </ul>
 </nav>
 <% } %>
+
