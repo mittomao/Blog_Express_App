@@ -1,15 +1,32 @@
-'use strict'
-const _CONST = require('../config/constant')
-const { getAllResources } = require('../utils/cloudinary')
-const _BLOG_CON = require('./blogController')
-const _USER_CON = require('./usersController')
-const _TAG_CON = require('./tagController')
-const _COMP_CON = require('./componentController')
-const imagesModel = require('../models/imagesModel');
+'use strict';
+
+const { getAllResources } = require('../utils/cloudinary');
+const _BLOG_CON = require('./blogController');
+const _USER_CON = require('./usersController');
+const _TAG_CON = require('./tagController');
+const _COMP_CON = require('./componentController');
 const dataApis = require('../api');
 
+/**
+ * Standard View Model for Admin Pages
+ */
 class ResonposeDataAdmin {
-    constructor({ layout, isAdmin, title, currentPage, totalPage, blogs, allItems, tags, account, action, dataComponent, componentName, useStyleClient, listImages }) {
+    constructor({
+        layout,
+        isAdmin,
+        title,
+        currentPage,
+        totalPage,
+        blogs,
+        allItems,
+        tags,
+        account,
+        action,
+        dataComponent,
+        componentName,
+        useStyleClient,
+        listImages
+    } = {}) {
         this.layout = layout;
         this.isAdmin = isAdmin;
         this.title = title;
@@ -27,11 +44,26 @@ class ResonposeDataAdmin {
     }
 }
 
+ResonposeDataAdmin.ResponseDataAdmin = ResonposeDataAdmin;
+
+/**
+ * Helper to perform redirect with standardized feedback toast parameters
+ */
+const redirectWithToast = (res, url, { toast, status = 'success', msg = '' }) => {
+    const params = new URLSearchParams();
+    if (toast) params.set('toast', toast);
+    if (status) params.set('status', status);
+    if (msg) params.set('msg', msg);
+    const queryString = params.toString();
+    const targetUrl = queryString ? `${url}${url.includes('?') ? '&' : '?'}${queryString}` : url;
+    return res.redirect(targetUrl);
+};
+
 module.exports = {
-    // Post
+    // Post Management
     home: async (req, res) => {
         try {
-            let { page = 1 } = req.params;
+            const { page = 1 } = req.params;
             if (req.session?.account?.loggedin) {
                 const data = await _BLOG_CON.Func_Get_ALl_Post(page);
                 if (data) {
@@ -49,13 +81,13 @@ module.exports = {
                         }));
                 }
             }
-
-            return res.redirect('/admin/login')
-
+            return res.redirect('/admin/login');
         } catch (error) {
-            console.error(error);
+            console.error("Error in admin home controller:", error);
+            return res.redirect('/admin/login');
         }
     },
+
     addPost: async (req, res) => {
         if (req.method === "GET") {
             try {
@@ -67,8 +99,12 @@ module.exports = {
                         layout: 'admin-layout'
                     }));
             } catch (error) {
-                console.error('error', error);
-                return res.redirect('/admin?toast=error&status=error&msg=Failed+to+load+tags');
+                console.error('Error loading tags in addPost:', error);
+                return redirectWithToast(res, '/admin', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to load tags'
+                });
             }
         }
 
@@ -77,22 +113,34 @@ module.exports = {
 
             // Server-Side Independent Validation
             if (!title || typeof title !== 'string' || title.trim().length < 5 || title.trim().length > 200) {
-                return res.redirect('/admin/add-post?toast=error&status=error&msg=Title+must+be+between+5+and+200+characters');
+                return redirectWithToast(res, '/admin/add-post', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Title must be between 5 and 200 characters'
+                });
             }
 
             const cleanContent = content ? content.replace(/<[^>]*>/g, '').trim() : '';
             if (!content || cleanContent.length < 10) {
-                return res.redirect('/admin/add-post?toast=error&status=error&msg=Content+must+be+at+least+10+characters');
+                return redirectWithToast(res, '/admin/add-post', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Content must be at least 10 characters'
+                });
             }
 
             if (summary && summary.trim().length > 500) {
-                return res.redirect('/admin/add-post?toast=error&status=error&msg=Summary+cannot+exceed+500+characters');
+                return redirectWithToast(res, '/admin/add-post', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Summary cannot exceed 500 characters'
+                });
             }
 
             const normalizedTag = tag ? (Array.isArray(tag) ? tag.join(',') : tag.toString()) : '';
             const normalizedStatus = status === '0' || status === 0 ? '0' : '1';
 
-            let add = await _BLOG_CON.Func_Create_Post({
+            const add = await _BLOG_CON.Func_Create_Post({
                 author: req.session?.account?.username,
                 title: title.trim(),
                 content,
@@ -110,20 +158,35 @@ module.exports = {
                         await _TAG_CON.Func_Increment_Quantity({ name: { "$in": tagList } });
                     }
                 }
-                return res.redirect('/admin?toast=post_created&status=success');
+                return redirectWithToast(res, '/admin', {
+                    toast: 'post_created',
+                    status: 'success'
+                });
             } else {
-                return res.redirect('/admin/add-post?toast=error&status=error&msg=Failed+to+create+post');
+                return redirectWithToast(res, '/admin/add-post', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to create post'
+                });
             }
         } catch (error) {
-            console.error('error', error);
-            return res.redirect('/admin/add-post?toast=error&status=error&msg=Server+error+creating+post');
+            console.error('Error in addPost controller:', error);
+            return redirectWithToast(res, '/admin/add-post', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Server error creating post'
+            });
         }
     },
+
     pageEdit: async (req, res) => {
         const { id } = req.params;
         try {
-            let post = await _BLOG_CON.Func_Get_Post_By_Id(id);
-            const tags = await _TAG_CON.Func_Get_ALl_Tag();
+            const [post, tags] = await Promise.all([
+                _BLOG_CON.Func_Get_Post_By_Id(id),
+                _TAG_CON.Func_Get_ALl_Tag()
+            ]);
+
             if (post) {
                 return res.render('edit-post.ejs',
                     new ResonposeDataAdmin({
@@ -133,16 +196,29 @@ module.exports = {
                         layout: 'admin-layout'
                     }));
             }
-            return res.redirect('/admin?toast=error&status=error&msg=Post+not+found');
+            return redirectWithToast(res, '/admin', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Post not found'
+            });
         } catch (error) {
-            console.error('error', error);
-            return res.redirect('/admin?toast=error&status=error&msg=Invalid+post+id');
+            console.error('Error in pageEdit controller:', error);
+            return redirectWithToast(res, '/admin', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Invalid post id'
+            });
         }
     },
+
     updatePost: async (req, res) => {
         const { id } = req.query;
         if (!id) {
-            return res.redirect('/admin?toast=error&status=error&msg=Missing+post+id');
+            return redirectWithToast(res, '/admin', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Missing post id'
+            });
         }
 
         try {
@@ -150,22 +226,34 @@ module.exports = {
 
             // Server-Side Independent Validation
             if (!title || typeof title !== 'string' || title.trim().length < 5 || title.trim().length > 200) {
-                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Title+must+be+between+5+and+200+characters`);
+                return redirectWithToast(res, `/admin/edit-post/${id}`, {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Title must be between 5 and 200 characters'
+                });
             }
 
             const cleanContent = content ? content.replace(/<[^>]*>/g, '').trim() : '';
             if (!content || cleanContent.length < 10) {
-                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Content+must+be+at+least+10+characters`);
+                return redirectWithToast(res, `/admin/edit-post/${id}`, {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Content must be at least 10 characters'
+                });
             }
 
             if (summary && summary.trim().length > 500) {
-                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Summary+cannot+exceed+500+characters`);
+                return redirectWithToast(res, `/admin/edit-post/${id}`, {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Summary cannot exceed 500 characters'
+                });
             }
 
             const normalizedTag = tag ? (Array.isArray(tag) ? tag.join(',') : tag.toString()) : '';
             const normalizedStatus = status === '0' || status === 0 ? '0' : '1';
 
-            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, {
+            const update = await _BLOG_CON.Func_Update_Post_By_Id(id, {
                 author: req.session?.account?.username,
                 title: title.trim(),
                 content,
@@ -177,28 +265,48 @@ module.exports = {
             });
 
             if (update) {
-                return res.redirect('/admin?toast=post_updated&status=success');
+                return redirectWithToast(res, '/admin', {
+                    toast: 'post_updated',
+                    status: 'success'
+                });
             } else {
-                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Failed+to+update+post`);
+                return redirectWithToast(res, `/admin/edit-post/${id}`, {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to update post'
+                });
             }
         } catch (error) {
-            console.error('error', error);
-            return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Server+error+updating+post`);
+            console.error('Error in updatePost controller:', error);
+            return redirectWithToast(res, `/admin/edit-post/${id}`, {
+                toast: 'error',
+                status: 'error',
+                msg: 'Server error updating post'
+            });
         }
     },
+
     deletePost: async (req, res) => {
         const { id } = req.query;
         if (!id) {
-            return res.redirect('/admin?toast=error&status=error&msg=Missing+post+id');
+            return redirectWithToast(res, '/admin', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Missing post id'
+            });
         }
 
         try {
             const post = await _BLOG_CON.Func_Get_Post_By_Id(id);
             if (!post) {
-                return res.redirect('/admin?toast=error&status=error&msg=Post+not+found');
+                return redirectWithToast(res, '/admin', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Post not found'
+                });
             }
 
-            let deletePost = await _BLOG_CON.Func_Delete_Post_By_Id(id);
+            const deletePost = await _BLOG_CON.Func_Delete_Post_By_Id(id);
             if (deletePost) {
                 if (post.tag) {
                     const tagList = post.tag.split(',').map(t => t.trim()).filter(Boolean);
@@ -206,18 +314,31 @@ module.exports = {
                         await _TAG_CON.Func_Decrement_Quantity({ name: { "$in": tagList } });
                     }
                 }
-                return res.redirect('/admin?toast=post_deleted&status=success');
+                return redirectWithToast(res, '/admin', {
+                    toast: 'post_deleted',
+                    status: 'success'
+                });
             } else {
-                return res.redirect('/admin?toast=error&status=error&msg=Failed+to+delete+post');
+                return redirectWithToast(res, '/admin', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to delete post'
+                });
             }
         } catch (error) {
-            console.error('error', error);
-            return res.redirect('/admin?toast=error&status=error&msg=Server+error+deleting+post');
+            console.error('Error in deletePost controller:', error);
+            return redirectWithToast(res, '/admin', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Server error deleting post'
+            });
         }
     },
+
     register: async (req, res) => {
         return res.redirect('/admin/login');
     },
+
     login: async (req, res) => {
         if (req.method === 'GET') {
             return res.render('login.ejs', new ResonposeDataAdmin({ title: 'Login Page', layout: 'admin-layout' }));
@@ -228,12 +349,15 @@ module.exports = {
         try {
             const { username, password } = req.body;
             if (!username || !password || username.trim().length < 3 || password.length < 6) {
-                return res.redirect('/admin/login?toast=login_failed&status=error');
+                return redirectWithToast(res, '/admin/login', {
+                    toast: 'login_failed',
+                    status: 'error'
+                });
             }
 
             const login = await _USER_CON.FUNC_LOGIN({
                 username: username.trim(),
-                password: password
+                password
             });
 
             if (login) {
@@ -242,44 +366,55 @@ module.exports = {
                     username: username.trim(),
                     avatar: login.avatar
                 };
-
                 return res.redirect('/admin');
             } else {
-                return res.redirect('/admin/login?toast=login_failed&status=error');
+                return redirectWithToast(res, '/admin/login', {
+                    toast: 'login_failed',
+                    status: 'error'
+                });
             }
         } catch (error) {
-            console.error(error);
-            return res.redirect('/admin/login?toast=error&status=error&msg=Login+error');
+            console.error("Error in login controller:", error);
+            return redirectWithToast(res, '/admin/login', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Login error'
+            });
         }
     },
+
     logout: async (req, res) => {
         req.session.account = {
             loggedin: false,
             username: null
         };
-
-        res.redirect('/admin/login');
-    },
-    // Tag
-    pageTag: async (req, res) => {
-        if (req.session?.account?.loggedin) {
-            const data = await _TAG_CON.Func_Get_ALl_Tag();
-
-            if (data) {
-                return res.render('tag-page.ejs',
-                    new ResonposeDataAdmin({
-                        account: req.session.account,
-                        tags: data,
-                        title: 'Tag Page',
-                        layout: 'admin-layout',
-                        isAdmin: true,
-                        action: 'add-tag'
-                    }));
-            }
-        }
-
         return res.redirect('/admin/login');
     },
+
+    // Tag Management
+    pageTag: async (req, res) => {
+        try {
+            if (req.session?.account?.loggedin) {
+                const data = await _TAG_CON.Func_Get_ALl_Tag();
+                if (data) {
+                    return res.render('tag-page.ejs',
+                        new ResonposeDataAdmin({
+                            account: req.session.account,
+                            tags: data,
+                            title: 'Tag Page',
+                            layout: 'admin-layout',
+                            isAdmin: true,
+                            action: 'add-tag'
+                        }));
+                }
+            }
+            return res.redirect('/admin/login');
+        } catch (error) {
+            console.error("Error in pageTag controller:", error);
+            return res.redirect('/admin/login');
+        }
+    },
+
     addTag: async (req, res) => {
         if (req.method === "GET") {
             return res.render('add-tag.ejs', new ResonposeDataAdmin({ title: 'Add Tag Page', layout: 'admin-layout' }));
@@ -288,7 +423,11 @@ module.exports = {
         try {
             const { name, prioritize } = req.body;
             if (!name || typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 50) {
-                return res.redirect('/admin/add-tag?toast=error&status=error&msg=Tag+name+must+be+between+2+and+50+characters');
+                return redirectWithToast(res, '/admin/add-tag', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Tag name must be between 2 and 50 characters'
+                });
             }
 
             const tagName = name.trim();
@@ -296,48 +435,81 @@ module.exports = {
             const allTags = await _TAG_CON.Func_Get_ALl_Tag();
             const exists = allTags.some(t => t.name.toLowerCase() === tagName.toLowerCase());
             if (exists) {
-                return res.redirect('/admin/add-tag?toast=error&status=error&msg=Tag+name+already+exists');
+                return redirectWithToast(res, '/admin/add-tag', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Tag name already exists'
+                });
             }
 
             const normalizedPriority = prioritize === '1' || prioritize === 1 ? 1 : 0;
-            let add = await _TAG_CON.Func_Create_Tag({
+            const add = await _TAG_CON.Func_Create_Tag({
                 name: tagName,
                 prioritize: normalizedPriority
             });
 
             if (add) {
-                return res.redirect('/admin/tag?toast=tag_created&status=success');
+                return redirectWithToast(res, '/admin/tag', {
+                    toast: 'tag_created',
+                    status: 'success'
+                });
             } else {
-                return res.redirect('/admin/add-tag?toast=error&status=error&msg=Failed+to+create+tag');
+                return redirectWithToast(res, '/admin/add-tag', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to create tag'
+                });
             }
         } catch (error) {
-            console.error('error', error);
-            return res.redirect('/admin/add-tag?toast=error&status=error&msg=Server+error+creating+tag');
+            console.error('Error in addTag controller:', error);
+            return redirectWithToast(res, '/admin/add-tag', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Server error creating tag'
+            });
         }
     },
+
     pageEditTag: async (req, res) => {
         const { id } = req.params;
         try {
-            let post = await _TAG_CON.Func_Get_Tag_By_Id(id);
+            const post = await _TAG_CON.Func_Get_Tag_By_Id(id);
             if (post) {
                 return res.render('edit-tag.ejs', new ResonposeDataAdmin({ blogs: post, title: 'Edit Tag Page', layout: 'admin-layout' }));
             }
-            return res.redirect('/admin/tag?toast=error&status=error&msg=Tag+not+found');
+            return redirectWithToast(res, '/admin/tag', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Tag not found'
+            });
         } catch (error) {
-            console.error('error', error);
-            return res.redirect('/admin/tag?toast=error&status=error&msg=Invalid+tag+id');
+            console.error('Error in pageEditTag controller:', error);
+            return redirectWithToast(res, '/admin/tag', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Invalid tag id'
+            });
         }
     },
+
     updateTag: async (req, res) => {
         const { id } = req.query;
         if (!id) {
-            return res.redirect('/admin/tag?toast=error&status=error&msg=Missing+tag+id');
+            return redirectWithToast(res, '/admin/tag', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Missing tag id'
+            });
         }
 
         try {
             const { name, prioritize } = req.body;
             if (!name || typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 50) {
-                return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Tag+name+must+be+between+2+and+50+characters`);
+                return redirectWithToast(res, `/admin/edit-tag/${id}`, {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Tag name must be between 2 and 50 characters'
+                });
             }
 
             const tagName = name.trim();
@@ -345,51 +517,87 @@ module.exports = {
             const allTags = await _TAG_CON.Func_Get_ALl_Tag();
             const exists = allTags.some(t => t._id.toString() !== id.toString() && t.name.toLowerCase() === tagName.toLowerCase());
             if (exists) {
-                return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Tag+name+already+exists`);
+                return redirectWithToast(res, `/admin/edit-tag/${id}`, {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Tag name already exists'
+                });
             }
 
             const normalizedPriority = prioritize === '1' || prioritize === 1 ? 1 : 0;
-            let update = await _TAG_CON.Func_Update_Tag_By_Query({ _id: id }, {
+            const update = await _TAG_CON.Func_Update_Tag_By_Query({ _id: id }, {
                 name: tagName,
                 prioritize: normalizedPriority
             });
 
             if (update) {
-                return res.redirect('/admin/tag?toast=tag_updated&status=success');
+                return redirectWithToast(res, '/admin/tag', {
+                    toast: 'tag_updated',
+                    status: 'success'
+                });
             } else {
-                return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Failed+to+update+tag`);
+                return redirectWithToast(res, `/admin/edit-tag/${id}`, {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to update tag'
+                });
             }
         } catch (error) {
-            console.error('error', error);
-            return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Server+error+updating+tag`);
+            console.error('Error in updateTag controller:', error);
+            return redirectWithToast(res, `/admin/edit-tag/${id}`, {
+                toast: 'error',
+                status: 'error',
+                msg: 'Server error updating tag'
+            });
         }
     },
+
     deleteTag: async (req, res) => {
         const { id } = req.query;
         if (!id) {
-            return res.redirect('/admin/tag?toast=error&status=error&msg=Missing+tag+id');
+            return redirectWithToast(res, '/admin/tag', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Missing tag id'
+            });
         }
 
         try {
-            let deleteTag = await _TAG_CON.Func_Delete_Post_By_Id(id);
+            const deleteTag = await _TAG_CON.Func_Delete_Post_By_Id(id);
             if (deleteTag) {
-                return res.redirect('/admin/tag?toast=tag_deleted&status=success');
+                return redirectWithToast(res, '/admin/tag', {
+                    toast: 'tag_deleted',
+                    status: 'success'
+                });
             } else {
-                return res.redirect('/admin/tag?toast=error&status=error&msg=Failed+to+delete+tag');
+                return redirectWithToast(res, '/admin/tag', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to delete tag'
+                });
             }
         } catch (error) {
-            console.error('error', error);
-            return res.redirect('/admin/tag?toast=error&status=error&msg=Server+error+deleting+tag');
+            console.error('Error in deleteTag controller:', error);
+            return redirectWithToast(res, '/admin/tag', {
+                toast: 'error',
+                status: 'error',
+                msg: 'Server error deleting tag'
+            });
         }
     },
-    // Components
+
+    // CMS Components Management
     components: async (req, res) => {
-        let { name } = req.params;
+        const { name } = req.params;
         if (req.method === "GET") {
             try {
                 const getFn = _COMP_CON['Func_Get_Data_Component_' + name];
                 if (!getFn) {
-                    return res.redirect('/admin?toast=error&status=error&msg=Component+not+found');
+                    return redirectWithToast(res, '/admin', {
+                        toast: 'error',
+                        status: 'error',
+                        msg: 'Component not found'
+                    });
                 }
                 const data = await getFn();
                 return res.render('components.ejs',
@@ -403,25 +611,41 @@ module.exports = {
                         useStyleClient: true
                     }));
             } catch (error) {
-                console.error(error);
-                return res.redirect('/admin?toast=error&status=error&msg=Failed+to+load+component');
+                console.error('Error loading component:', error);
+                return redirectWithToast(res, '/admin', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Failed to load component'
+                });
             }
         }
 
         try {
             const updateFn = _COMP_CON['Func_Update_Data_Component_' + name];
             if (!updateFn) {
-                return res.redirect('/admin?toast=error&status=error&msg=Component+update+handler+not+found');
+                return redirectWithToast(res, '/admin', {
+                    toast: 'error',
+                    status: 'error',
+                    msg: 'Component update handler not found'
+                });
             }
-            await updateFn(req.body, (result) => {
-                return res.redirect('/admin/components/' + name + '?toast=widget_updated&status=success');
+            await updateFn(req.body, () => {
+                return redirectWithToast(res, '/admin/components/' + name, {
+                    toast: 'widget_updated',
+                    status: 'success'
+                });
             });
         } catch (error) {
-            console.error(error);
-            return res.redirect('/admin/components/' + name + '?toast=error&status=error&msg=Failed+to+update+widget');
+            console.error('Error updating component:', error);
+            return redirectWithToast(res, '/admin/components/' + name, {
+                toast: 'error',
+                status: 'error',
+                msg: 'Failed to update widget'
+            });
         }
     },
-    //Upload Image
+
+    // Media Upload
     viewUpload: async (req, res) => {
         try {
             if (req.session?.account?.loggedin) {
@@ -437,46 +661,26 @@ module.exports = {
             }
             return res.redirect('/admin/login');
         } catch (error) {
-            console.error(error);
+            console.error("Error in viewUpload controller:", error);
+            return res.redirect('/admin');
         }
     },
+
+    // JSON API
     getAllJsonData: async (req, res) => {
         try {
             return res.status(200).json({
                 data: dataApis,
-                succes: true
+                succes: true,
+                success: true
             });
         } catch (error) {
-            console.error(error);
+            console.error("Error in getAllJsonData controller:", error);
+            return res.status(500).json({
+                succes: false,
+                success: false,
+                message: "Failed to retrieve API data"
+            });
         }
-    },
-    // uploadImage: async (req, res) => {
-    //     try {
-    //         const { file } = req.body;
-    //         console.log('file upload', req.file);
-
-    //         res.status(200).send({
-    //             message: 'Image uploaded successfully',
-    //         });
-    //     } catch (error) {
-    //         res.status(400).json({
-    //             message: "Upload Fail"
-    //         })
-    //     }
-    // },
-    // deleteImage: async (req, res) => {
-    //     const { id } = req.body;
-    //     try {
-    //         let deleteTag = await imagesModel.findByIdAndDelete(id);
-    //         if (deleteTag) {
-    //             return res.status(200).json({
-    //                 message: 'Delete Success'
-    //             })
-    //         }
-    //     } catch (error) {
-    //         return res.status(500).json({
-    //             message: 'Delete Fail' + error
-    //         })
-    //     }
-    // }
-}
+    }
+};

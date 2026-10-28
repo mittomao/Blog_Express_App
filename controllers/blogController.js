@@ -1,39 +1,57 @@
+'use strict';
+
 const blogModel = require('../models/blogModel');
 
-module.exports = {
-    // Get Post
+const blogController = {
+    /**
+     * Get paginated posts by query filter
+     */
     Func_Get_ALl_Post: async (p, query = {}) => {
-        let perPage = parseInt(process.env.PER_PAGE);
-        let page = p;
-        const count = await blogModel.find(query);
-        const response = await blogModel.find(query)
-            .limit(perPage)
-            .skip((perPage * page) - perPage)
-            .sort({ createdAt: -1 })
+        const perPage = parseInt(process.env.PER_PAGE, 10) || 6;
+        const page = Math.max(1, parseInt(p, 10) || 1);
 
-        let totalCount = 1;
-        if (count.length > perPage) {
-            totalCount = Math.ceil(count.length / perPage)
-        }
+        // Fetch total count and paginated posts in parallel using countDocuments
+        const [totalItems, posts] = await Promise.all([
+            blogModel.countDocuments(query),
+            blogModel.find(query)
+                .limit(perPage)
+                .skip((perPage * page) - perPage)
+                .sort({ createdAt: -1 })
+        ]);
+
+        const totalPage = totalItems > perPage ? Math.ceil(totalItems / perPage) : 1;
+
         return {
-            posts: response,
+            posts,
             current: page,
-            allItems: count.length,
-            totalPage: totalCount
-        }
+            allItems: totalItems,
+            totalPage
+        };
     },
+
+    /**
+     * Retrieve single post by ID
+     */
     Func_Get_Post_By_Id: async (id) => {
-        return await blogModel.findById(id);
+        return blogModel.findById(id);
     },
+
+    /**
+     * Find 2 random posts excluding current post ID
+     */
     Func_Random_Post: async (callback, id) => {
         await blogModel.findRandom({
             _id: { $ne: id }
         }, {}, { limit: 2 }, function (err, res) {
-            if (!err) {
-                callback(res, id)
+            if (!err && typeof callback === 'function') {
+                callback(res, id);
             }
         });
     },
+
+    /**
+     * Retrieve mixed random hints from titles and tags for search hints
+     */
     Func_Get_Random_Hint_Title: async () => {
         // Lấy 3 bài viết random có title
         const titleDocs = await blogModel.aggregate([
@@ -79,10 +97,13 @@ module.exports = {
             .map(x => x.value);
         return mixed;
     },
-    // Action
+
+    /**
+     * Create new blog post
+     */
     Func_Create_Post: async (obj) => {
         const { author, tag, title, topic, summary, thumbnail, content, status } = obj;
-        return await blogModel.create({
+        return blogModel.create({
             author,
             tag,
             title,
@@ -93,18 +114,26 @@ module.exports = {
             status
         });
     },
+
+    /**
+     * Update post by ID
+     */
     Func_Update_Post_By_Id: async (id, params) => {
-        return await blogModel.findByIdAndUpdate({
-            _id: id
-        }, {
-            ...params
-        });
+        return blogModel.findByIdAndUpdate(id, { ...params }, { new: true });
     },
+
+    /**
+     * Delete post by ID
+     */
     Func_Delete_Post_By_Id: async (id) => {
-        return await blogModel.findByIdAndDelete(id);
+        return blogModel.findByIdAndDelete(id);
     },
+
+    /**
+     * Get distinct unique non-empty values for a given field
+     */
     Func_Get_Unique_By_Field: async (fieldName) => {
-        return await blogModel.distinct(fieldName, {
+        return blogModel.distinct(fieldName, {
             $and: [
                 { [fieldName]: { $ne: null } },
                 { [fieldName]: { $ne: "" } }
@@ -112,3 +141,8 @@ module.exports = {
         });
     }
 };
+
+// Aliases for naming convention consistency
+blogController.Func_Get_All_Post = blogController.Func_Get_ALl_Post;
+
+module.exports = blogController;

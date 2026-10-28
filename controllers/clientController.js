@@ -1,4 +1,5 @@
-'use strict'
+'use strict';
+
 const _BLOG_CON = require('./blogController');
 const _PROJECT_LOVE_CON = require('./projectLoveController');
 const _TAG_CON = require('./tagController');
@@ -7,15 +8,17 @@ const { viewFormProjectLove, createProjectLove, previewProjectLove } = require('
 
 const ResonposeDataClient = require('./ResonposeDataClient');
 
+/**
+ * Fetch common homepage widgets and metadata in parallel
+ */
 const GetDataInHomePage = async () => {
-    const tags = await _TAG_CON.Func_Get_ALl_Tag();
-    const newsletters = await _COMP_CON.Func_Get_Data_Component_newsletter();
-    const popularArticles = await _COMP_CON.Func_Get_Data_Component_popular_articles();
-    //Get Categories
-    const categories = await _BLOG_CON.Func_Get_Unique_By_Field("topic");
-    console.log("dataCategories", categories);
-    // Get Hints
-    const hints = await _BLOG_CON.Func_Get_Random_Hint_Title();
+    const [tags, newsletters, popularArticles, categories, hints] = await Promise.all([
+        _TAG_CON.Func_Get_ALl_Tag(),
+        _COMP_CON.Func_Get_Data_Component_newsletter(),
+        _COMP_CON.Func_Get_Data_Component_popular_articles(),
+        _BLOG_CON.Func_Get_Unique_By_Field("topic"),
+        _BLOG_CON.Func_Get_Random_Hint_Title()
+    ]);
 
     return {
         tags,
@@ -23,16 +26,17 @@ const GetDataInHomePage = async () => {
         popularArticles,
         categories,
         hints
-    }
-}
+    };
+};
 
 module.exports = {
     home: async (req, res) => {
         try {
-            let { page = 1 } = req.params;
-            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, { status: true });
-            const dataHome = await GetDataInHomePage();
-            // End
+            const { page = 1 } = req.params;
+            const [listPosts, dataHome] = await Promise.all([
+                _BLOG_CON.Func_Get_ALl_Post(page, { status: true }),
+                GetDataInHomePage()
+            ]);
 
             if (listPosts || dataHome) {
                 return res.render("home.ejs",
@@ -53,10 +57,11 @@ module.exports = {
                     }));
             }
         } catch (error) {
-            console.error(error);
-            res.redirect('/page-404');
+            console.error("Error in home controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     pageNotFound: async (req, res) => {
         return res.render("page-404.ejs",
             new ResonposeDataClient({
@@ -64,6 +69,7 @@ module.exports = {
                 layout: "default-layout",
             }));
     },
+
     portfolio: async (req, res) => {
         try {
             const portfolios = await _COMP_CON.Func_Get_Data_Component_portfolio();
@@ -75,43 +81,50 @@ module.exports = {
                     fullLayout: false,
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in portfolio controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     detailPost: async (req, res) => {
         try {
             const { id } = req.params;
-            const dataPost = await _BLOG_CON.Func_Get_Post_By_Id(id);
-            const aboutAuthor = await _COMP_CON.Func_Get_Data_Component_about_author();
+            const [dataPost, aboutAuthor] = await Promise.all([
+                _BLOG_CON.Func_Get_Post_By_Id(id),
+                _COMP_CON.Func_Get_Data_Component_about_author()
+            ]);
 
-            const dataHome = await GetDataInHomePage();
-            if (dataPost || dataHome) {
-                await _BLOG_CON.Func_Random_Post((result, id) => {
-                    const response = new ResonposeDataClient({
-                        posts: dataPost,
-                        related: result,
-                        title: dataPost.title,
-                        layout: "home-layout",
-                        fullLayout: true,
-                        isHideSidebar: true
-                    })
-                    return res.render("detail-post.ejs", { ...response, aboutAuthor: aboutAuthor[0] });
-                });
+            if (!dataPost) {
+                return res.redirect('/page-404');
             }
 
+            await _BLOG_CON.Func_Random_Post((result) => {
+                const response = new ResonposeDataClient({
+                    posts: dataPost,
+                    related: result,
+                    title: dataPost.title,
+                    layout: "home-layout",
+                    fullLayout: true,
+                    isHideSidebar: true
+                });
+                return res.render("detail-post.ejs", { ...response, aboutAuthor: aboutAuthor[0] });
+            }, id);
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in detailPost controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     tag: async (req, res) => {
         try {
             const { page = 1, tag } = req.params;
-            let dataPost = await _BLOG_CON.Func_Get_ALl_Post(page, {
-                tag: { "$regex": tag, "$options": "i" },
-                status: true
-            });
-            const dataHome = await GetDataInHomePage();
-            // End 
+            const [dataPost, dataHome] = await Promise.all([
+                _BLOG_CON.Func_Get_ALl_Post(page, {
+                    tag: { "$regex": tag, "$options": "i" },
+                    status: true
+                }),
+                GetDataInHomePage()
+            ]);
 
             if (dataPost) {
                 return res.render("tag.ejs",
@@ -129,11 +142,12 @@ module.exports = {
                         isAdmin: false
                     }));
             }
-
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in tag controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     contact: async (req, res) => {
         try {
             return res.render("contact.ejs",
@@ -144,9 +158,11 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in contact controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     life: async (req, res) => {
         try {
             return res.render("life.ejs",
@@ -157,9 +173,11 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in life controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     about: async (req, res) => {
         try {
             return res.render("about.ejs",
@@ -170,18 +188,21 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in about controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     search: async (req, res) => {
         try {
-            let { page = 1, title } = req.params;
-            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, {
-                status: true,
-                title: { "$regex": title, "$options": "i" },
-            });
-            const dataHome = await GetDataInHomePage();
-            // End 
+            const { page = 1, title } = req.params;
+            const [listPosts, dataHome] = await Promise.all([
+                _BLOG_CON.Func_Get_ALl_Post(page, {
+                    status: true,
+                    title: { "$regex": title, "$options": "i" },
+                }),
+                GetDataInHomePage()
+            ]);
 
             if (listPosts || dataHome) {
                 return res.render("home.ejs",
@@ -202,20 +223,21 @@ module.exports = {
                     }));
             }
         } catch (error) {
-            console.error(error);
-            res.redirect('/page-404');
+            console.error("Error in search controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     filterTopic: async (req, res) => {
         try {
-            let { page = 1, title } = req.params;
-            const listPosts = await _BLOG_CON.Func_Get_ALl_Post(page, {
-                status: true,
-                topic: title,
-            });
-            console.log("title-listPosts: ", title, listPosts);
-            const dataHome = await GetDataInHomePage();
-            // End 
+            const { page = 1, title } = req.params;
+            const [listPosts, dataHome] = await Promise.all([
+                _BLOG_CON.Func_Get_ALl_Post(page, {
+                    status: true,
+                    topic: title,
+                }),
+                GetDataInHomePage()
+            ]);
 
             if (listPosts || dataHome) {
                 return res.render("home.ejs",
@@ -236,11 +258,12 @@ module.exports = {
                     }));
             }
         } catch (error) {
-            console.error(error);
-            res.redirect('/page-404');
+            console.error("Error in filterTopic controller:", error);
+            return res.redirect('/page-404');
         }
     },
-    // StartProject QR Love
+
+    // QR Love
     qrLove: async (req, res) => {
         try {
             return res.render("form-qr-love.ejs",
@@ -251,47 +274,48 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in qrLove controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     createQRLove: async (req, res) => {
         try {
             const { texts, color, music } = req.body;
-            console.log("texts: ", texts);
             if (!texts || texts.length === 0) {
                 return res.redirect('/projects/qr-love');
             }
 
-            var loveTexts = texts;
+            const imageUrls = req.files ? req.files.map(file => file.path).join(',') : '';
 
-            const imageUrls = req.files && req.files.map(file => file.path).join(',');
+            const id = await _PROJECT_LOVE_CON.Func_Create_QR_LOVE({
+                texts,
+                images: imageUrls,
+                color,
+                music
+            });
 
-            console.log("loveTexts: ", loveTexts);
-            console.log("imageUrls: ", imageUrls);
-            console.log("color: ", color);
-            console.log("music: ", music);
-
-            var id = await _PROJECT_LOVE_CON.Func_Create_QR_LOVE({ texts: loveTexts, images: imageUrls, color, music });
             return res.redirect(`/projects/qr-love/?id=${id}`);
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in createQRLove controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     qrPreview: async (req, res) => {
         try {
             const { id } = req.query;
-            console.log("id: ", id);
 
             if (!id) {
                 return res.status(400).send('Thiếu tham số id');
             }
 
             const doc = await _PROJECT_LOVE_CON.Func_Get_QR_By_Id(id);
-            console.log("QR Item: ", doc);
 
             if (!doc) {
                 return res.status(404).send('Không tìm thấy dữ liệu');
             }
+
             return res.render("preview-qr-love-page.ejs",
                 new ResonposeDataClient({
                     fullLayout: false,
@@ -304,12 +328,12 @@ module.exports = {
                     music: doc.music
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in qrPreview controller:", error);
+            return res.redirect('/page-404');
         }
     },
-    // End Project QR Love
 
-    // Start Project Firework Love
+    // Firework Love
     fireworkLove: async (req, res) => {
         try {
             return res.render("form-firework-love.ejs",
@@ -320,7 +344,8 @@ module.exports = {
                     isAdmin: false
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in fireworkLove controller:", error);
+            return res.redirect('/page-404');
         }
     },
 
@@ -331,30 +356,35 @@ module.exports = {
                 return res.redirect('/projects/firework-love');
             }
 
-            const imageUrls = req.files.map(file => file.path).join(',');
+            const imageUrls = req.files ? req.files.map(file => file.path).join(',') : '';
 
-            var id = await _PROJECT_LOVE_CON.Func_Create_Firework_LOVE({ texts, images: imageUrls, music });
+            const id = await _PROJECT_LOVE_CON.Func_Create_Firework_LOVE({
+                texts,
+                images: imageUrls,
+                music
+            });
+
             return res.redirect(`/projects/firework-love/?id=${id}`);
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in createFireworkLove controller:", error);
+            return res.redirect('/page-404');
         }
     },
 
     fireworkPreview: async (req, res) => {
         try {
             const { id } = req.query;
-            console.log("id: ", id);
 
             if (!id) {
                 return res.status(400).send('Thiếu tham số id');
             }
 
             const doc = await _PROJECT_LOVE_CON.Func_Get_Firework_By_Id(id);
-            console.log("Firework Item: ", doc);
 
             if (!doc) {
                 return res.status(404).send('Không tìm thấy dữ liệu');
             }
+
             return res.render("preview-firework-love-page.ejs",
                 new ResonposeDataClient({
                     fullLayout: false,
@@ -366,48 +396,55 @@ module.exports = {
                     music: doc.music
                 }));
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in fireworkPreview controller:", error);
+            return res.redirect('/page-404');
         }
     },
-    // End Project Firework Love
 
-    // Start Project Love
+    // Project Love Wrappers
     viewFormProjectLove: async (req, res) => {
         try {
-            const { project } = req.query || "";
+            const { project = "" } = req.query || {};
             return await viewFormProjectLove(req, res, project);
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in viewFormProjectLove controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     createProjectTreeStory: async (req, res) => {
-        try {            
+        try {
             return await createProjectLove(req, res, "tree-story");
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in createProjectTreeStory controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     projectTreeStoryPreview: async (req, res) => {
         try {
             return await previewProjectLove(req, res, "Tree Story", "projects/preview-tree-story-page.ejs");
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in projectTreeStoryPreview controller:", error);
+            return res.redirect('/page-404');
         }
     },
 
     createProjectMerryChristmas: async (req, res) => {
-        try {            
+        try {
             return await createProjectLove(req, res, "merry-christmas");
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in createProjectMerryChristmas controller:", error);
+            return res.redirect('/page-404');
         }
     },
+
     projectMerryChristmasPreview: async (req, res) => {
         try {
             return await previewProjectLove(req, res, "Merry Christmas", "projects/preview-merry-christmas-page.ejs");
         } catch (error) {
-            res.redirect('/page-404');
+            console.error("Error in projectMerryChristmasPreview controller:", error);
+            return res.redirect('/page-404');
         }
-    },
-    // End Project Love
-}
+    }
+};

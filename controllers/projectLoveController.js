@@ -1,3 +1,5 @@
+'use strict';
+
 const projectLoveModel = require('../models/projectLoveModel');
 const qrLoveModel = require('../models/qrLoveModel');
 const fireworkLoveModel = require('../models/fireworkLoveModel');
@@ -10,8 +12,9 @@ module.exports = {
         return newProject._id;
     },
     Func_Get_Project_Love_By_Id: async (id) => {
-        return await projectLoveModel.findById(id);
+        return projectLoveModel.findById(id);
     },
+
     // QR Code Love
     Func_Create_QR_LOVE: async (obj) => {
         const { texts, images, color, music } = obj;
@@ -19,8 +22,9 @@ module.exports = {
         return newQR._id;
     },
     Func_Get_QR_By_Id: async (id) => {
-        return await qrLoveModel.findById(id);
+        return qrLoveModel.findById(id);
     },
+
     // Firework Love
     Func_Create_Firework_LOVE: async (obj) => {
         const { texts, images, music } = obj;
@@ -28,6 +32,6 @@ module.exports = {
         return newFirework._id;
     },
     Func_Get_Firework_By_Id: async (id) => {
-        return await fireworkLoveModel.findById(id);
-    },
-}
+        return fireworkLoveModel.findById(id);
+    }
+};
