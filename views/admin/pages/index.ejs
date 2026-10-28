@@ -1,0 +1,11 @@
+<%- include('../partials/navbar', { account }) %>
+
+<div class="page-wrapper">
+    <%- include('../partials/header', { account, action, title }) %>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <%- include('../partials/blog-table', { blogs, totalPage, currentPage, allItems }) %>
+        </div>
+    </div>
+</div>

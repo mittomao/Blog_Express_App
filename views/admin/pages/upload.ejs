@@ -1,0 +1,11 @@
+<%- include('../partials/navbar', { account }) %>
+
+<div class="page-wrapper">
+    <%- include('../partials/header', { account, action: null, title: 'Media Library' }) %>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <%- include('../partials/media-grid', { listImages }) %>
+        </div>
+    </div>
+</div>

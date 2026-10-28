@@ -74,7 +74,7 @@
             <!-- Tab 2: Live Preview -->
             <div class="tab-pane" id="tab-portfolio-preview" role="tabpanel">
                 <div class="p-3 border rounded bg-surface">
-                    <%- include('../components/c_portfolio', { portfolio: dataComponent }) %>
+                    <%- include('../../client/partials/portfolio', { portfolio: dataComponent }) %>
                 </div>
             </div>
 
@@ -82,7 +82,7 @@
             <div class="tab-pane" id="tab-portfolio-code" role="tabpanel">
                 <div class="code-frame">
                     <textarea cols="30" id="source-code" name="" rows="10" class="form-control font-monospace">
-<%- include('../components/c_portfolio', { portfolio: dataComponent }) %>
+<%- include('../../client/partials/portfolio', { portfolio: dataComponent }) %>
                     </textarea>
                 </div>
             </div>

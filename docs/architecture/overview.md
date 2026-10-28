@@ -195,13 +195,18 @@ Blog_Express_App/
 │   ├── index.js                   # Hàm tiện ích kiểm tra thiếu thuộc tính
 │   └── middleware.js              # Middleware kiểm tra đăng nhập (checkLogin)
 └── views/                         # Giao diện EJS Template
-    ├── components/                # EJS Partials tái sử dụng (navbar, header, post list...)
-    ├── layouts/                   # Layouts khung: home-layout, admin-layout, default-layout
-    ├── modules/                   # Các component module thay thế
-    ├── pages/
-    │   ├── admin/                 # Giao diện trang quản trị (login, index, add-post, tag...)
-    │   └── client/                # Giao diện người dùng (home, detail, portfolio, projects...)
-    └── templates/                 # EJS templates nhỏ (meta, scripts, navbar)
+    ├── admin/                     # Phân vùng CMS Quản trị
+    │   ├── layouts/               # admin-layout.ejs
+    │   ├── modules/               # Widget config modules (about_author, newsletter, popular_articles, portfolio)
+    │   ├── pages/                 # index, login, add-post, edit-post, tag-page, add-tag, edit-tag, upload, components
+    │   └── partials/              # navbar, header, meta, block-script, blog-table, tag-table, media-grid, stats
+    ├── client/                    # Phân vùng Frontend Người dùng
+    │   ├── layouts/               # home-layout.ejs, default-layout.ejs
+    │   ├── pages/                 # home, detail-post, tag, portfolio, about, life, contact, page-404, form-*, preview-*
+    │   │   └── projects/          # form-project-love, preview-tree-story, preview-merry-christmas
+    │   └── partials/              # navbar, list-post, categories, topic, tag-cloud, newsletter, about-author, etc.
+    └── shared/                    # Partials dùng chung giữa Client và Admin
+        └── pagination.ejs         # Thanh phân trang EJS đa năng
 ```
 
 ---

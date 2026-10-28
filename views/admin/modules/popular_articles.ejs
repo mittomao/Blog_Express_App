@@ -81,7 +81,7 @@
             <!-- Tab 2: Live Preview -->
             <div class="tab-pane" id="tab-popular-preview" role="tabpanel">
                 <div class="p-3 border rounded bg-surface">
-                    <%- include('../components/c_popular-articles', { popularArticle: dataComponent }) %>
+                    <%- include('../../client/partials/popular-articles', { popularArticle: dataComponent }) %>
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
             <div class="tab-pane" id="tab-popular-code" role="tabpanel">
                 <div class="code-frame">
                     <textarea cols="30" id="source-code" name="" rows="10" class="form-control font-monospace">
-<%- include('../components/c_popular-articles', { popularArticle: dataComponent }) %>
+<%- include('../../client/partials/popular-articles', { popularArticle: dataComponent }) %>
                     </textarea>
                 </div>
             </div>

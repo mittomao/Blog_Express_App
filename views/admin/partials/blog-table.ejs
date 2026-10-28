@@ -118,7 +118,7 @@
             Showing <span><%= blogs.length %></span> items out of <span><%= typeof allItems !== 'undefined' ? allItems : blogs.length %></span> total records
         </p>
         <% if (typeof totalPage !== 'undefined' && typeof currentPage !== 'undefined') { %>
-            <%- include('pagination', { totalPage: totalPage, page: currentPage, isAdmin: true }) %>
+            <%- include('../../shared/pagination', { totalPage: totalPage, page: currentPage, isAdmin: true }) %>
         <% } %>
     </div>
 </div>

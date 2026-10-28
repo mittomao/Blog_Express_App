@@ -1,7 +1,7 @@
-<%- include('../../components/navbar', { account: typeof account !== 'undefined' ? account : null }) %>
+<%- include('../partials/navbar', { account: typeof account !== 'undefined' ? account : null }) %>
 
 <div class="page-wrapper">
-    <%- include('../../components/header', { account: typeof account !== 'undefined' ? account : null, action: null, title: 'Add New Post' }) %>
+    <%- include('../partials/header', { account: typeof account !== 'undefined' ? account : null, action: null, title: 'Add New Post' }) %>
 
     <div class="page-body">
         <div class="container-xl">

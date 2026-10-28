@@ -13,13 +13,13 @@
             <% if (posts.content) { %>
                 <%- posts.content %>
             <% } else { %>
-                <%- include('../../components/no-result') %>
+                <%- include('../partials/no-result') %>
             <% } %>
         </div>
 
         <% if (posts.content) { %>
-            <%- include('../../components/c_about-author') %>
+            <%- include('../partials/about-author') %>
         <% } %>
     </div>
-    <%- include('../../components/c_related-post') %>
+    <%- include('../partials/related-post') %>
 </div>

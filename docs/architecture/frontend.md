@@ -11,28 +11,28 @@ Toàn bộ HTML được máy chủ Node.js kết xuất kèm dữ liệu độn
 
 ---
 
-## 2. Hệ thống Layouts (views/layouts/)
+## 2. Hệ thống Layouts (views/client/layouts/ & views/admin/layouts/)
 
 Hệ thống sử dụng 3 layout chính phục vụ từng ngữ cảnh chuyên biệt:
 
 ```mermaid
 graph TD
     subgraph Layout_System ["Hệ thống Layouts (express-ejs-layouts)"]
-        HomeLayout["home-layout.ejs<br/>(Dùng cho Client Blog: Home, Tag, Detail, Contact)"]
-        AdminLayout["admin-layout.ejs<br/>(Dùng cho CMS Admin: Dashboard, Posts, Tags, Media)"]
-        DefaultLayout["default-layout.ejs<br/>(Dùng cho Fullscreen Interactive: Tree Story, QR, 404)"]
+        HomeLayout["client/layouts/home-layout.ejs<br/>(Dùng cho Client Blog: Home, Tag, Detail, Contact)"]
+        AdminLayout["admin/layouts/admin-layout.ejs<br/>(Dùng cho CMS Admin: Dashboard, Posts, Tags, Media)"]
+        DefaultLayout["client/layouts/default-layout.ejs<br/>(Dùng cho Fullscreen Interactive: Tree Story, QR, 404)"]
     end
 
     subgraph Home_Structure ["Cấu trúc home-layout.ejs"]
-        NavSidebar["views/templates/c_nav-bar.ejs"]
+        NavSidebar["views/client/partials/navbar.ejs"]
         MainArea["wainiidev-main Container"]
         BodyContent["<%- body %> (Nội dung trang con)"]
         RightSidebar["Sidebar (Search, Categories, Tag Cloud, Newsletter, Stats)"]
     end
 
     subgraph Admin_Structure ["Cấu trúc admin-layout.ejs"]
-        AdminNav["views/components/navbar.ejs"]
-        AdminHeader["views/components/header.ejs"]
+        AdminNav["views/admin/partials/navbar.ejs"]
+        AdminHeader["views/admin/partials/header.ejs"]
         AdminBody["<%- body %> (Bảng quản trị, Form soạn thảo)"]
     end
 
@@ -46,19 +46,19 @@ graph TD
     AdminLayout --> AdminBody
 ```
 
-### 2.1. `home-layout.ejs` (Layout Blog chính)
-- **Đặc điểm**: Bố cục 2 cột (Cột chính hiển thị bài viết, Cột phụ bên phải chứa widget thanh tìm kiếm, danh mục `c_categories`, đám mây thẻ `c_tag-cloud`, đăng ký nhận tin `c_newsletter` và thống kê `c_statistical`).
+### 2.1. `home-layout.ejs` (Layout Blog chính - `views/client/layouts/`)
+- **Đặc điểm**: Bố cục 2 cột (Cột chính hiển thị bài viết, Cột phụ bên phải chứa widget thanh tìm kiếm, danh mục `categories`, đám mây thẻ `tag-cloud`, đăng ký nhận tin `newsletter` và thống kê `statistical`).
 - **Cờ điều khiển giao diện**:
   - `fullLayout`: Nếu `true`, hiển thị bố cục 2 cột. Nếu `false`, chỉ render `<%- body %>` (dành cho trang giới thiệu hoặc danh mục toàn trang).
   - `isHideSidebar`: Ẩn cột sidebar bên phải khi xem chi tiết bài viết (`detail-post.ejs`) để dành không gian tối đa cho nội dung bài đọc.
 - **Tải trước (Preloader)**: Tích hợp hiệu ứng SVG xoay (`#ftco-loader`) khi tải trang.
 
-### 2.2. `admin-layout.ejs` (Layout Trang Quản Trị)
-- **Đặc điểm**: Bố cục Dashboard hiện đại với sidebar điều hướng dọc (`views/components/navbar.ejs`), thanh header hiển thị profile và avatar (`views/components/header.ejs`).
+### 2.2. `admin-layout.ejs` (Layout Trang Quản Trị - `views/admin/layouts/`)
+- **Đặc điểm**: Bố cục Dashboard hiện đại với sidebar điều hướng dọc (`views/admin/partials/navbar.ejs`), thanh header hiển thị profile và avatar (`views/admin/partials/header.ejs`).
 - **Nạp style linh hoạt**: Cờ `useStyleClient` cho phép nhúng kèm `main.css` của phía client khi xem trước hoặc chỉnh sửa các component của client ngay trong admin.
-- **Thư viện tích hợp**: Nạp TinyMCE, Flmngr JS SDK, Highlight.js và Select2 qua `views/templates/block_script.ejs`.
+- **Thư viện tích hợp**: Nạp TinyMCE, Flmngr JS SDK, Highlight.js và Select2 qua `views/admin/partials/block-script.ejs`.
 
-### 2.3. `default-layout.ejs` (Layout Toàn Màn Hình)
+### 2.3. `default-layout.ejs` (Layout Toàn Màn Hình - `views/client/layouts/`)
 - **Đặc điểm**: Bố cục không có thanh điều hướng hay sidebar, sử dụng class `fullscreen-layout`.
 - **Mục đích**: Dành riêng cho trang thông báo lỗi 404 (`page-404.ejs`) và các trang trải nghiệm tương tác toàn màn hình (Preview Tree Story, QR Code Love, Firework Love).
 
@@ -66,18 +66,33 @@ graph TD
 
 ## 3. Bản đồ các thành phần giao diện (Component Hierarchy)
 
-### 3.1. Reusable Partials (`views/components/`)
-- `header.ejs`: Header admin hiển thị thông tin tài khoản và breadcrumb.
+### 3.1. Reusable Partials Phía Client (`views/client/partials/`)
+- `navbar.ejs`: Thanh menu điều hướng chính của Client blog.
+- `list-post.ejs`: Danh sách bài viết phía client kèm ảnh thumbnail, tiêu đề, ngày tháng, liên kết đọc chi tiết.
+- `topic.ejs`: Băng chuyền hiển thị các chủ đề (Topic) trên trang chủ.
+- `categories.ejs`: Danh sách danh mục bài viết lấy từ trường `topic` trong cơ sở dữ liệu.
+- `tag-cloud.ejs`: Danh sách các thẻ tag được định dạng dạng đám mây từ khóa.
+- `newsletter.ejs`: Widget kêu gọi người dùng đăng ký nhận bản tin qua email.
+- `about-author.ejs`: Khối giới thiệu ngắn về tác giả kèm avatar hiển thị ở cuối bài viết chi tiết.
+- `related-post.ejs`: Khối bài viết liên quan ngẫu nhiên.
+- `popular-articles.ejs`: Băng chuyền bài viết nổi bật.
+- `portfolio.ejs`: Khối tóm tắt hồ sơ tác giả.
+- `statistical.ejs`: Thống kê số lượng bài viết và chuyên mục.
+- `archives.ejs`: Lưu trữ bài viết theo thời gian.
+- `no-result.ejs`: Khối hiển thị khi không tìm thấy kết quả.
+
+### 3.2. Reusable Partials Phía Admin (`views/admin/partials/`)
+- `header.ejs`: Header admin hiển thị thông tin tài khoản, breadcrumb và nút hành động.
 - `navbar.ejs`: Menu thanh bên của Admin CMS (Liên kết tới Posts, Tags, Components, Media).
-- `blog.ejs`: Bảng dữ liệu quản lý bài viết trong Admin (hiển thị tiêu đề, ngày tạo, thẻ tag, nút Sửa/Xóa).
-- `c_list-post.ejs`: Danh sách bài viết phía client kèm ảnh thumbnail, tiêu đề, ngày tháng, liên kết đọc chi tiết.
-- `c_topic.ejs`: Băng chuyền hiển thị các chủ đề (Topic) trên trang chủ.
-- `c_categories.ejs`: Danh sách danh mục bài viết lấy từ trường `topic` trong cơ sở dữ liệu.
-- `c_tag-cloud.ejs`: Danh sách các thẻ tag được định dạng dạng đám mây từ khóa.
-- `c_newsletter.ejs`: Widget kêu gọi người dùng đăng ký nhận bản tin qua email.
-- `c_about-author.ejs`: Khối giới thiệu ngắn về tác giả kèm avatar hiển thị ở cuối bài viết chi tiết.
-- `c_related-post.ejs`: Khối bài viết liên quan ngẫu nhiên.
-- `pagination.ejs`: Thanh phân trang danh sách bài viết.
+- `meta.ejs`: Khai báo thẻ meta, favicon và nạp stylesheets admin.
+- `block-script.ejs`: Nạp các thư viện JavaScript hỗ trợ quản trị (TinyMCE, Select2, Highlight.js).
+- `blog-table.ejs`: Bảng dữ liệu quản lý bài viết trong Admin (tiêu đề, ngày tạo, thẻ tag, nút Sửa/Xóa).
+- `tag-table.ejs`: Bảng dữ liệu quản lý danh sách thẻ tag.
+- `media-grid.ejs`: Lưới hiển thị danh sách hình ảnh trong thư viện media.
+- `stats.ejs`: Khối thống kê số liệu tổng quan.
+
+### 3.3. Partials Dùng Chung (`views/shared/`)
+- `pagination.ejs`: Thanh phân trang đa năng dùng chung cho cả Client và Admin CMS.
 
 ---
 

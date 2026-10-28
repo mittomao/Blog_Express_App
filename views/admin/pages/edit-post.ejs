@@ -1,4 +1,4 @@
-<%- include('../../components/navbar', { account: typeof account !== 'undefined' ? account : null }) %>
+<%- include('../partials/navbar', { account: typeof account !== 'undefined' ? account : null }) %>
 
 <% 
     let checkImage = (blogs && blogs.thumbnail) ? '' : 'disable'; 
@@ -9,7 +9,7 @@
 %>
 
 <div class="page-wrapper">
-    <%- include('../../components/header', { account: typeof account !== 'undefined' ? account : null, action: null, title: 'Edit Post' }) %>
+    <%- include('../partials/header', { account: typeof account !== 'undefined' ? account : null, action: null, title: 'Edit Post' }) %>
 
     <div class="page-body">
         <div class="container-xl">

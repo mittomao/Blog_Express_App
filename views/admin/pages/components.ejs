@@ -1,0 +1,11 @@
+<%- include('../partials/navbar', { account }) %>
+
+<div class="page-wrapper">
+    <%- include('../partials/header', { account, action: null, title: 'Component Widget: ' + componentName.replace('_', ' ').toUpperCase() }) %>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <%- include('../modules/' + componentName) %>
+        </div>
+    </div>
+</div>

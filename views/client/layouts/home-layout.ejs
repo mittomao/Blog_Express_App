@@ -38,7 +38,7 @@
 <body>
     <div id="wainiidev-page">
         <a href="#" class="js-wainiidev-nav-toggle wainiidev-nav-toggle"><i></i></a>
-        <%- include('../../templates/c_nav-bar')%>
+        <%- include('../partials/navbar')%>
             <div id="wainiidev-main">
                 <% if (fullLayout) { %>
                     <% let clsLeft=isHideSidebar ? 'col-xl-12' : 'col-xl-8' ; let clsRight=isHideSidebar ? 'd-none'
@@ -60,12 +60,12 @@
                                             </form>
                                             <div class="hint-list" id="hintList" data-hints="<%= hints %>" aria-hidden="false"></div>
                                         </div>
-                                        <%- include('../../components/c_categories')%>
-                                            <!-- <%- include('../../components/c_popular-articles')%> -->
-                                            <%- include('../../components/c_tag-cloud')%>
-                                                <%- include('../../components/c_newsletter')%>
-                                                    <%- include('../../components/c_statistical')%>
-                                                        <!-- <%- include('../../components/c_archives')%> -->
+                                        <%- include('../partials/categories')%>
+                                            <!-- <%- include('../partials/popular-articles')%> -->
+                                            <%- include('../partials/tag-cloud')%>
+                                                <%- include('../partials/newsletter')%>
+                                                    <%- include('../partials/statistical')%>
+                                                        <!-- <%- include('../partials/archives')%> -->
                                     </div>
                                 </div>
                             </div>

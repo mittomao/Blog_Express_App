@@ -1,8 +1,8 @@
 <div class="page-tag">
     <h1>TAG:  <strong><%= title %></strong></h1>
     <% if (posts.length) { %>
-        <%- include('../../components/c_list-post') %>
+        <%- include('../partials/list-post') %>
     <% } else { %>
-        <%- include('../../components/no-result') %>
+        <%- include('../partials/no-result') %>
     <% } %>
 </div>

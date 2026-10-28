@@ -17,7 +17,9 @@
             } else {
                 urlImage = `${process.env.IMAGE_PREFIX}/default-post-1.png`;
             }
-            let listTags = post.tag && post.tag.split(',');
+            let listTags = (typeof post.tag === 'string' && post.tag.trim()) 
+                ? post.tag.split(',').map(t => t.trim()).filter(Boolean) 
+                : (Array.isArray(post.tag) ? post.tag : []);
         %>
         <div class="col-md-12">
             <div class="blog-entry js-blog-entry ftco-animate d-md-flex">
@@ -30,6 +32,7 @@
                     <div class="meta-wrap">
                         <p class="meta">
                             <span><i class="icon-calendar mr-2"></i><%= currentDay %> <%= currentMonth %> <%= currentYear %></span>
+                            <% if (listTags.length > 0) { %>
                             <span>
                                 <% listTags.forEach((tag) => { %>
                                     <a href="/tag/<%= tag %>">
@@ -38,6 +41,7 @@
                                     </a>
                                 <% }) %>  
                             </span>
+                            <% } %>
                             <span><i class="icon-comments-o mr-2"></i><%= Math.floor(Math.random() * 10) %> Comment</span>
                         </p>
                     </div>
@@ -48,8 +52,8 @@
         </div>
     <% }) %>
     <div class="col-md-12 d-flex align-items-center flex-wrap mt-4 mb-3">
-        <%- include('pagination', {totalPage: totalPage, page: currentPage}) %>
-        <span class="text-muted text-sm ml-md-3 mt-2 mt-md-0">Showing <%= posts.length%> items out of <%= allPost %> results found</span>
+        <%- include('../../shared/pagination', {totalPage: totalPage, page: currentPage}) %>
+        <span class="text-muted text-sm ml-md-3 mt-2 mt-md-0">Showing <%= posts.length %> items out of <%= typeof allPost !== 'undefined' && allPost !== null ? allPost : posts.length %> results found</span>
     </div>
 </div>
 <% } else { %>

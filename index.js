@@ -11,9 +11,11 @@ const expressLayouts = require('express-ejs-layouts')
 const { bindFlmngr } = require("@flmngr/flmngr-server-node-express");
 
 const app = express();
-const PATH_ADMIN_TEMPLATE = "/views/pages/admin/";
-const PATH_CLIENT_TEMPLATE = "/views/pages/client/";
-const PATH_LAYOUTS_TEMPLATE = "/views/layouts/";
+const PATH_CLIENT_PAGES = path.join(__dirname, "views/client/pages");
+const PATH_ADMIN_PAGES = path.join(__dirname, "views/admin/pages");
+const PATH_CLIENT_LAYOUTS = path.join(__dirname, "views/client/layouts");
+const PATH_ADMIN_LAYOUTS = path.join(__dirname, "views/admin/layouts");
+const PATH_SHARED = path.join(__dirname, "views/shared");
 
 bindFlmngr({
     app: app,
@@ -43,7 +45,13 @@ app.use(express.static(__dirname + '/public'));
 // set the view engine to ejs
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
-app.set('views', [__dirname + PATH_LAYOUTS_TEMPLATE, __dirname + PATH_ADMIN_TEMPLATE, __dirname + PATH_CLIENT_TEMPLATE]);
+app.set('views', [
+    PATH_CLIENT_PAGES,
+    PATH_ADMIN_PAGES,
+    PATH_CLIENT_LAYOUTS,
+    PATH_ADMIN_LAYOUTS,
+    PATH_SHARED
+]);
 
 //cors
 //app.use(cors({ origin: true, credentials: true }));

@@ -67,7 +67,7 @@
             <!-- Tab 2: Live Preview -->
             <div class="tab-pane" id="tab-newsletter-preview" role="tabpanel">
                 <div class="p-3 border rounded bg-surface">
-                    <%- include('../components/c_newsletter', { newsletter: dataComponent }) %>
+                    <%- include('../../client/partials/newsletter', { newsletter: dataComponent }) %>
                 </div>
             </div>
 
@@ -75,7 +75,7 @@
             <div class="tab-pane" id="tab-newsletter-code" role="tabpanel">
                 <div class="code-frame">
                     <textarea cols="30" id="source-code" name="" rows="10" class="form-control font-monospace">
-<%- include('../components/c_newsletter', { newsletter: dataComponent }) %>
+<%- include('../../client/partials/newsletter', { newsletter: dataComponent }) %>
                     </textarea>
                 </div>
             </div>

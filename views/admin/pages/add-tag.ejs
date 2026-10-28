@@ -1,40 +1,41 @@
-<%- include('../../components/navbar', { account: typeof account !== 'undefined' ? account : null }) %>
+<%- include('../partials/navbar', { account: typeof account !== 'undefined' ? account : null }) %>
 
 <div class="page-wrapper">
-    <%- include('../../components/header', { account: typeof account !== 'undefined' ? account : null, action: null, title: 'Edit Tag' }) %>
+    <%- include('../partials/header', { account: typeof account !== 'undefined' ? account : null, action: null, title: 'Add New Tag' }) %>
 
     <div class="page-body">
         <div class="container-xl">
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6">
-                    <form method="post" role="form" action="/admin/update-tag?id=<%= blogs._id %>" novalidate>
+                    <form method="post" role="form" action="/admin/add-tag" novalidate>
                         <div class="card shadow-sm border-0">
                             <div class="card-header">
                                 <h3 class="card-title fw-bold d-flex align-items-center gap-2">
-                                    <i class="ti ti-pencil text-primary"></i>
-                                    <span>Edit Tag</span>
+                                    <i class="ti ti-tag text-primary"></i>
+                                    <span>Create Tag</span>
                                 </h3>
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label required" for="name">Tag Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Tag Name"
-                                        value="<%= blogs.name %>" required />
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="e.g. React, Node.js, Architecture (2-50 chars)..." required autofocus />
                                     <div class="invalid-feedback"></div>
+                                    <small class="form-hint mt-1">Unique identifier used for categorizing blog posts.</small>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label" for="prioritize">Priority Level</label>
                                     <select name="prioritize" id="prioritize" class="form-select">
-                                        <option value="0" <%= blogs.prioritize == 0 ? "selected" : "" %>>Secondary (Standard tag)</option>
-                                        <option value="1" <%= blogs.prioritize == 1 ? "selected" : "" %>>Primary (Featured / Highlighted tag)</option>
+                                        <option value="0" selected>Secondary (Standard tag)</option>
+                                        <option value="1">Primary (Featured / Highlighted tag)</option>
                                     </select>
                                     <div class="invalid-feedback"></div>
+                                    <small class="form-hint mt-1">Primary tags will be prioritized on client cloud tags.</small>
                                 </div>
                             </div>
                             <div class="card-footer d-flex gap-2">
                                 <button type="submit" class="btn btn-primary flex-fill">
-                                    <i class="ti ti-device-floppy me-1"></i> Update Tag
+                                    <i class="ti ti-plus me-1"></i> Create Tag
                                 </button>
                                 <a href="/admin/tag" class="btn btn-outline-secondary">
                                     Cancel
