@@ -7,7 +7,7 @@
         <div class="container-xl">
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6">
-                    <form method="post" role="form" action="/admin/add-tag">
+                    <form method="post" role="form" action="/admin/add-tag" novalidate>
                         <div class="card shadow-sm border-0">
                             <div class="card-header">
                                 <h3 class="card-title fw-bold d-flex align-items-center gap-2">
@@ -17,18 +17,20 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label class="form-label required">Tag Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="e.g. React, Node.js, Architecture" required autofocus />
-                                    <small class="form-hint">Unique identifier used for categorizing blog posts.</small>
+                                    <label class="form-label required" for="name">Tag Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="e.g. React, Node.js, Architecture (2-50 chars)..." required autofocus />
+                                    <div class="invalid-feedback"></div>
+                                    <small class="form-hint mt-1">Unique identifier used for categorizing blog posts.</small>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Priority Level</label>
+                                    <label class="form-label" for="prioritize">Priority Level</label>
                                     <select name="prioritize" id="prioritize" class="form-select">
                                         <option value="0" selected>Secondary (Standard tag)</option>
                                         <option value="1">Primary (Featured / Highlighted tag)</option>
                                     </select>
-                                    <small class="form-hint">Primary tags will be prioritized on client cloud tags.</small>
+                                    <div class="invalid-feedback"></div>
+                                    <small class="form-hint mt-1">Primary tags will be prioritized on client cloud tags.</small>
                                 </div>
                             </div>
                             <div class="card-footer d-flex gap-2">

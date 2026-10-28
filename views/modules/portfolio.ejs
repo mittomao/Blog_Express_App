@@ -31,10 +31,11 @@
         <div class="tab-content">
             <!-- Tab 1: Edit Form -->
             <div class="tab-pane active show" id="tab-portfolio-edit" role="tabpanel">
-                <form action="/admin/components/<%= componentName %>" method="post">
+                <form action="/admin/components/<%= componentName %>" method="post" novalidate>
                     <div class="mb-3">
                         <label class="form-label required">Full Name</label>
                         <input type="text" class="form-control" name="name" placeholder="Full Name" value="<%= name %>" required />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
@@ -47,16 +48,19 @@
                         </div>
                         <input type="text" id="thumbnail-input" name="avatar" class="form-control form-control-sm" value="<%= avatar %>" placeholder="Avatar URL" />
                         <small class="form-hint mt-1">Image size under 10MB.</small>
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Description / Professional Bio</label>
                         <textarea class="form-control" name="description" id="description" rows="3" placeholder="Profile summary..."><%= description %></textarea>
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Link to CV / Resume</label>
                         <input type="text" class="form-control" name="linkcv" id="linkcv" placeholder="https://..." value="<%= linkcv %>" />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mt-4">

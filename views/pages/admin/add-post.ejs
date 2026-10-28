@@ -5,7 +5,7 @@
 
     <div class="page-body">
         <div class="container-xl">
-            <form method="post" role="form" action="/admin/add-post">
+            <form method="post" role="form" action="/admin/add-post" data-unsaved-guard="true" novalidate>
                 <div class="row row-cards">
                     <!-- Left / Main Column: Content Editor -->
                     <div class="col-lg-8">
@@ -15,16 +15,19 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label class="form-label required">Title</label>
-                                    <input type="text" class="form-control" name="title" placeholder="Enter post title..." required />
+                                    <label class="form-label required" for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter post title (5-200 characters)..." required />
+                                    <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Summary</label>
-                                    <textarea class="form-control" name="summary" id="summary" rows="3" placeholder="Brief summary of the article..."></textarea>
+                                    <label class="form-label" for="summary">Summary</label>
+                                    <textarea class="form-control" name="summary" id="summary" rows="3" placeholder="Brief summary of the article (max 500 characters)..."></textarea>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Content</label>
+                                    <label class="form-label required" for="editor-content">Content</label>
                                     <textarea class="form-control" id="editor-content" name="content" rows="12" data-key="<%= process.env.FLMNGR_KEY %>"></textarea>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                         </div>
@@ -39,23 +42,26 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label class="form-label">Status</label>
+                                    <label class="form-label" for="status">Status</label>
                                     <select name="status" id="status" class="form-select">
                                         <option value="1" selected>Show (Public)</option>
                                         <option value="0">Hide (Draft)</option>
                                     </select>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Topic / Category</label>
-                                    <input type="text" class="form-control" name="topic" placeholder="e.g. Javascript, Node.js, Life" />
+                                    <label class="form-label" for="topic">Topic / Category</label>
+                                    <input type="text" class="form-control" id="topic" name="topic" placeholder="e.g. Javascript, Node.js, Life" />
+                                    <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Tags</label>
+                                    <label class="form-label" for="select-tag">Tags</label>
                                     <select class="form-select" name="tag" id="select-tag" multiple placeholder="Choose tags..." data-allow-clear="1">
                                         <% tags.forEach((tag, index)=> { %>
                                             <option value="<%= tag.name %>"><%= tag.name %></option>
                                         <% }) %>
                                     </select>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                         </div>
@@ -73,6 +79,7 @@
                                     <i class="ti ti-photo me-1"></i> Select from Media Library
                                 </div>
                                 <input type="text" id="thumbnail-input" name="thumbnail" class="form-control form-control-sm" placeholder="Image URL will appear here" />
+                                <div class="invalid-feedback"></div>
                                 <small class="form-hint mt-1">Image selected via Flmngr file manager.</small>
                             </div>
                         </div>

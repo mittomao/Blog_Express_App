@@ -99,7 +99,8 @@
                                 <i class="ti ti-pencil"></i>
                             </a>
                             <form action="/admin/delete-post?id=<%= blog._id %>" method="post" class="d-inline"
-                                onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                data-confirm-delete="Do you really want to permanently delete post '<%= blog.title ? blog.title.replace(/"/g, '&quot;') : 'Untitled' %>'? This action cannot be undone."
+                                data-delete-title="Delete Blog Post">
                                 <button type="submit" class="btn btn-outline-danger" title="Delete Post" data-bs-toggle="tooltip">
                                     <i class="ti ti-trash"></i>
                                 </button>

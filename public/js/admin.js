@@ -1,5 +1,10 @@
 
+import { initAdminFormValidation, AdminNotifier } from './admin-form-validator.js';
+
 $(function () {
+    // Initialize Admin Form Validation, Feedback & Submit State Machine
+    initAdminFormValidation();
+
     // Higlight Code
     const frame = document.querySelectorAll('.code-frame textarea');
     if (frame.length) {

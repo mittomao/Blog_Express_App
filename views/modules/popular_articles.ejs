@@ -32,15 +32,17 @@
         <div class="tab-content">
             <!-- Tab 1: Edit Form -->
             <div class="tab-pane active show" id="tab-popular-edit" role="tabpanel">
-                <form action="/admin/components/<%= componentName %>" method="post">
+                <form action="/admin/components/<%= componentName %>" method="post" novalidate>
                     <div class="mb-3">
                         <label class="form-label required">Article Title</label>
                         <input type="text" class="form-control" name="title" placeholder="Popular article title" value="<%= title %>" required />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Description</label>
                         <input type="text" class="form-control" name="desciption" placeholder="Short description" value="<%= desciption %>" />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
@@ -53,16 +55,19 @@
                         </div>
                         <input type="text" id="thumbnail-input" name="image" class="form-control form-control-sm" value="<%= image %>" placeholder="Image URL" />
                         <small class="form-hint mt-1">Image size under 10MB.</small>
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label required">Author</label>
                         <input type="text" class="form-control" name="author" placeholder="Author name" value="<%= author %>" required />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label required">Article Link</label>
                         <input type="text" class="form-control" name="link" placeholder="e.g. /post/123456 or external URL" value="<%= link %>" required />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mt-4">

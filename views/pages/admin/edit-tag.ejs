@@ -7,7 +7,7 @@
         <div class="container-xl">
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6">
-                    <form method="post" role="form" action="/admin/update-tag?id=<%= blogs._id %>">
+                    <form method="post" role="form" action="/admin/update-tag?id=<%= blogs._id %>" novalidate>
                         <div class="card shadow-sm border-0">
                             <div class="card-header">
                                 <h3 class="card-title fw-bold d-flex align-items-center gap-2">
@@ -17,17 +17,19 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label class="form-label required">Tag Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Tag Name"
+                                    <label class="form-label required" for="name">Tag Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Tag Name"
                                         value="<%= blogs.name %>" required />
+                                    <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Priority Level</label>
+                                    <label class="form-label" for="prioritize">Priority Level</label>
                                     <select name="prioritize" id="prioritize" class="form-select">
                                         <option value="0" <%= blogs.prioritize == 0 ? "selected" : "" %>>Secondary (Standard tag)</option>
                                         <option value="1" <%= blogs.prioritize == 1 ? "selected" : "" %>>Primary (Featured / Highlighted tag)</option>
                                     </select>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="card-footer d-flex gap-2">

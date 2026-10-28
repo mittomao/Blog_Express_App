@@ -30,15 +30,17 @@
         <div class="tab-content">
             <!-- Tab 1: Edit Form -->
             <div class="tab-pane active show" id="tab-newsletter-edit" role="tabpanel">
-                <form action="/admin/components/<%= componentName %>" method="post">
+                <form action="/admin/components/<%= componentName %>" method="post" novalidate>
                     <div class="mb-3">
                         <label class="form-label required">Title</label>
                         <input type="text" class="form-control" name="title" placeholder="Newsletter headline" value="<%= title %>" required />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Description</label>
                         <textarea class="form-control" name="description" id="description" rows="3" placeholder="Call to action description..."><%= description %></textarea>
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mb-3">
@@ -51,6 +53,7 @@
                         </div>
                         <input type="text" id="thumbnail-input" name="bgimage" class="form-control form-control-sm" value="<%= bgimage %>" placeholder="Image URL" />
                         <small class="form-hint mt-1">Image size under 10MB.</small>
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="mt-4">

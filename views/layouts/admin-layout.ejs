@@ -14,6 +14,71 @@
         <%- body %>
     </div>
 
+    <!-- Global Toast Notifications Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1090;" id="adminToastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Accessible Destructive Confirmation Modal -->
+    <div class="modal modal-blur fade" id="adminConfirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+                    <i class="ti ti-alert-triangle text-danger fs-1 mb-2"></i>
+                    <h3 id="adminConfirmModalTitle" class="fw-bold">Are you sure?</h3>
+                    <div class="text-muted" id="adminConfirmModalMessage">Do you really want to perform this action? This operation cannot be undone.</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal" id="adminConfirmModalCancelBtn">
+                                    Cancel
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-danger w-100" id="adminConfirmModalConfirmBtn">
+                                    Yes, Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unsaved Changes Warning Modal -->
+    <div class="modal modal-blur fade" id="adminUnsavedModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-warning"></div>
+                <div class="modal-body text-center py-4">
+                    <i class="ti ti-file-alert text-warning fs-1 mb-2"></i>
+                    <h3 class="fw-bold">Unsaved Changes</h3>
+                    <div class="text-muted">You have unsaved changes on this page. If you leave now, your changes will be discarded.</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">
+                                    Stay on Page
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-danger w-100" id="adminUnsavedModalLeaveBtn">
+                                    Leave Page
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <%- include('../../templates/block_script') %>
     <script type="module" src="/js/admin.js"></script>
 </body>

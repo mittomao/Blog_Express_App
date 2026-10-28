@@ -67,20 +67,56 @@ module.exports = {
                         layout: 'admin-layout'
                     }));
             } catch (error) {
-                console.error('error', error)
+                console.error('error', error);
+                return res.redirect('/admin?toast=error&status=error&msg=Failed+to+load+tags');
             }
         }
 
         try {
-            let add = await _BLOG_CON.Func_Create_Post({ author: req.session?.account?.username, ...req.body, tag: req.body.tag.toString() });
+            const { title, content, summary, status, topic, tag, thumbnail } = req.body;
+
+            // Server-Side Independent Validation
+            if (!title || typeof title !== 'string' || title.trim().length < 5 || title.trim().length > 200) {
+                return res.redirect('/admin/add-post?toast=error&status=error&msg=Title+must+be+between+5+and+200+characters');
+            }
+
+            const cleanContent = content ? content.replace(/<[^>]*>/g, '').trim() : '';
+            if (!content || cleanContent.length < 10) {
+                return res.redirect('/admin/add-post?toast=error&status=error&msg=Content+must+be+at+least+10+characters');
+            }
+
+            if (summary && summary.trim().length > 500) {
+                return res.redirect('/admin/add-post?toast=error&status=error&msg=Summary+cannot+exceed+500+characters');
+            }
+
+            const normalizedTag = tag ? (Array.isArray(tag) ? tag.join(',') : tag.toString()) : '';
+            const normalizedStatus = status === '0' || status === 0 ? '0' : '1';
+
+            let add = await _BLOG_CON.Func_Create_Post({
+                author: req.session?.account?.username,
+                title: title.trim(),
+                content,
+                summary: summary ? summary.trim() : '',
+                status: normalizedStatus,
+                topic: topic ? topic.trim() : '',
+                thumbnail: thumbnail ? thumbnail.trim() : '',
+                tag: normalizedTag
+            });
+
             if (add) {
-                let updateQuantity = _TAG_CON.Func_Increment_Quantity({ name: { "$in": req.body.tag } });
-                if (updateQuantity) {
-                    return res.redirect('/admin');
+                if (tag) {
+                    const tagList = Array.isArray(tag) ? tag : tag.toString().split(',').map(t => t.trim()).filter(Boolean);
+                    if (tagList.length > 0) {
+                        await _TAG_CON.Func_Increment_Quantity({ name: { "$in": tagList } });
+                    }
                 }
+                return res.redirect('/admin?toast=post_created&status=success');
+            } else {
+                return res.redirect('/admin/add-post?toast=error&status=error&msg=Failed+to+create+post');
             }
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect('/admin/add-post?toast=error&status=error&msg=Server+error+creating+post');
         }
     },
     pageEdit: async (req, res) => {
@@ -97,32 +133,86 @@ module.exports = {
                         layout: 'admin-layout'
                     }));
             }
+            return res.redirect('/admin?toast=error&status=error&msg=Post+not+found');
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect('/admin?toast=error&status=error&msg=Invalid+post+id');
         }
     },
     updatePost: async (req, res) => {
         const { id } = req.query;
+        if (!id) {
+            return res.redirect('/admin?toast=error&status=error&msg=Missing+post+id');
+        }
+
         try {
-            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, { author: req.session?.account?.username, ...req.body, tag: req.body.tag.toString() });
+            const { title, content, summary, status, topic, tag, thumbnail } = req.body;
+
+            // Server-Side Independent Validation
+            if (!title || typeof title !== 'string' || title.trim().length < 5 || title.trim().length > 200) {
+                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Title+must+be+between+5+and+200+characters`);
+            }
+
+            const cleanContent = content ? content.replace(/<[^>]*>/g, '').trim() : '';
+            if (!content || cleanContent.length < 10) {
+                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Content+must+be+at+least+10+characters`);
+            }
+
+            if (summary && summary.trim().length > 500) {
+                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Summary+cannot+exceed+500+characters`);
+            }
+
+            const normalizedTag = tag ? (Array.isArray(tag) ? tag.join(',') : tag.toString()) : '';
+            const normalizedStatus = status === '0' || status === 0 ? '0' : '1';
+
+            let update = await _BLOG_CON.Func_Update_Post_By_Id(id, {
+                author: req.session?.account?.username,
+                title: title.trim(),
+                content,
+                summary: summary ? summary.trim() : '',
+                status: normalizedStatus,
+                topic: topic ? topic.trim() : '',
+                thumbnail: thumbnail ? thumbnail.trim() : '',
+                tag: normalizedTag
+            });
+
             if (update) {
-                return res.redirect('/admin');
+                return res.redirect('/admin?toast=post_updated&status=success');
+            } else {
+                return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Failed+to+update+post`);
             }
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect(`/admin/edit-post/${id}?toast=error&status=error&msg=Server+error+updating+post`);
         }
     },
     deletePost: async (req, res) => {
         const { id } = req.query;
-        const post = await _BLOG_CON.Func_Get_Post_By_Id(id);
+        if (!id) {
+            return res.redirect('/admin?toast=error&status=error&msg=Missing+post+id');
+        }
+
         try {
+            const post = await _BLOG_CON.Func_Get_Post_By_Id(id);
+            if (!post) {
+                return res.redirect('/admin?toast=error&status=error&msg=Post+not+found');
+            }
+
             let deletePost = await _BLOG_CON.Func_Delete_Post_By_Id(id);
             if (deletePost) {
-                let updateQuantity = _TAG_CON.Func_Decrement_Quantity({ name: { "$in": post.tag.split(',') } });
-                return res.redirect('/admin');
+                if (post.tag) {
+                    const tagList = post.tag.split(',').map(t => t.trim()).filter(Boolean);
+                    if (tagList.length > 0) {
+                        await _TAG_CON.Func_Decrement_Quantity({ name: { "$in": tagList } });
+                    }
+                }
+                return res.redirect('/admin?toast=post_deleted&status=success');
+            } else {
+                return res.redirect('/admin?toast=error&status=error&msg=Failed+to+delete+post');
             }
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect('/admin?toast=error&status=error&msg=Server+error+deleting+post');
         }
     },
     register: async (req, res) => {
@@ -130,34 +220,36 @@ module.exports = {
     },
     login: async (req, res) => {
         if (req.method === 'GET') {
-            return res.render('login.ejs', new ResonposeDataAdmin({ title: 'Login Page', layout: 'admin-layout' }))
+            return res.render('login.ejs', new ResonposeDataAdmin({ title: 'Login Page', layout: 'admin-layout' }));
         }
 
         req.session = req.session || {};
 
         try {
             const { username, password } = req.body;
+            if (!username || !password || username.trim().length < 3 || password.length < 6) {
+                return res.redirect('/admin/login?toast=login_failed&status=error');
+            }
+
             const login = await _USER_CON.FUNC_LOGIN({
-                username,
-                password
+                username: username.trim(),
+                password: password
             });
 
             if (login) {
                 req.session.account = {
                     loggedin: true,
-                    username: username,
+                    username: username.trim(),
                     avatar: login.avatar
                 };
 
-                res.redirect('/admin')
+                return res.redirect('/admin');
             } else {
-                res.send("Username Or Password Is Correct!!!")
-                // res.status(404).json({
-                //     mess: "Username or Password is Correct"
-                // })
+                return res.redirect('/admin/login?toast=login_failed&status=error');
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
+            return res.redirect('/admin/login?toast=error&status=error&msg=Login+error');
         }
     },
     logout: async (req, res) => {
@@ -166,7 +258,7 @@ module.exports = {
             username: null
         };
 
-        res.redirect('/admin/login')
+        res.redirect('/admin/login');
     },
     // Tag
     pageTag: async (req, res) => {
@@ -186,19 +278,41 @@ module.exports = {
             }
         }
 
-        return res.redirect('/admin/login')
+        return res.redirect('/admin/login');
     },
     addTag: async (req, res) => {
         if (req.method === "GET") {
             return res.render('add-tag.ejs', new ResonposeDataAdmin({ title: 'Add Tag Page', layout: 'admin-layout' }));
         }
+
         try {
-            let add = await _TAG_CON.Func_Create_Tag({ ...req.body });
+            const { name, prioritize } = req.body;
+            if (!name || typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 50) {
+                return res.redirect('/admin/add-tag?toast=error&status=error&msg=Tag+name+must+be+between+2+and+50+characters');
+            }
+
+            const tagName = name.trim();
+            // Check if tag already exists in MongoDB
+            const allTags = await _TAG_CON.Func_Get_ALl_Tag();
+            const exists = allTags.some(t => t.name.toLowerCase() === tagName.toLowerCase());
+            if (exists) {
+                return res.redirect('/admin/add-tag?toast=error&status=error&msg=Tag+name+already+exists');
+            }
+
+            const normalizedPriority = prioritize === '1' || prioritize === 1 ? 1 : 0;
+            let add = await _TAG_CON.Func_Create_Tag({
+                name: tagName,
+                prioritize: normalizedPriority
+            });
+
             if (add) {
-                return res.redirect('/admin/tag');
+                return res.redirect('/admin/tag?toast=tag_created&status=success');
+            } else {
+                return res.redirect('/admin/add-tag?toast=error&status=error&msg=Failed+to+create+tag');
             }
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect('/admin/add-tag?toast=error&status=error&msg=Server+error+creating+tag');
         }
     },
     pageEditTag: async (req, res) => {
@@ -208,30 +322,64 @@ module.exports = {
             if (post) {
                 return res.render('edit-tag.ejs', new ResonposeDataAdmin({ blogs: post, title: 'Edit Tag Page', layout: 'admin-layout' }));
             }
+            return res.redirect('/admin/tag?toast=error&status=error&msg=Tag+not+found');
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect('/admin/tag?toast=error&status=error&msg=Invalid+tag+id');
         }
     },
     updateTag: async (req, res) => {
         const { id } = req.query;
+        if (!id) {
+            return res.redirect('/admin/tag?toast=error&status=error&msg=Missing+tag+id');
+        }
+
         try {
-            let update = await _TAG_CON.Func_Update_Tag_By_Query({ _id: id }, { ...req.body });
+            const { name, prioritize } = req.body;
+            if (!name || typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 50) {
+                return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Tag+name+must+be+between+2+and+50+characters`);
+            }
+
+            const tagName = name.trim();
+            // Check duplicate tag excluding current id
+            const allTags = await _TAG_CON.Func_Get_ALl_Tag();
+            const exists = allTags.some(t => t._id.toString() !== id.toString() && t.name.toLowerCase() === tagName.toLowerCase());
+            if (exists) {
+                return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Tag+name+already+exists`);
+            }
+
+            const normalizedPriority = prioritize === '1' || prioritize === 1 ? 1 : 0;
+            let update = await _TAG_CON.Func_Update_Tag_By_Query({ _id: id }, {
+                name: tagName,
+                prioritize: normalizedPriority
+            });
+
             if (update) {
-                return res.redirect('/admin/tag');
+                return res.redirect('/admin/tag?toast=tag_updated&status=success');
+            } else {
+                return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Failed+to+update+tag`);
             }
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect(`/admin/edit-tag/${id}?toast=error&status=error&msg=Server+error+updating+tag`);
         }
     },
     deleteTag: async (req, res) => {
         const { id } = req.query;
+        if (!id) {
+            return res.redirect('/admin/tag?toast=error&status=error&msg=Missing+tag+id');
+        }
+
         try {
             let deleteTag = await _TAG_CON.Func_Delete_Post_By_Id(id);
             if (deleteTag) {
-                return res.redirect('/admin/tag');
+                return res.redirect('/admin/tag?toast=tag_deleted&status=success');
+            } else {
+                return res.redirect('/admin/tag?toast=error&status=error&msg=Failed+to+delete+tag');
             }
         } catch (error) {
-            console.error('error', error)
+            console.error('error', error);
+            return res.redirect('/admin/tag?toast=error&status=error&msg=Server+error+deleting+tag');
         }
     },
     // Components
@@ -239,7 +387,11 @@ module.exports = {
         let { name } = req.params;
         if (req.method === "GET") {
             try {
-                const data = await _COMP_CON['Func_Get_Data_Component_' + name]();
+                const getFn = _COMP_CON['Func_Get_Data_Component_' + name];
+                if (!getFn) {
+                    return res.redirect('/admin?toast=error&status=error&msg=Component+not+found');
+                }
+                const data = await getFn();
                 return res.render('components.ejs',
                     new ResonposeDataAdmin({
                         account: req.session.account,
@@ -251,17 +403,22 @@ module.exports = {
                         useStyleClient: true
                     }));
             } catch (error) {
-                console.error(error)
+                console.error(error);
+                return res.redirect('/admin?toast=error&status=error&msg=Failed+to+load+component');
             }
-
         }
 
         try {
-            await _COMP_CON['Func_Update_Data_Component_' + name](req.body, (result) => {
-                return res.redirect('/admin/components/' + name);
+            const updateFn = _COMP_CON['Func_Update_Data_Component_' + name];
+            if (!updateFn) {
+                return res.redirect('/admin?toast=error&status=error&msg=Component+update+handler+not+found');
+            }
+            await updateFn(req.body, (result) => {
+                return res.redirect('/admin/components/' + name + '?toast=widget_updated&status=success');
             });
         } catch (error) {
-            console.error(error)
+            console.error(error);
+            return res.redirect('/admin/components/' + name + '?toast=error&status=error&msg=Failed+to+update+widget');
         }
     },
     //Upload Image

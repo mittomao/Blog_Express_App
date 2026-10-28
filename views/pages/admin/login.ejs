@@ -20,23 +20,25 @@
                     Enter your administrative credentials to manage posts, tags, widgets and assets.
                 </p>
 
-                <form action="/admin/login" method="post" autocomplete="off">
+                <form action="/admin/login" method="post" autocomplete="off" novalidate>
                     <div class="mb-3">
-                        <label class="form-label required">Username</label>
-                        <div class="input-group">
+                        <label class="form-label required" for="username">Username</label>
+                        <div class="input-group has-validation">
                             <span class="input-group-text"><i class="ti ti-user text-muted"></i></span>
                             <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus />
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label required">Password</label>
-                        <div class="input-group">
+                        <label class="form-label required" for="password">Password</label>
+                        <div class="input-group has-validation">
                             <span class="input-group-text"><i class="ti ti-lock text-muted"></i></span>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
                             <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn" title="Toggle password visibility" tabindex="-1">
                                 <i class="ti ti-eye" id="togglePasswordIcon"></i>
                             </button>
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
 
